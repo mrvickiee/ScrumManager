@@ -10,6 +10,11 @@
 		A3EF9E531C98FB0400C3B053 /* ScrumManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A3EF9E521C98FB0400C3B053 /* ScrumManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A3EF9E5A1C98FB0400C3B053 /* ScrumManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */; };
 		A3EF9E5F1C98FB0400C3B053 /* ScrumManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E5E1C98FB0400C3B053 /* ScrumManagerTests.swift */; };
+		A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */; };
+		A3EF9E6C1C98FDDB00C3B053 /* webroot in Resources */ = {isa = PBXBuildFile; fileRef = A3EF9E6B1C98FDDB00C3B053 /* webroot */; };
+		A3EF9E6F1C98FDF100C3B053 /* MongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */; };
+		A3EF9E701C98FDF100C3B053 /* PerfectLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */; };
+		A3EF9E721C98FEC100C3B053 /* webroot in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3EF9E6B1C98FDDB00C3B053 /* webroot */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,6 +27,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A3EF9E711C98FEA700C3B053 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				A3EF9E721C98FEC100C3B053 /* webroot in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScrumManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EF9E521C98FB0400C3B053 /* ScrumManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScrumManager.h; sourceTree = "<group>"; };
@@ -29,6 +47,10 @@
 		A3EF9E591C98FB0400C3B053 /* ScrumManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScrumManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EF9E5E1C98FB0400C3B053 /* ScrumManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumManagerTests.swift; sourceTree = "<group>"; };
 		A3EF9E601C98FB0400C3B053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfectHandlers.swift; sourceTree = "<group>"; };
+		A3EF9E6B1C98FDDB00C3B053 /* webroot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = webroot; sourceTree = "<group>"; };
+		A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MongoDB.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/MongoDB.framework"; sourceTree = "<group>"; };
+		A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerfectLib.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/PerfectLib.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3EF9E6F1C98FDF100C3B053 /* MongoDB.framework in Frameworks */,
+				A3EF9E701C98FDF100C3B053 /* PerfectLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +77,8 @@
 		A3EF9E451C98FB0400C3B053 = {
 			isa = PBXGroup;
 			children = (
+				A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */,
+				A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */,
 				A3EF9E511C98FB0400C3B053 /* ScrumManager */,
 				A3EF9E5D1C98FB0400C3B053 /* ScrumManagerTests */,
 				A3EF9E501C98FB0400C3B053 /* Products */,
@@ -71,8 +97,10 @@
 		A3EF9E511C98FB0400C3B053 /* ScrumManager */ = {
 			isa = PBXGroup;
 			children = (
+				A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */,
 				A3EF9E521C98FB0400C3B053 /* ScrumManager.h */,
 				A3EF9E541C98FB0400C3B053 /* Info.plist */,
+				A3EF9E6B1C98FDDB00C3B053 /* webroot */,
 			);
 			path = ScrumManager;
 			sourceTree = "<group>";
@@ -108,6 +136,7 @@
 				A3EF9E4B1C98FB0400C3B053 /* Frameworks */,
 				A3EF9E4C1C98FB0400C3B053 /* Headers */,
 				A3EF9E4D1C98FB0400C3B053 /* Resources */,
+				A3EF9E711C98FEA700C3B053 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -177,6 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3EF9E6C1C98FDDB00C3B053 /* webroot in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,36 +336,43 @@
 		A3EF9E641C98FB0400C3B053 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(CONFIGURATION_BUILD_DIR)";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = ScrumManager/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = /PerfectLibraries;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.benjaminjohnson.ScrumManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		A3EF9E651C98FB0400C3B053 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(CONFIGURATION_BUILD_DIR)";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = ScrumManager/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = /PerfectLibraries;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.benjaminjohnson.ScrumManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};
