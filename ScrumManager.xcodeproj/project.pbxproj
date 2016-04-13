@@ -417,6 +417,7 @@
 				A3EF9E651C98FB0400C3B053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A3EF9E661C98FB0400C3B053 /* Build configuration list for PBXNativeTarget "ScrumManagerTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +426,7 @@
 				A3EF9E681C98FB0400C3B053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
