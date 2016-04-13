@@ -12,7 +12,7 @@ import MongoDB
 // This is the function which all Perfect Server modules must expose.
 // The system will load the module and call this function.
 // In here, register any handlers or perform any one-time tasks.
-
+//test commit
 public func PerfectServerModuleInit() {
     
     // Register our handler class with the PageHandlerRegistry.
