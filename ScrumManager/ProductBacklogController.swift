@@ -19,6 +19,7 @@ class ProductBacklogController: AuthController {
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
+        /*
         let db = try! DatabaseManager().database
         let postsBSON = db.getCollection(UserStory).find()
         var userStories: [[String: Any]] = []
@@ -30,8 +31,9 @@ class ProductBacklogController: AuthController {
         
         postsBSON?.close()
         
-        var values :MustacheEvaluationContext.MapType = [:]
-        values["userStories"] = userStories
+ */
+        let values :MustacheEvaluationContext.MapType = [:]
+     //   values["userStories"] = userStories
         
         return values
     }

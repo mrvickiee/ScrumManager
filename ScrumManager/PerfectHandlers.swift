@@ -36,6 +36,8 @@ public func PerfectServerModuleInit() {
 
     //Routing.Routes["GET", "/"] = { _  in StaticFileHandler() }
     
+    let database = try! DatabaseManager().database
+    print(database.collectionNames())
     
 
     print("\(Routing.Routes.description)")

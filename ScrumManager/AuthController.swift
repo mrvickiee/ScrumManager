@@ -58,9 +58,7 @@ extension AuthController {
         
         let requestMethod = RequestMethod(rawValue: request.requestMethod())!
         
-        // Show handle
-        
-        // Check identifier here
+        var values = getUserInformation(request, response: response)
         
         
         if let identifier = request.urlVariables["id"] {
@@ -83,8 +81,7 @@ extension AuthController {
                     let templateURL = request.documentRoot + "/templates/\(modelPluralName)/new.mustache"
                     
                     // Call Show
-                    var values = try! create(request, response: response)
-                    values.update(getUserInformation(request, response: response))
+                    values.update(try! create(request, response: response))
                     response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                     response.requestCompletedCallback()
                     
@@ -95,8 +92,8 @@ extension AuthController {
                         
                         // Call Show
                         let templateURL = request.documentRoot + "/templates/\(modelPluralName)/edit.mustache"
-                        
-                        var values = try! edit(identifier, request: request, response: response)
+                        values.update( try! edit(identifier, request: request, response: response))
+                    //    var values = try! edit(identifier, request: request, response: response)
                         values["url"] = "/\(modelName)s/\(identifier)"
                         
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
@@ -106,8 +103,8 @@ extension AuthController {
                     } else {
                         
                         let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
-                        let values = try! show(identifier, request: request, response: response)
-                        
+                        //let values = try! show(identifier, request: request, response: response)
+                        values.update(try! show(identifier, request: request, response: response))
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                         response.requestCompletedCallback()
                     }
@@ -133,7 +130,8 @@ extension AuthController {
                     templateURL = request.documentRoot + "/templates/\(modelPluralName)/index.mustache"
                 }
                 
-                var values = try! list(request, response: response)
+               // var values = try! list(request, response: response)
+                values.update(try! list(request, response: response))
                 print("getting user information")
                 print("DICT: \(getUserInformation(request, response: response))")
                 values.update(getUserInformation(request, response: response))
