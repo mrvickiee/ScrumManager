@@ -28,7 +28,7 @@ class UserController: RESTController {
         }
         
         postsBSON?.close()
-        values["user"] = posts
+        values["users"] = posts
         
         return values
         

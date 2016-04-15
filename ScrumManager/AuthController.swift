@@ -31,7 +31,7 @@ extension AuthController {
         let currentSession = response.getSession("user")
         print(currentSession["user_id"])
         
-        guard let currentUserID = currentSession["user_id"] as? String, let user = User(email: currentUserID) else {
+        guard let currentUserID = currentSession["user_id"] as? String, let user = User(userID: currentUserID) else {
             return  nil
         }
         
@@ -58,9 +58,15 @@ extension AuthController {
         
         let requestMethod = RequestMethod(rawValue: request.requestMethod())!
         
-        var values = getUserInformation(request, response: response)
+        // Redirect to login if no logged in user
+        guard let user = currentUser(request, response: response) else {
+            response.redirectTo("/login")
+            response.requestCompletedCallback()
+            return
+        }
         
-        
+        var values: MustacheEvaluationContext.MapType = ["user":["name": user.name] as [String: Any]]
+
         if let identifier = request.urlVariables["id"] {
             
             switch(requestMethod) {

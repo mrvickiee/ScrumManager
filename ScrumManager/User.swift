@@ -44,6 +44,18 @@ final class User: Object {
         self.init(bson: userBSON)
     }
     
+    convenience init?(userID: String) {
+        let database = try! DatabaseManager().database
+        
+        // Find Author with email
+        guard let authorBSON = database.getCollection(User).get(userID) else {
+            return nil
+        }
+        
+        self.init(bson: authorBSON)
+        
+    }
+    
     convenience init(bson: BSON) {
         
         let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
