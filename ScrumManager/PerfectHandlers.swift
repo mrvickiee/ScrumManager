@@ -1,6 +1,6 @@
 //
 //  PerfectHandlers.swift
-//  SwiftBlog
+//  ScrumManager
 //
 //  Created by Benjamin Johnson on 9/02/2016.
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
@@ -12,6 +12,7 @@ import MongoDB
 // This is the function which all Perfect Server modules must expose.
 // The system will load the module and call this function.
 // In here, register any handlers or perform any one-time tasks.
+let AUTH_REALM = "ScrumManager"
 
 public func PerfectServerModuleInit() {
     
@@ -20,8 +21,22 @@ public func PerfectServerModuleInit() {
     
     // Do routing
     Routing.Handler.registerGlobally()
-  
-    Routing.Routes["GET", "/"] = { _  in StaticFileHandler() }
+    
+    Routing.addRoutesForRESTController(UserController())
+    Routing.addRoutesForRESTController(ProductBacklogController())
+    
+    
+    Routing.Routes["GET", "/"] = { _ in return ProductBacklogController() }
+    
+    // Add access to stylesheets
+    Routing.Routes["GET", "/stylesheets/*"] = {_  in StaticFileHandler() }
+    
+    Routing.Routes["/login"] = { _ in LoginHandler() }
+    Routing.Routes["/logout"] = { _ in LogoutHandler() }
+
+    //Routing.Routes["GET", "/"] = { _  in StaticFileHandler() }
+    
+    
 
     print("\(Routing.Routes.description)")
     

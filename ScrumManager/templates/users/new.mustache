@@ -1,0 +1,50 @@
+{{% handler:NewPost}}{{!
+
+This is the mustache template file for the tap tracker example.
+
+}}
+
+<div class="callout large primary">
+<div class="row column text-center">
+<h1>Create a new user</h1>
+</div>
+</div>
+
+<form action="/users" method="post" enctype="multipart/form-data">
+
+<div class="row">
+<div class="large-12 columns">
+<label>Email
+<input type="text" name="email" />
+</label>
+</div>
+</div>
+
+<div class="row">
+<div class="large-12 columns">
+<label>Name
+<input type="text" name="name"  />
+</label>
+</div>
+</div>
+
+<div class="row">
+<div class="large-12 columns">
+<label>Password
+<input type="password" name="password" />
+<label>Retype Password
+<input type="password" name="password2" />
+</label>
+
+<label>Profile Picture <input type="file" name="picture"><br>
+</label>
+<input type="submit" value="Submit">
+
+</div>
+</div>
+</form>
+
+
+
+
+

@@ -7,14 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A319953D1CC0959A00ED8F9F /* stylesheets in Resources */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
+		A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
+		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
+		A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F71CC099E30042FC02 /* LoginHandler.swift */; };
+		A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F91CC09A660042FC02 /* UserController.swift */; };
 		A3EF9E531C98FB0400C3B053 /* ScrumManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A3EF9E521C98FB0400C3B053 /* ScrumManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A3EF9E5A1C98FB0400C3B053 /* ScrumManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */; };
 		A3EF9E5F1C98FB0400C3B053 /* ScrumManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E5E1C98FB0400C3B053 /* ScrumManagerTests.swift */; };
 		A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */; };
-		A3EF9E6C1C98FDDB00C3B053 /* webroot in Resources */ = {isa = PBXBuildFile; fileRef = A3EF9E6B1C98FDDB00C3B053 /* webroot */; };
 		A3EF9E6F1C98FDF100C3B053 /* MongoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */; };
 		A3EF9E701C98FDF100C3B053 /* PerfectLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */; };
-		A3EF9E721C98FEC100C3B053 /* webroot in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3EF9E6B1C98FDDB00C3B053 /* webroot */; };
+		A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E731C9A530D00C3B053 /* Project.swift */; };
+		A3FB67D51CBF2DA900CB3A7A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67D41CBF2DA900CB3A7A /* User.swift */; };
+		A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67D61CC06D2400CB3A7A /* Comment.swift */; };
+		A3FB67DC1CC06D5E00CB3A7A /* MongoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67D81CC06D5E00CB3A7A /* MongoExtensions.swift */; };
+		A3FB67DD1CC06D5E00CB3A7A /* PerfectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67D91CC06D5E00CB3A7A /* PerfectExtensions.swift */; };
+		A3FB67DE1CC06D5E00CB3A7A /* CryptoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67DA1CC06D5E00CB3A7A /* CryptoExtensions.swift */; };
+		A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67DB1CC06D5E00CB3A7A /* Extensions.swift */; };
+		A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67E11CC06D8A00CB3A7A /* DatabaseManager.swift */; };
+		A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67E31CC06DE500CB3A7A /* ManagedObject.swift */; };
+		A3FB67E61CC06EA300CB3A7A /* RESTController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67E51CC06EA300CB3A7A /* RESTController.swift */; };
+		A3FB67E91CC07D3C00CB3A7A /* ProductBacklogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67E81CC07D3C00CB3A7A /* ProductBacklogController.swift */; };
+		A3FB67EB1CC07E3300CB3A7A /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67EA1CC07E3300CB3A7A /* AuthController.swift */; };
+		A3FB67ED1CC081D700CB3A7A /* UserStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB67EC1CC081D700CB3A7A /* UserStory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,16 +47,20 @@
 		A3EF9E711C98FEA700C3B053 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = webroot;
 			dstSubfolderSpec = 16;
 			files = (
-				A3EF9E721C98FEC100C3B053 /* webroot in CopyFiles */,
+				A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */,
+				A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A319953C1CC0959A00ED8F9F /* stylesheets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = stylesheets; sourceTree = "<group>"; };
+		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
+		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScrumManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3EF9E521C98FB0400C3B053 /* ScrumManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScrumManager.h; sourceTree = "<group>"; };
 		A3EF9E541C98FB0400C3B053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,6 +71,20 @@
 		A3EF9E6B1C98FDDB00C3B053 /* webroot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = webroot; sourceTree = "<group>"; };
 		A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MongoDB.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/MongoDB.framework"; sourceTree = "<group>"; };
 		A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerfectLib.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/PerfectLib.framework"; sourceTree = "<group>"; };
+		A3EF9E731C9A530D00C3B053 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		A3FB67D41CBF2DA900CB3A7A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A3FB67D61CC06D2400CB3A7A /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		A3FB67D81CC06D5E00CB3A7A /* MongoExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MongoExtensions.swift; sourceTree = "<group>"; };
+		A3FB67D91CC06D5E00CB3A7A /* PerfectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfectExtensions.swift; sourceTree = "<group>"; };
+		A3FB67DA1CC06D5E00CB3A7A /* CryptoExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoExtensions.swift; sourceTree = "<group>"; };
+		A3FB67DB1CC06D5E00CB3A7A /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		A3FB67E11CC06D8A00CB3A7A /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		A3FB67E31CC06DE500CB3A7A /* ManagedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObject.swift; sourceTree = "<group>"; };
+		A3FB67E51CC06EA300CB3A7A /* RESTController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RESTController.swift; sourceTree = "<group>"; };
+		A3FB67E81CC07D3C00CB3A7A /* ProductBacklogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductBacklogController.swift; sourceTree = "<group>"; };
+		A3FB67EA1CC07E3300CB3A7A /* AuthController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		A3FB67EC1CC081D700CB3A7A /* UserStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStory.swift; sourceTree = "<group>"; };
+		A3FB67EE1CC08D4D00CB3A7A /* templates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = templates; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +131,20 @@
 		A3EF9E511C98FB0400C3B053 /* ScrumManager */ = {
 			isa = PBXGroup;
 			children = (
+				A3FB67E71CC07D0600CB3A7A /* Controllers */,
+				A3FB67E01CC06D6F00CB3A7A /* Extensions */,
 				A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */,
+				A3FB67E11CC06D8A00CB3A7A /* DatabaseManager.swift */,
+				A3EE54F71CC099E30042FC02 /* LoginHandler.swift */,
+				A3EF9E731C9A530D00C3B053 /* Project.swift */,
+				A3FB67E31CC06DE500CB3A7A /* ManagedObject.swift */,
+				A3FB67D41CBF2DA900CB3A7A /* User.swift */,
+				A3FB67EC1CC081D700CB3A7A /* UserStory.swift */,
 				A3EF9E521C98FB0400C3B053 /* ScrumManager.h */,
 				A3EF9E541C98FB0400C3B053 /* Info.plist */,
+				A3FB67D61CC06D2400CB3A7A /* Comment.swift */,
+				A319953C1CC0959A00ED8F9F /* stylesheets */,
+				A3FB67EE1CC08D4D00CB3A7A /* templates */,
 				A3EF9E6B1C98FDDB00C3B053 /* webroot */,
 			);
 			path = ScrumManager;
@@ -112,6 +157,28 @@
 				A3EF9E601C98FB0400C3B053 /* Info.plist */,
 			);
 			path = ScrumManagerTests;
+			sourceTree = "<group>";
+		};
+		A3FB67E01CC06D6F00CB3A7A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A3FB67DB1CC06D5E00CB3A7A /* Extensions.swift */,
+				A3FB67D81CC06D5E00CB3A7A /* MongoExtensions.swift */,
+				A3FB67D91CC06D5E00CB3A7A /* PerfectExtensions.swift */,
+				A3FB67DA1CC06D5E00CB3A7A /* CryptoExtensions.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		A3FB67E71CC07D0600CB3A7A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A3FB67E81CC07D3C00CB3A7A /* ProductBacklogController.swift */,
+				A3FB67E51CC06EA300CB3A7A /* RESTController.swift */,
+				A3FB67EA1CC07E3300CB3A7A /* AuthController.swift */,
+				A3EE54F91CC09A660042FC02 /* UserController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,7 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3EF9E6C1C98FDDB00C3B053 /* webroot in Resources */,
+				A319953D1CC0959A00ED8F9F /* stylesheets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +291,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3FB67ED1CC081D700CB3A7A /* UserStory.swift in Sources */,
+				A3FB67DC1CC06D5E00CB3A7A /* MongoExtensions.swift in Sources */,
+				A3FB67DE1CC06D5E00CB3A7A /* CryptoExtensions.swift in Sources */,
 				A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */,
+				A3FB67E61CC06EA300CB3A7A /* RESTController.swift in Sources */,
+				A3FB67EB1CC07E3300CB3A7A /* AuthController.swift in Sources */,
+				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
+				A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */,
+				A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */,
+				A3FB67E91CC07D3C00CB3A7A /* ProductBacklogController.swift in Sources */,
+				A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */,
+				A3FB67DD1CC06D5E00CB3A7A /* PerfectExtensions.swift in Sources */,
+				A3FB67D51CBF2DA900CB3A7A /* User.swift in Sources */,
+				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
+				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
+				A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,9 +430,11 @@
 				INFOPLIST_FILE = ScrumManager/Info.plist;
 				INSTALL_PATH = /PerfectLibraries;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/system";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.benjaminjohnson.ScrumManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/linked/CommonCrypto";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -370,9 +454,11 @@
 				INFOPLIST_FILE = ScrumManager/Info.plist;
 				INSTALL_PATH = /PerfectLibraries;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/system";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.benjaminjohnson.ScrumManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/linked/CommonCrypto";
 			};
 			name = Release;
 		};
@@ -417,6 +503,7 @@
 				A3EF9E651C98FB0400C3B053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A3EF9E661C98FB0400C3B053 /* Build configuration list for PBXNativeTarget "ScrumManagerTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +512,7 @@
 				A3EF9E681C98FB0400C3B053 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
