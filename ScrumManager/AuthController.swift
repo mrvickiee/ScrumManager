@@ -65,8 +65,9 @@ extension AuthController {
             return
         }
         
+        // Add logged in user information to provided values for templates
         var values: MustacheEvaluationContext.MapType = ["user":["name": user.name] as [String: Any]]
-
+        
         if let identifier = request.urlVariables["id"] {
             
             switch(requestMethod) {
@@ -89,7 +90,6 @@ extension AuthController {
                     // Call Show
                     values.update(try! create(request, response: response))
                     response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                    response.requestCompletedCallback()
                     
                 default:
                     
@@ -103,16 +103,14 @@ extension AuthController {
                         values["url"] = "/\(modelName)s/\(identifier)"
                         
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                        response.requestCompletedCallback()
                         
                         
                     } else {
                         
-                        let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
+                        let templateURL = request.documentRoot + "/templates/\(modelPluralName)/showw.mustache"
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                        response.requestCompletedCallback()
                     }
                 }
                 
@@ -141,12 +139,17 @@ extension AuthController {
                 print("getting user information")
                 print("DICT: \(getUserInformation(request, response: response))")
                 values.update(getUserInformation(request, response: response))
-
+                // Add routing
+               
                 response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                 response.requestCompletedCallback()
                 
             }
         }
+        
+        response.requestCompletedCallback()
+
+        
     }
     
     

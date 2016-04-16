@@ -15,6 +15,8 @@ protocol DBManagedObject {
     
     func keyValues() -> [String: Any]
     
+    func asDictionary() -> [String: Any]
+    
     func document() throws -> BSON
     
     var ignoredProperties: [String] { get }
@@ -23,6 +25,7 @@ protocol DBManagedObject {
     
     init?(identifier: String)
     
+ //   var urlPath: String { get }
     
 }
 
@@ -31,7 +34,7 @@ typealias ObjectID = Dictionary<JSONKey, JSONValue>?
 extension DBManagedObject {
     
     var ignoredProperties: [String] {
-        return []
+        return [] //["urlPath"]
     }
     
     
@@ -59,6 +62,10 @@ extension DBManagedObject {
         let bson = try BSON(json: json)
         
         return bson
+    }
+    
+    func asDictionary() -> [String: Any] {
+        return keyValues()
     }
     
     func keyValues() -> [String: Any] {

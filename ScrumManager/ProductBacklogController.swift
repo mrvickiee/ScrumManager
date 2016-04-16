@@ -19,28 +19,26 @@ class ProductBacklogController: AuthController {
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
-        /*
+        
         let db = try! DatabaseManager().database
         let postsBSON = db.getCollection(UserStory).find()
         var userStories: [[String: Any]] = []
         
         while let postBSON = postsBSON?.next() {
             let post = UserStory(bson: postBSON)
-            userStories.append(post.keyValues())
+            userStories.append(post.asDictionary())
         }
         
         postsBSON?.close()
         
- */
-        let values :MustacheEvaluationContext.MapType = [:]
-     //   values["userStories"] = userStories
-        
+        let values :MustacheEvaluationContext.MapType = ["userStories": userStories]
         return values
     }
     
     func getUserStoryWithIdentifier(identifier: Int) -> UserStory? {
         let db = try! DatabaseManager().database
-        let postsBSON = db.getCollection(UserStory).find(BSON(), fields: nil, flags: MongoQueryFlag(rawValue: 0), skip: identifier, limit: 1, batchSize: 0)
+        let postsBSON = db.getCollection(UserStory).find(["identifier": identifier])
+       // let postsBSON = db.getCollection(UserStory).find(BSON(), fields: nil, flags: MongoQueryFlag(rawValue: 0), skip: identifier, limit: 1, batchSize: 0)
         guard let postBSON = postsBSON?.next() else {
             // response.setStatus(404, message: "Article not found")
             // response.requestCompletedCallback()
@@ -90,24 +88,17 @@ class ProductBacklogController: AuthController {
         response.requestCompletedCallback()
     }
     
+ 
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
-        /*
-        let beforeValues = beforeAction(request, response: response)
-        guard var values = beforeValues else {
-            return MustacheEvaluationContext.MapType()
-        }
-  
-        guard let post = getModelWithIdentifier(identifier) else {
+
+      
+        guard let userStory = getUserStoryWithIdentifier(Int(identifier)!) else {
             return MustacheEvaluationContext.MapType()
         }
         
-        values["post"] = post.keyValues()
-        
+        let values = ["userStory": userStory.asDictionary()] as  MustacheEvaluationContext.MapType
         return values
- */
-        
-        return MustacheEvaluationContext.MapType()
+ 
     }
  
     
@@ -124,7 +115,17 @@ class ProductBacklogController: AuthController {
             do {
                 let database = try! DatabaseManager().database
                 newUserStory._objectID = database.generateObjectID()
+                // Set Identifier
+                let result = database.getCollection(UserStory).count(BSON())
+                let identifier: Int
+                switch result {
+                case .ReplyInt(let count):
+                    identifier = count
+                default:
+                    throw CreateUserError.DatabaseError
+                }
                 
+                newUserStory.identifier = identifier
                 database.getCollection(UserStory).insert(try newUserStory.document())
                 
                 response.redirectTo("/")

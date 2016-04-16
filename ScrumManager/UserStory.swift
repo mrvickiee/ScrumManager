@@ -10,15 +10,17 @@ import Foundation
 import PerfectLib
 import MongoDB
 
-final class UserStory: Object {
+
+
+final class UserStory: Object, Commentable {
     
     var title: String
     
     var story: String
     
-  //  var comments:[Comment] = []
+    var identifier: Int = 0
     
-  //  var timeEstimate: TimeEstimate?
+    var comments: [Comment] = []
     
     init(title: String, story: String) {
         self.title = title
@@ -37,9 +39,13 @@ final class UserStory: Object {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
+        let identifier = dictionary["identifier"] as! Int
+        
         self.init(title: title, story: story)
                 
         self._objectID = id
+        
+        self.identifier = identifier
         
     }
     
@@ -52,11 +58,24 @@ extension UserStory: DBManagedObject {
     
     static var collectionName: String = "userstory"
     
-    
-    
-
 }
 
+extension UserStory: Routable {
     
+    var pathURL: String { return "userstories/\(identifier)" }
+    
+    var editURL: String { return "userstories/\(identifier)/edit" }
+}
+
+extension DBManagedObject where Self: Routable {
+    
+    func asDictionary() -> [String: Any] {
+        var dictionary = keyValues()
+        dictionary["urlPath"] = pathURL
+        
+        return dictionary
+    }
+    
+}
     
  

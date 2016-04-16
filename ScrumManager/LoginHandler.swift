@@ -65,9 +65,6 @@ class LoginHandler: RequestHandler {
                     
                     response.redirectTo("/")
                 }
-                
-                
-                
             }
             
             response.requestCompletedCallback()

@@ -14,16 +14,15 @@
 
 <div class="row medium-8 large-7 columns">
 
-{{#post}}
-<div class="blog-post">
-<h3>{{title}}</h3>
-<p>{{body}}</p>
-<div class="author">
-{{#author}}
-<div class="photo"> <img src="{{pictureURL}}" /></div>
-<h3>{{name}}</h3>
-<p>{{bio}}</p>
-{{/author}}
+{{#userStory}}
+<article class="blog-post">
+
+<a href="#"><h3>{{title}}</h3></a>
+<p>{{story}}</p>
+
+
+</article>
+{{/userStory}}
 
 </div>
 </div>

@@ -26,7 +26,7 @@ class DatabaseManager {
     
     init() throws {
         
-        mongo = try  MongoClient(uri: DatabaseManager.mongoURI)
+        mongo =  MongoClient(uri: DatabaseManager.mongoURI)
         let status = mongo.serverStatus()
         
         switch status {

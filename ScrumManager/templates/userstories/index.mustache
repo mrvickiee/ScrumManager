@@ -13,15 +13,15 @@ This is the mustache template file for the tap tracker example.
 
 	<div class="row medium-8 large-7 columns">
 
-		{{#userstory}}
+		{{#userStories}}
 		<article class="blog-post">
 
-            <h3>{{title}}</h3>
+<a href="{{urlPath}}"><h3>{{title}}</h3></a>
 			<p>{{story}}</p>
            
 
 		</article>
-		{{/userstory}}
+		{{/userStories}}
 
 	</div>
 

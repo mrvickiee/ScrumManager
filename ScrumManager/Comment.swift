@@ -8,7 +8,22 @@
 
 import Foundation
 
-class Comment {
+// Protocol for objects that contain comments from users
+protocol Commentable {
+    
+    var comments: [Comment] {get set}
+    
+    mutating func addComment(comment: Comment)
+}
+
+extension Commentable {
+    mutating func addComment(comment: Comment) {
+        comments.append(comment)
+    }
+}
+
+
+class Comment: Object {
     
     let comment: String
     
