@@ -18,6 +18,7 @@ protocol Commentable {
 
 extension Commentable {
     mutating func addComment(comment: Comment) {
+        
         comments.append(comment)
     }
 }

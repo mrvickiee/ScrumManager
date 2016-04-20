@@ -50,6 +50,10 @@ final class UserStory: Object, Commentable {
     }
     
     init?(identifier: String) {
+        story = ""
+        title = ""
+        super.init()
+
         return nil
     }
 }

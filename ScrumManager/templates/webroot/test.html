@@ -1,0 +1,87 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="../stylesheets/foundation.min.css">
+        <link rel="stylesheet" href="../stylesheets/main.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+                                
+    </head>
+    <body>
+        
+        <div class="row">
+            <div class="medium-8 medium-centered columns">
+                <ul class="vertical accordion-menu menu" data-accordion-menu>
+                    <li>
+                        <a href="#">Item 1</a>
+                        <ul class="menu vertical sublevel-1">
+                            <li>
+                                <a href="#">Sub-item 1</a>
+                                <ul class="menu vertical sublevel-2">
+                                    <li><a class="subitem" href="#">Thing 1</a></li>
+                                    <li><a class="subitem" href="#">Thing 2</a></li>
+                                    <li><a class="subitem" href="#">Thing 3</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Sub-item 2</a>
+                                <ul class="menu vertical sublevel-2">
+                                    <li>
+                                        <a href="#">Super-sub-item 1</a>
+                                        <ul class="menu vertical sublevel-3">
+                                            <li><a class="subitem" href="#">Thing 1</a></li>
+                                            <li><a class="subitem" href="#">Thing 2</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="subitem" href="#">Thing 2</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="subitem" href="#">Thing 1</a></li>
+                            <li><a class="subitem" href="#">Thing 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Item 2</a>
+                        <ul class="menu vertical sublevel-1">
+                            <li><a class="subitem" href="#">Thing 1</a></li>
+                            <li><a class="subitem" href="#">Thing 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Item 3</a>
+                        <ul class="menu vertical sublevel-1">
+                            <li><a class="subitem" href="#">Thing 1</a></li>
+                            <li><a class="subitem" href="#">Thing 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Item 4</a>
+                        <ul class="menu vertical sublevel-1">
+                            <li>
+                                <a href="#">Sub-item 3</a>
+                                <ul class="menu vertical sublevel-2">
+                                    <li><a class="subitem" href="#">Thing 1</a></li>
+                                    <li><a class="subitem" href="#">Thing 2</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="subitem" href="#">Thing 1</a></li>
+                            <li><a class="subitem" href="#">Thing 2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <script>
+            $(document).foundation();
+            $(".off-canvas-submenu").hide();
+            $(".off-canvas-submenu-call").click(function() {
+                var icon = $(this).parent().next(".off-canvas-submenu").is(':visible') ? '+' : '-';
+                $(this).parent().next(".off-canvas-submenu").slideToggle('fast');
+                $(this).find("span").text(icon);
+            });
+            </script>
+       
+    </body>
+</html>
