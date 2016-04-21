@@ -23,4 +23,8 @@ extension Routable {
             "editURL": editURL
         ]
     }
+    
+    func testFunc() {
+        
+    }
 }

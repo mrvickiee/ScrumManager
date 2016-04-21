@@ -31,7 +31,7 @@ extension AuthController {
         let currentSession = response.getSession("user")
         print(currentSession["user_id"])
         
-        guard let currentUserID = currentSession["user_id"] as? String, let user = User(userID: currentUserID) else {
+        guard let currentUserID = currentSession["user_id"] as? String, let user = User(identifier: currentUserID) else {
             return  nil
         }
         
@@ -107,7 +107,7 @@ extension AuthController {
                         
                     } else {
                         
-                        let templateURL = request.documentRoot + "/templates/\(modelPluralName)/showw.mustache"
+                        let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))

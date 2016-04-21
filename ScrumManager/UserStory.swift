@@ -50,6 +50,7 @@ final class UserStory: Object, Commentable {
     }
     
     init?(identifier: String) {
+        
         return nil
     }
 }

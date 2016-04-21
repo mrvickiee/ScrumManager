@@ -8,7 +8,6 @@
 
 
 import PerfectLib
-import MongoDB
 
 class ProductBacklogController: AuthController {
     
@@ -20,32 +19,22 @@ class ProductBacklogController: AuthController {
         
         // Get Articles
         
-        let db = try! DatabaseManager().database
-        let postsBSON = db.getCollection(UserStory).find()
-        var userStories: [[String: Any]] = []
-        
-        while let postBSON = postsBSON?.next() {
-            let post = UserStory(bson: postBSON)
-            userStories.append(post.asDictionary())
+        let db = try! DatabaseManager()
+        let userStories = db.executeFetchRequest(UserStory)
+        let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
+            return userStory.asDictionary()
         }
         
-        postsBSON?.close()
-        
-        let values :MustacheEvaluationContext.MapType = ["userStories": userStories]
+        let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
     }
     
     func getUserStoryWithIdentifier(identifier: Int) -> UserStory? {
-        let db = try! DatabaseManager().database
-        let postsBSON = db.getCollection(UserStory).find(["identifier": identifier])
-       // let postsBSON = db.getCollection(UserStory).find(BSON(), fields: nil, flags: MongoQueryFlag(rawValue: 0), skip: identifier, limit: 1, batchSize: 0)
-        guard let postBSON = postsBSON?.next() else {
-            // response.setStatus(404, message: "Article not found")
-            // response.requestCompletedCallback()
+        let db = try! DatabaseManager()
+        guard let userStory = db.executeFetchRequest(UserStory.self, predicate: ["identifier": identifier]).first else {
             return nil
         }
-        
-        let userStory = UserStory(bson: postBSON)
+       
         return userStory
     }
     
@@ -59,7 +48,7 @@ class ProductBacklogController: AuthController {
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["userStory"] = userStory.keyValues()
+        values["userStory"] = userStory.asDictionary()
         
         return values
         
@@ -113,21 +102,17 @@ class ProductBacklogController: AuthController {
             
             // Save Article
             do {
-                let database = try! DatabaseManager().database
-                newUserStory._objectID = database.generateObjectID()
+                let databaseManager = try! DatabaseManager()
+                
+                newUserStory._objectID = databaseManager.generateUniqueIdentifier()
                 // Set Identifier
-                let result = database.getCollection(UserStory).count(BSON())
-                let identifier: Int
-                switch result {
-                case .ReplyInt(let count):
-                    identifier = count
-                default:
+                let userStoryCount = databaseManager.countForFetchRequest(UserStory)
+                guard userStoryCount > -1 else {
                     throw CreateUserError.DatabaseError
                 }
                 
-                newUserStory.identifier = identifier
-                database.getCollection(UserStory).insert(try newUserStory.document())
-                
+                newUserStory.identifier = userStoryCount
+                try databaseManager.insertObject(newUserStory)
                 response.redirectTo("/")
             } catch {
                 
@@ -152,21 +137,9 @@ class ProductBacklogController: AuthController {
     }
     
     func delete(identifier: Int, request: WebRequest, response: WebResponse) {
-        
-        if let postBSON = try! DatabaseManager().database.getCollection(UserStory).find(identifier) {
-            
-            do {
-                
-                let post = UserStory(bson: postBSON)
-                let query: [String: JSONValue] = ["_id": post.identifierDictionary!]
-                let jsonEncode = try JSONEncoder().encode(query)
-                
-                try! DatabaseManager().database.getCollection(UserStory).remove(try! BSON(json: jsonEncode))
-                
-            } catch {
-                print(error)
-            }
-        
+        let databseManager = try! DatabaseManager()
+        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: identifier) {
+            try! databseManager.deleteObject(userStory)
             
         }
         response.requestCompletedCallback()

@@ -30,20 +30,13 @@ final class User: Object {
         
     }
     
-    convenience init?(email: String) {
-        let database = try! DatabaseManager().database
-        let results = database.getCollection(User).find(["email": email])
-        defer {
-            results?.close()
-        }
+    class func userWithEmail(email: String) -> User? {
+        let database = try! DatabaseManager()
+        let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first!
         
-        guard let userBSON = results?.next() else {
-            return nil
-        }
-        
-        self.init(bson: userBSON)
+        return user
     }
-    
+    /*
     convenience init?(userID: String) {
         let database = try! DatabaseManager().database
         
@@ -55,12 +48,8 @@ final class User: Object {
         self.init(bson: authorBSON)
         
     }
-    
-    convenience init(bson: BSON) {
-        
-        let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
-        
-        let dictionary = json.dictionary
+    */
+    convenience init(dictionary: [String: Any]) {
         
         let email = dictionary["email"] as! String
         
@@ -77,6 +66,17 @@ final class User: Object {
         self.profilePictureURL = pictureURL
         
         self._objectID = id
+
+    }
+    
+    convenience init(bson: BSON) {
+        
+        let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
+        
+        let dictionary = json.dictionary
+        
+        self.init(dictionary: dictionary)
+        
     }
     
     convenience init?(identifier: String) {
@@ -91,7 +91,7 @@ extension User: DBManagedObject {
     static func create(name: String, email: String, password: String, pictureURL: String = "") throws -> User {
         
         // Check Email uniqueness
-        guard User(email: email) == nil else {
+        guard User.userWithEmail(email) == nil else {
             throw CreateUserError.EmailExists
         }
         
@@ -103,7 +103,7 @@ extension User: DBManagedObject {
         let user = User(email: email, name: name, authKey: authKey)
         
         do {
-            try DatabaseManager().database.insert(user)
+            try DatabaseManager().insertObject(user)
             return user
         } catch {
             print(error)

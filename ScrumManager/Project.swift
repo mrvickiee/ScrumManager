@@ -60,17 +60,7 @@ class Task {
     }
 }
 
-class Sprint {
-    
-    var userStory: UserStory
-    
-    var comments: [Comment] = []
-    
-    init(userStory: UserStory) {
-        
-        self.userStory = userStory
-    }
-}
+
 
 struct TimeEstimate {
     

@@ -25,11 +25,13 @@ protocol DBManagedObject {
     
     init?(identifier: String)
     
+    static var primaryKey: String? { get }
+    
  //   var urlPath: String { get }
     
 }
 
-typealias ObjectID = Dictionary<JSONKey, JSONValue>?
+typealias ObjectID = Dictionary<JSONKey, JSONValue>
 
 extension DBManagedObject {
     
@@ -37,6 +39,7 @@ extension DBManagedObject {
         return [] //["urlPath"]
     }
     
+    static var primaryKey: String? { return nil }
     
     var identifierDictionary: ObjectID? {
         
@@ -83,4 +86,8 @@ extension DBManagedObject {
         
     }
     
+}
+
+extension DBManagedObject where Self: Object {
+    var primaryKey: String? { return "_objectID" }
 }

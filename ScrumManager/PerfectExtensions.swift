@@ -44,6 +44,12 @@ extension Routing {
     }
 }
 
+extension WebResponse {
+    func redirectTo(routable: Routable) {
+        redirectTo(routable.pathURL)
+    }
+}
+
 extension RequestHandler {
     func parseMustacheFromURL(url: String, withValues values: [String: Any]) -> String {
         

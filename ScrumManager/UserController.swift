@@ -8,7 +8,6 @@
 
 
 import PerfectLib
-import MongoDB
 
 class UserController: RESTController {
     
@@ -16,35 +15,16 @@ class UserController: RESTController {
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         var values = MustacheEvaluationContext.MapType()
-        
-        // Get Articles
-        let db = try! DatabaseManager().database
-        let postsBSON = db.getCollection(User).find()
-        var posts: [[String: Any]] = []
-        
-        while let postBSON = postsBSON?.next() {
-            let post = User(bson: postBSON)
-            posts.append(post.keyValues())
-        }
-        
-        postsBSON?.close()
-        values["users"] = posts
+        values["users"] = try! DatabaseManager().executeFetchRequest(User).map({ (user) -> [String: Any] in
+            return user.asDictionary()
+        })
         
         return values
-        
     }
     
     func getUserWithIdentifier(identifier: Int) -> User? {
-        let db = try! DatabaseManager().database
         
-        let postsBSON = db.getCollection(User).find(BSON(), fields: nil, flags: MongoQueryFlag(rawValue: 0), skip: identifier, limit: 1, batchSize: 0)
-        guard let postBSON = postsBSON?.next() else {
-            // response.setStatus(404, message: "Article not found")
-            // response.requestCompletedCallback()
-            return nil
-        }
-        
-        let user = User(bson: postBSON)
+        let user = try! DatabaseManager().getObject(User.self, primaryKeyValue: identifier);
         return user
     }
     

@@ -46,7 +46,7 @@ class LoginHandler: RequestHandler {
             
             if let email = request.param("email"), password = request.param("password") {
                 // Get User with Email
-                guard let user = User(email: email) else {
+                guard let user = User.userWithEmail(email) else {
                     
                     response.redirectTo(request.requestURI())
                     return response.requestCompletedCallback()

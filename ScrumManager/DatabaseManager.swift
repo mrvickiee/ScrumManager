@@ -9,6 +9,11 @@
 import PerfectLib
 import MongoDB
 
+protocol PrimaryKey {}
+
+extension Int: PrimaryKey {}
+extension String: PrimaryKey {}
+
 class DatabaseManager {
 
     let mongo: MongoClient
@@ -16,7 +21,7 @@ class DatabaseManager {
     static let databaseName = "scrummanager"
     static let mongoURI = "mongodb://localhost"
 
-    var database: MongoDatabase {
+    private var database: MongoDatabase {
         return mongo.getDatabase(DatabaseManager.databaseName)
     }
     
@@ -32,7 +37,7 @@ class DatabaseManager {
         switch status {
             
         case .Error(let domain, let code, let message):
-            assert(false, "Error connecting to mongo: \(domain) \(code) \(message)")
+            assert(false, "Error connecting to mongo: \(domain) \(code) \(message). Did you start MongoDB with mongod in terminal?")
             
         case .ReplyDoc(let doc):
             print("Status doc: \(doc)")
@@ -41,10 +46,85 @@ class DatabaseManager {
         default:
             assert(false, "Strange reply type \(status)")
         }
-
+      
     }
     
-   }
+    func executeFetchRequest<Collection: DBManagedObject>(collection: Collection.Type, predicate: [String: Any] = [:]) -> [Collection] {
+        let collectionBSON = database.getCollection(collection).find(predicate);
+        var objects: [Collection] = []
+        while let objectBSON = collectionBSON?.next() {
+            let object = Collection(bson: objectBSON)
+            objects.append(object)
+        }
+        
+        collectionBSON?.close()
+        return objects
+    }
+    
+    func countForFetchRequest(collection: DBManagedObject.Type, predicate: [String: Any] = [:]) -> Int {
+        
+        let result = database.getCollection(collection).count(try! BSON(dictionary: predicate))
+        let count: Int
+        switch result {
+        case .ReplyInt(let resultCount):
+            count = resultCount
+        default:
+            count = -1
+        }
+        
+        return count
+    }
+    
+    func getObject<Collection: DBManagedObject>(collection: Collection.Type, primaryKeyValue: Int) -> Collection? {
+        
+        guard let primaryKeyName = collection.primaryKey else {
+            fatalError("No primary key set for \(collection)")
+        }
+        
+        // Create Query
+        let query = [primaryKeyName: primaryKeyValue]
+        
+        let cusor = database.getCollection(collection).find(try! BSON(dictionary: query), fields: nil, flags: MongoQueryFlag(rawValue: 0), skip: 0, limit: 1, batchSize: 0)
+        
+        defer {
+            cusor?.close()
+        }
+        if let bson = cusor?.next() {
+            return Collection(bson: bson)
+        }
+    
+        return nil
+    }
+    
+    func insertObject(object: DBManagedObject) throws {
+       try! database.insert(object)
+    }
+    
+    func deleteObject(object: DBManagedObject) throws {
+        //try! databas
+        if let identifierDictionary = object.identifierDictionary {
+            let query: [String: JSONValue] = ["_id": identifierDictionary]
+            let jsonEncode = try JSONEncoder().encode(query)
+            
+            database.getCollection(object.dynamicType).remove(try! BSON(json: jsonEncode), flag: MongoRemoveFlag.SingleRemove)
+        }
+    }
+    
+    func deleteObjects(objects: [DBManagedObject]) throws {
+        
+        for object in objects {
+            try deleteObject(object)
+        }
+    }
+    
+    func deleteObjectsWithPredicate(collection: DBManagedObject.Type, predicate: [String: Any] = [:]) {
+        database.getCollection(collection).remove(try! BSON(dictionary: predicate))
+    }
+    
+    func generateUniqueIdentifier() -> String {
+        return database.generateObjectID()
+    }
+}
 
 class Object {
     var _objectID: String? = nil

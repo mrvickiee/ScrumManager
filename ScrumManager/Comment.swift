@@ -16,6 +16,12 @@ protocol Commentable {
     mutating func addComment(comment: Comment)
 }
 
+protocol DictionarySerializable {
+    
+    init(dictionary: [String: Any]) 
+    
+}
+
 extension Commentable {
     mutating func addComment(comment: Comment) {
         comments.append(comment)
@@ -23,16 +29,32 @@ extension Commentable {
 }
 
 
-class Comment: Object {
+final class Comment: Object, DictionarySerializable {
     
     let comment: String
     
-    let userID: String // User who made the comment
+    private let userID: String // User who made the comment
     
-    init(comment: String, user: User) {
+    lazy var user: User? = User(identifier: self.userID)
+    
+    init(comment: String, userID: String) {
         self.comment = comment
-        self.userID = user._objectID!
+        self.userID = userID
+    }
+    
+   convenience init(comment: String, user: User) {
+        self.init(comment: comment, userID: user._objectID!)
+    }
+    
+    convenience init(dictionary: [String: Any]) {
+        
+        let comment = dictionary["comment"] as! String
+        let userID = dictionary["userID"] as! String
+        
+        self.init(comment: comment, userID: userID)
     }
     
 }
+
+
 
