@@ -25,6 +25,7 @@ class LogoutHandler: RequestHandler {
     
 }
 
+
 class LoginHandler: RequestHandler {
     
     var authenticatedUser: User?

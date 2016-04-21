@@ -14,7 +14,7 @@ class ProductBacklogController: AuthController {
     let modelName = "userstory"
     
     let modelPluralName: String = "userstories"
-
+    
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
@@ -73,7 +73,8 @@ class ProductBacklogController: AuthController {
             }
         }
  */
-        
+        let userStory = UserStory(title: "test", story: "")
+        response.redirectTo("\(userStory.pathURL)")
         response.requestCompletedCallback()
     }
     
