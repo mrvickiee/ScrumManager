@@ -36,19 +36,7 @@ final class User: Object {
         
         return user
     }
-    /*
-    convenience init?(userID: String) {
-        let database = try! DatabaseManager().database
-        
-        // Find Author with email
-        guard let authorBSON = database.getCollection(User).get(userID) else {
-            return nil
-        }
-        
-        self.init(bson: authorBSON)
-        
-    }
-    */
+  
     convenience init(dictionary: [String: Any]) {
         
         let email = dictionary["email"] as! String

@@ -31,7 +31,7 @@ extension AuthController {
         let currentSession = response.getSession("user")
         print(currentSession["user_id"])
         
-        guard let currentUserID = currentSession["user_id"] as? String, let user = User(identifier: currentUserID) else {
+        guard let currentUserID = currentSession["user_id"] as? String, let user = try! DatabaseManager().getObjectWithID(User.self, objectID: currentUserID) else {
             return  nil
         }
         

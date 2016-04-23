@@ -51,6 +51,10 @@ final class UserStory: Object, Commentable {
     
     init?(identifier: String) {
         
+        story = ""
+        title = ""
+        super.init()
+
         return nil
     }
 }
@@ -59,6 +63,9 @@ extension UserStory: DBManagedObject {
     
     static var collectionName: String = "userstory"
     
+    static var ignoredProperties: [String] {
+        return ["comments"]
+    }
 }
 
 extension UserStory: Routable {

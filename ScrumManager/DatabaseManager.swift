@@ -75,6 +75,27 @@ class DatabaseManager {
         return count
     }
     
+    func getObjectWithID<Collection: DBManagedObject>(collection: Collection.Type, objectID: String) -> Collection? {
+        
+        let identifierDictionary = ["$oid": objectID] as Dictionary<JSONKey, JSONValue>
+        
+        let query: [String: JSONValue] = ["_id": identifierDictionary]
+        let jsonEncode = try! JSONEncoder().encode(query)
+        
+        let cursor = database.getCollection(collection).find(try! BSON(json: jsonEncode))
+        defer {
+            cursor?.close()
+        }
+        
+        if let bson = cursor?.next() {
+            return Collection(bson: bson)
+
+        } else {
+            return nil
+        }
+        
+    }
+    
     func getObject<Collection: DBManagedObject>(collection: Collection.Type, primaryKeyValue: Int) -> Collection? {
         
         guard let primaryKeyName = collection.primaryKey else {
