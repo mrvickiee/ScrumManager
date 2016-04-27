@@ -15,6 +15,16 @@ class ProductBacklogController: AuthController {
     
     let modelPluralName: String = "userstories"
     
+    //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
+    
+    func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
+        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
+        modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+        
+        return modelActions
+    }
+    
+    
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
@@ -91,7 +101,25 @@ class ProductBacklogController: AuthController {
  
     }
  
-    
+    func newComment(request: WebRequest, response: WebResponse,identifier: String) {
+        
+        print("New Comment")
+        guard var userStory = getUserStoryWithIdentifier(Int(identifier)!) else {
+            return response.redirectTo("/")
+        }
+        
+        if let comment = request.param("comment"), user = currentUser(request, response: response) {
+            
+            // Post comment
+            let newComment = Comment(comment: comment, user: user)
+            userStory.addComment(newComment)
+            
+            response.redirectTo(userStory)
+            
+        }
+        
+        
+    }
     
     func new(request: WebRequest, response: WebResponse) {
         

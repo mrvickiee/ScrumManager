@@ -48,6 +48,24 @@ class DatabaseManager {
         }
       
     }
+    /*
+    func updateObject(object: DBManagedObject, update: [String: Any]) {
+    if let identifierDictionary = object.identifierDictionary {
+        let query: [String: JSONValue] = ["_id": identifierDictionary]
+       // update(object.dynamicType, predicate: query, update: update)
+
+    }
+ 
+        
+    }
+    
+   */
+    func update(collection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
+        let collection = database.getCollection(collection)
+        let updateBSON = try! BSON(dictionary: update)
+        
+        collection.update(try! BSON(dictionary: predicate), selector: updateBSON)
+    }
     
     func executeFetchRequest<Collection: DBManagedObject>(collection: Collection.Type, predicate: [String: Any] = [:]) -> [Collection] {
         let collectionBSON = database.getCollection(collection).find(predicate);

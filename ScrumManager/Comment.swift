@@ -26,6 +26,9 @@ extension Commentable {
     mutating func addComment(comment: Comment) {
         
         comments.append(comment)
+        
+        // Save comments to database 
+        
     }
 }
 

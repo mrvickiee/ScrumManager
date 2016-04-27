@@ -24,6 +24,9 @@ extension Routing {
         
         // Edit
         Routing.Routes["GET", "/\(controller.modelPluralName)/{id}/{action}"] = { _ in return controller }
+        Routing.Routes["POST", "/\(controller.modelPluralName)/{id}/{action}"] = { _ in return controller }
+
+        
         
         // Update
         Routing.Routes["POST", "/\(controller.modelPluralName)/{id}"] = { _ in return controller }
@@ -80,10 +83,11 @@ extension MustacheTemplate {
             
             let parser = MustacheParser()
             let str = UTF8Encoding.encode(bytes)
-            let template = try parser.parse(str)
+            let template = try! parser.parse(str)
             return template
             
         } catch {
+            print(error)
             return nil
         } 
     }

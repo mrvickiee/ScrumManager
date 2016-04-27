@@ -1,16 +1,8 @@
-{{% handler:TTHandler}}{{!
+{{% handler:NewPost}}{{!
 
-	This is the mustache template file for the tap tracker example.
-	
+This is the mustache template file for the tap tracker example.
+
 }}
-
-
-<div class="callout large primary">
-<div class="row column text-center">
-<h1>Blog</h1>
-<h2 class="subheader">A collection of random thoughts</h2>
-</div>
-</div>
 
 <div class="row medium-8 large-7 columns">
 
@@ -20,22 +12,27 @@
 <a href="#"><h3>{{title}}</h3></a>
 <p>{{story}}</p>
 
+<h3>Comments</h3>
+{{#comments}}
+{{/comments}}
+
+<form action="{{url}}/comments" method="post">
+
+<div class="row">
+<div class="large-12 columns">
+<label>Comment
+<input type="text" name="comment" />
+</label>
+</div>
+</div>
+<input type="submit" value="Post">
+
+</form>
 
 </article>
 {{/userStory}}
 
 </div>
-</div>
-
-<a href="/">All Blog Posts</a>
-</div>
-
-{{/post}}
-</div>
-
-
-
-
 
 
 

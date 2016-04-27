@@ -71,7 +71,7 @@ extension AuthController {
         if let identifier = request.urlVariables["id"] {
             
             switch(requestMethod) {
-            case .POST, .PATCH, .PUT:
+            case .PATCH, .PUT:
                 fatalError()
                 //update(identifier, request: request, response: response)
                 
@@ -79,7 +79,7 @@ extension AuthController {
                 fatalError()
                 //delete(identifier, request: request, response: response)
                 
-            case .GET:
+            case .GET, .POST:
                 
                 switch(identifier) {
                 case "new":
@@ -96,20 +96,30 @@ extension AuthController {
                     if let action = request.urlVariables["action"]{
                         print("Found action \(action)")
                         
-                        // Call Show
-                        let templateURL = request.documentRoot + "/templates/\(modelPluralName)/edit.mustache"
-                        values.update( try! edit(identifier, request: request, response: response))
-                    //    var values = try! edit(identifier, request: request, response: response)
-                        values["url"] = "/\(modelName)s/\(identifier)"
+                        if let actionHandler = actions()[action] {
+                            actionHandler(request, response, identifier)
+                            
+                        } else {
+                            // Call Show
+                            let templateURL = request.documentRoot + "/templates/\(modelPluralName)/edit.mustache"
+                            values.update( try! edit(identifier, request: request, response: response))
+                            //    var values = try! edit(identifier, request: request, response: response)
+                            values["url"] = "/\(modelPluralName)/\(identifier)"
+                            
+                            response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
+                        }
                         
-                        response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                         
+                      
                         
                     } else {
                         
                         let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
+
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
+                        values["url"] = "/\(modelPluralName)/\(identifier)"
+
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                     }
                 }
