@@ -12,7 +12,7 @@ import MongoDB
 
 
 
-final class UserStory: Object, Commentable {
+final class UserStory: Object,DBManagedObject, Commentable {
     
     var title: String
     
@@ -59,7 +59,7 @@ final class UserStory: Object, Commentable {
     }
 }
 
-extension UserStory: DBManagedObject {
+extension UserStory {
     
     static var collectionName: String = "userstory"
     

@@ -82,7 +82,7 @@ class ProductBacklogController: AuthController {
                 print(error)
             }
         }
- */
+         */
         let userStory = UserStory(title: "test", story: "")
         response.redirectTo("\(userStory.pathURL)")
         response.requestCompletedCallback()
@@ -113,6 +113,8 @@ class ProductBacklogController: AuthController {
             // Post comment
             let newComment = Comment(comment: comment, user: user)
             userStory.addComment(newComment)
+            
+            
             
             response.redirectTo(userStory)
             

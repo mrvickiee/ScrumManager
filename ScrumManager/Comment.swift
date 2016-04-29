@@ -1,4 +1,4 @@
-//
+ //
 //  Comment.swift
 //  ScrumManager
 //
@@ -22,12 +22,17 @@ protocol DictionarySerializable {
     
 }
 
-extension Commentable {
+extension Commentable where Self: DBManagedObject {
     mutating func addComment(comment: Comment) {
         
         comments.append(comment)
         
-        // Save comments to database 
+        // Update comments in database
+        let commentsArray = comments.map { (comment) -> [String: Any] in
+            return comment.asDictionary()
+        }
+        
+        try! DatabaseManager().updateObject(self, updateValues: ["comments": commentsArray] as [String: Any])
         
     }
 }
@@ -56,6 +61,10 @@ final class Comment: Object, DictionarySerializable {
         let userID = dictionary["userID"] as! String
         
         self.init(comment: comment, userID: userID)
+    }
+    
+    func asDictionary() -> [String: Any] {
+        return ["comment": comment, "userID": userID]
     }
     
 }
