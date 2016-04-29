@@ -22,17 +22,22 @@ final class User: Object {
     var authKey: String
     var profilePictureURL: String = ""
     var name: String
+    var expertises = [String]()
+    var projects = [String]()
+    var roles: String
     
-    init(email: String, name: String, authKey: String) {
+    init(email: String, name: String, authKey: String, roles: String) {
         self.email = email
         self.name = name
         self.authKey = authKey
+        self.roles = roles
         
     }
     
     class func userWithEmail(email: String) -> User? {
         let database = try! DatabaseManager()
         let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first
+        print(user)
         return user
     }
   
@@ -46,13 +51,23 @@ final class User: Object {
         
         let pictureURL = dictionary["pictureURL"] as? String ?? ""
         
+        let roles = dictionary["roles"] as? String ?? ""
+        
+        let expertise = dictionary["expertises"] as? [String] ?? [""]
+        
+        let projects = dictionary["projects"] as? [String] ?? [""]
+        
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(email: email, name: name, authKey: authKey)
+        self.init(email: email, name: name, authKey: authKey, roles: roles)
         
         self.profilePictureURL = pictureURL
         
         self._objectID = id
+        
+        self.expertises = expertise
+        
+        self.projects = projects
 
     }
     
@@ -75,7 +90,7 @@ extension User: DBManagedObject {
     
     static var collectionName = "user"
     
-    static func create(name: String, email: String, password: String, pictureURL: String = "") throws -> User {
+    static func create(name: String, email: String, password: String, pictureURL: String, roles: String) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -87,7 +102,7 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey)
+        let user = User(email: email, name: name, authKey: authKey, roles: roles)
         
         do {
             try DatabaseManager().insertObject(user)

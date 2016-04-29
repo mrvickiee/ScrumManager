@@ -105,7 +105,8 @@ class UserController: RESTController {
         if let email = request.param("email"),
             name = request.param("name"),
             password = request.param("password"),
-            password2 = request.param("password2")
+            password2 = request.param("password2"),
+            roles = request.param("roles")
         {
             
             // Valid Article
@@ -138,7 +139,7 @@ class UserController: RESTController {
             
             do {
                 
-                let user = try User.create(name, email: email, password: password, pictureURL: pictureURL)
+                let user = try User.create(name, email: email, password: password, pictureURL: pictureURL, roles: roles)
                 // Create Session
                 let session = response.getSession("user")
                 session["user_id"] = user._objectID

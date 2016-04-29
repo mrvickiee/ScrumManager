@@ -17,7 +17,6 @@ class UserShowHandler: RequestHandler {
         let values = [:] as [String: Any]
         let content = parseMustacheFromURL(indexURL, withValues: values)
         let templateContent = ["content": content] as [String: Any]
-        
         response.appendBodyString(parseMustacheFromURL(templateURL, withValues: templateContent))
         response.requestCompletedCallback()
         
