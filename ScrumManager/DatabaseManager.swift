@@ -30,22 +30,22 @@ class DatabaseManager {
     }
     
     init() throws {
+            try mongo =  MongoClient(uri: DatabaseManager.mongoURI)
+            let status = mongo.serverStatus()
+            
+            switch status {
+                
+            case .Error(let domain, let code, let message):
+                assert(false, "Error connecting to mongo: \(domain) \(code) \(message). Did you start MongoDB with mongod in terminal?")
+                
+            case .ReplyDoc(let doc):
+                print("Status doc: \(doc)")
+                assert(true)
+                
+            default:
+                assert(false, "Strange reply type \(status)")
+            }
         
-        mongo =  MongoClient(uri: DatabaseManager.mongoURI)
-        let status = mongo.serverStatus()
-        
-        switch status {
-            
-        case .Error(let domain, let code, let message):
-            assert(false, "Error connecting to mongo: \(domain) \(code) \(message). Did you start MongoDB with mongod in terminal?")
-            
-        case .ReplyDoc(let doc):
-            print("Status doc: \(doc)")
-            assert(true)
-            
-        default:
-            assert(false, "Strange reply type \(status)")
-        }
       
     }
     

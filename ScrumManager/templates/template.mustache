@@ -62,6 +62,13 @@
 <script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
 <script>
 $(document).foundation();
+$("document").ready(function(){
+
+//User Management: Edit Profile
+$("#image").change(function() {
+document.getElementById('profileImage').innerHTML =  document.getElementById("image").files[0].name;
+});
+});
 </script>
 </body>
 </html>

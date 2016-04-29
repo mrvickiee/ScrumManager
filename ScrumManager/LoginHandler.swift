@@ -10,7 +10,6 @@ import Foundation
 import PerfectLib
 
 
-
 class LogoutHandler: RequestHandler {
     
     func handleRequest(request: WebRequest, response: WebResponse) {
