@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		094E8EE61CD33E8C007243A5 /* UserEditHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E8EE51CD33E8C007243A5 /* UserEditHandler.swift */; };
+		094E8EE81CD33EA9007243A5 /* UserIndexHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E8EE71CD33EA9007243A5 /* UserIndexHandler.swift */; };
+		094E8EEA1CD33ED5007243A5 /* UserShowHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E8EE91CD33ED5007243A5 /* UserShowHandler.swift */; };
+		094E8EEC1CD33EEB007243A5 /* UserNewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094E8EEB1CD33EEB007243A5 /* UserNewHandler.swift */; };
 		6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01A80A1CC1DCD00022CCDA /* Routable.swift */; };
 		6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDAFD871CC0F751006ACF2A /* Package.swift */; };
 		A319953D1CC0959A00ED8F9F /* stylesheets in Resources */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
 		A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
-		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
 		A386D9541CC86833008BDA1D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
 		A386D9551CC86840008BDA1D /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
 		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
@@ -65,11 +68,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		094E8EE51CD33E8C007243A5 /* UserEditHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserEditHandler.swift; sourceTree = "<group>"; };
+		094E8EE71CD33EA9007243A5 /* UserIndexHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserIndexHandler.swift; sourceTree = "<group>"; };
+		094E8EE91CD33ED5007243A5 /* UserShowHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserShowHandler.swift; sourceTree = "<group>"; };
+		094E8EEB1CD33EEB007243A5 /* UserNewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNewHandler.swift; sourceTree = "<group>"; };
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		6FDAFD871CC0F751006ACF2A /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		A319953C1CC0959A00ED8F9F /* stylesheets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = stylesheets; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
-		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
 		A386D9531CC86833008BDA1D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
@@ -209,7 +215,10 @@
 				A3EE54F71CC099E30042FC02 /* LoginHandler.swift */,
 				A3FB67E81CC07D3C00CB3A7A /* ProductBacklogController.swift */,
 				A3EE54F91CC09A660042FC02 /* UserController.swift */,
-				A386D9511CC72FBC008BDA1D /* TestHandler.swift */,
+				094E8EE51CD33E8C007243A5 /* UserEditHandler.swift */,
+				094E8EE71CD33EA9007243A5 /* UserIndexHandler.swift */,
+				094E8EE91CD33ED5007243A5 /* UserShowHandler.swift */,
+				094E8EEB1CD33EEB007243A5 /* UserNewHandler.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -328,8 +337,10 @@
 				A3FB67ED1CC081D700CB3A7A /* UserStory.swift in Sources */,
 				A3FB67DC1CC06D5E00CB3A7A /* MongoExtensions.swift in Sources */,
 				A3FB67DE1CC06D5E00CB3A7A /* CryptoExtensions.swift in Sources */,
+				094E8EEA1CD33ED5007243A5 /* UserShowHandler.swift in Sources */,
 				A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */,
 				A3FB67E61CC06EA300CB3A7A /* RESTController.swift in Sources */,
+				094E8EEC1CD33EEB007243A5 /* UserNewHandler.swift in Sources */,
 				A3FB67EB1CC07E3300CB3A7A /* AuthController.swift in Sources */,
 				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
 				A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */,
@@ -337,13 +348,14 @@
 				A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */,
 				A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */,
 				A3FB67E91CC07D3C00CB3A7A /* ProductBacklogController.swift in Sources */,
+				094E8EE81CD33EA9007243A5 /* UserIndexHandler.swift in Sources */,
 				6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */,
 				A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */,
 				A3FB67DD1CC06D5E00CB3A7A /* PerfectExtensions.swift in Sources */,
 				A3FB67D51CBF2DA900CB3A7A /* User.swift in Sources */,
 				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
-				A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */,
+				094E8EE61CD33E8C007243A5 /* UserEditHandler.swift in Sources */,
 				A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
