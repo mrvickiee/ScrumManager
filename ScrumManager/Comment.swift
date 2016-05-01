@@ -18,9 +18,13 @@ protocol Commentable {
 
 protocol DictionarySerializable {
     
-    init(dictionary: [String: Any]) 
-    
+    init(dictionary: [String: Any])
 }
+ 
+ 
+ protocol CustomDictionaryConvertible {
+    var dictionary: [String: Any] { get }
+ }
 
 extension Commentable where Self: DBManagedObject {
     mutating func addComment(comment: Comment) {
@@ -29,16 +33,17 @@ extension Commentable where Self: DBManagedObject {
         
         // Update comments in database
         let commentsArray = comments.map { (comment) -> [String: Any] in
-            return comment.asDictionary()
+            return comment.dictionary
         }
         
-        try! DatabaseManager().updateObject(self, updateValues: ["comments": commentsArray] as [String: Any])
+    //    try! DatabaseManager().updateObject(self, updateValues:["$set": ["comments": commentsArray] as [String: Any]] as [String: Any])
+         try! DatabaseManager().updateObject(self, updateValues:["comments": commentsArray] as [String: Any])
         
     }
 }
 
 
-final class Comment: Object, DictionarySerializable {
+final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible {
     
     let comment: String
     
@@ -63,7 +68,7 @@ final class Comment: Object, DictionarySerializable {
         self.init(comment: comment, userID: userID)
     }
     
-    func asDictionary() -> [String: Any] {
+    var dictionary: [String : Any] {
         return ["comment": comment, "userID": userID]
     }
     

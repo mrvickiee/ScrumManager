@@ -32,7 +32,7 @@ class ProductBacklogController: AuthController {
         let db = try! DatabaseManager()
         let userStories = db.executeFetchRequest(UserStory)
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
-            return userStory.asDictionary()
+            return userStory.dictionary
         }
         
         let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
@@ -58,7 +58,7 @@ class ProductBacklogController: AuthController {
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["userStory"] = userStory.asDictionary()
+        values["userStory"] = userStory.dictionary
         
         return values
         
@@ -96,7 +96,7 @@ class ProductBacklogController: AuthController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values = ["userStory": userStory.asDictionary()] as  MustacheEvaluationContext.MapType
+        let values = ["userStory": userStory.dictionary] as  MustacheEvaluationContext.MapType
         return values
  
     }

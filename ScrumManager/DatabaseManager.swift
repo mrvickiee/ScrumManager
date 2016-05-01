@@ -58,11 +58,12 @@ class DatabaseManager {
     }
     
  
-    func update(collection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
-        let collection = database.getCollection(collection)
-        let updateBSON = try! BSON(dictionary: update)
-        
-        collection.update(try! BSON(dictionary: predicate), selector: updateBSON)
+    func update(objectCollection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
+        let collection = database.getCollection(objectCollection)
+        let updateBSON = try! BSON(dictionary: ["$set":update] as [String: Any])
+        let resut = collection.update(updateBSON, selector: try! BSON(dictionary: predicate))
+       //let resut =  collection.update(try! BSON(), selector: updateBSON)
+        print(resut)
     }
     
     func executeFetchRequest<Collection: DBManagedObject>(collection: Collection.Type, predicate: [String: Any] = [:]) -> [Collection] {

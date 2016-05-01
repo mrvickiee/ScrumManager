@@ -9,13 +9,11 @@
 import MongoDB
 import PerfectLib
 
-protocol DBManagedObject {
+protocol DBManagedObject: CustomDictionaryConvertible {
     
     static var collectionName: String { get }
     
     func keyValues() -> [String: Any]
-    
-    func asDictionary() -> [String: Any]
     
     func document() throws -> BSON
     
@@ -67,7 +65,7 @@ extension DBManagedObject {
         return bson
     }
     
-    func asDictionary() -> [String: Any] {
+    var dictionary:[String: Any] {
         return keyValues()
     }
     
@@ -78,7 +76,21 @@ extension DBManagedObject {
         for child in Mirror(reflecting: self).children {
             
             if let key = child.label where key.characters[key.startIndex] != "_" && !Self.ignoredProperties.contains(key) {
-                properties[key] = child.value as Any
+                
+                if let value = child.value as? CustomDictionaryConvertible {
+                    properties[key] = value.dictionary
+                } else if let array = child.value as? Array<Any>  {
+                     let dictionaryConvertibleArray = array.map({ (element) -> [String: Any] in
+                        let dictionaryConvertible = element as! CustomDictionaryConvertible
+                    
+                        return dictionaryConvertible.dictionary
+                    })
+                    properties[key] =  dictionaryConvertibleArray
+                    
+                   
+                } else {
+                    properties[key] = child.value as Any
+                }
             }
         }
         
