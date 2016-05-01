@@ -19,6 +19,8 @@ public func PerfectServerModuleInit() {
     // Register our handler class with the PageHandlerRegistry.
     // The name "TTHandler", which we supply here, is used within a mustache template to associate the template with the handler.
     
+    
+    
     // Do routing
     Routing.Handler.registerGlobally()
     
@@ -38,7 +40,7 @@ public func PerfectServerModuleInit() {
     Routing.Routes["/show"] = { _ in UserShowHandler() }
     Routing.Routes["/edit"] = { _ in UserEditHandler() }
     
-    Routing.Routes["GET", "/resources/*"] = {_  in StaticFileHandler() }
+    Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
 
     
     print("\(Routing.Routes.description)")

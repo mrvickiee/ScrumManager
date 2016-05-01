@@ -110,7 +110,7 @@ extension User: DBManagedObject {
     
     static var collectionName = "user"
     
-    static func create(name: String, email: String, password: String, pictureURL: String, roles: String) throws -> User {
+    static func create(name: String, email: String, password: String, pictureURL: String, role: String) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -122,7 +122,7 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey, role: roles)
+        let user = User(email: email, name: name, authKey: authKey, role: role)
         
         do {
             try DatabaseManager().insertObject(user)

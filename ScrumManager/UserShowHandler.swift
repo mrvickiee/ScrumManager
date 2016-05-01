@@ -10,7 +10,7 @@ import Foundation
 import PerfectLib
 
 class UserShowHandler: RequestHandler {
-    
+    // TODO: Get login user/ get user list/ how to list all list just like ng-repeat
     func handleRequest(request: WebRequest, response: WebResponse) {
         let templateURL = request.documentRoot + "/templates/template.mustache"
         let indexURL = request.documentRoot + "/templates/users/show.mustache"

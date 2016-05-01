@@ -71,6 +71,51 @@ class UserController: RESTController {
             }
         }
         */
+        
+        if let name = request.param("name"),
+            email = request.param("email"),
+            expertises = request.param("expertises"),
+            password = request.param("password"),
+            theUser = getUserWithIdentifier(identifier){
+            var profilePic = ""
+            // Update the pic if the user gt upload a new version of file
+            if request.fileUploads.count > 0 {
+                // Get Profile Picture
+                if let uploadedFile = request.fileUploads.first {
+                    
+                    let fileName = uploadedFile.fileName
+                    print("Profile Pic uploaded: \(fileName)")
+                    
+                    // Save profile picture to disk
+                    if let file = uploadedFile.file {
+                        // Copy file
+                        do {
+                            let saveLocation = request.documentRoot + "/resources/pictures/" + uploadedFile.fileName
+                            profilePic = uploadedFile.fileName
+                            print(saveLocation)
+                            
+                            try file.copyTo(saveLocation, overWrite: true)
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
+                }
+            }
+            // Update
+            let updateValues: [String: Any] =
+                [ "name" : name,
+                  "email" : email,
+                  "expertises" : expertises,
+                  "authKey" : User.encodeRawPassword(email, password: password),
+                  "profilePicURL" : profilePic
+                ]
+            // Save User
+            try! DatabaseManager().updateObject(theUser, updateValues: updateValues)
+
+            response.redirectTo("/")
+            
+        }
         response.requestCompletedCallback()
     }
     
@@ -104,9 +149,9 @@ class UserController: RESTController {
         // Handle new post request
         if let email = request.param("email"),
             name = request.param("name"),
-            password = request.param("password"),
+            password = request.param("password1"),
             password2 = request.param("password2"),
-            roles = request.param("roles")
+            role = request.param("role")
         {
             
             // Valid Article
@@ -139,7 +184,7 @@ class UserController: RESTController {
             
             do {
                 
-                let user = try User.create(name, email: email, password: password, pictureURL: pictureURL, roles: roles)
+                let user = try User.create(name, email: email, password: password, pictureURL: pictureURL, role: role)
                 // Create Session
                 let session = response.getSession("user")
                 session["user_id"] = user._objectID
