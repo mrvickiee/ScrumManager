@@ -22,22 +22,21 @@ final class User: Object {
     var authKey: String
     var profilePictureURL: String = ""
     var name: String
-    var expertises = [String]()
-    var projects = [String]()
-    var roles: String
+    var expertises = ""
+    var project: String = ""
+    var role: String = ""
     
-    init(email: String, name: String, authKey: String, roles: String) {
+    init(email: String, name: String, authKey: String, role: String) {
         self.email = email
         self.name = name
         self.authKey = authKey
-        self.roles = roles
+        self.role = role
         
     }
     
     class func userWithEmail(email: String) -> User? {
         let database = try! DatabaseManager()
         let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first
-        print(user)
         return user
     }
   
@@ -49,26 +48,47 @@ final class User: Object {
         
         let authKey = dictionary["authKey"] as! String
         
-        let pictureURL = dictionary["pictureURL"] as? String ?? ""
+        let pictureURL = dictionary["profilePicURL"] as? String ?? ""
         
-        let roles = dictionary["roles"] as? String ?? ""
+        // Need further display to modify it
+        let roleTemp = dictionary["role"] as? NSInteger
+        var role = ""
+        // roleTemp: 0 = Scrum Master. 1 = Scrum Member, 2: PO
+        if roleTemp == 0 {
+            role = "Scrum Master"
+        }else if roleTemp == 1 {
+            role = "Scrum Member"
+        }else if roleTemp == 2{
+            role = "Product Owner"
+        }else{
+            role = ""
+        }
+        let expertisesTemp = dictionary["expertises"] as? JSONArrayType
+        var expertises = ""
+        let jEncoder = JSONEncoder()
+        do{
+            var results = try jEncoder.encode(expertisesTemp!)
+            // Replace the regex of '[ OR ] OR "' that get from database
+            results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertises = results
+        }catch{}
         
-        let expertise = dictionary["expertises"] as? [String] ?? [""]
-        
-        let projects = dictionary["projects"] as? [String] ?? [""]
+        let project = dictionary["currentProject"] as? String ?? ""
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(email: email, name: name, authKey: authKey, roles: roles)
+        self.init(email: email, name: name, authKey: authKey, role: role)
         
         self.profilePictureURL = pictureURL
         
         self._objectID = id
         
-        self.expertises = expertise
+        self.expertises = expertises
         
-        self.projects = projects
-
+        self.project = project
+        
     }
     
     convenience init(bson: BSON) {
@@ -102,7 +122,7 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey, roles: roles)
+        let user = User(email: email, name: name, authKey: authKey, role: roles)
         
         do {
             try DatabaseManager().insertObject(user)

@@ -15,12 +15,19 @@ class UserIndexHandler: RequestHandler{
         let templateURL = request.documentRoot + "/templates/template.mustache"
         let indexURL = request.documentRoot + "/templates/users/index.mustache"
         var values = [:] as [String: Any]
-        let userController = UserController()
+        let ttt = UserController()
         do{
-           let user = try userController.list(request, response: response)
-            values["user"] = user
-            print(user)
+            let user2 = try ttt.list(request, response: response)
+            print(user2);
         }catch{}
+            let user = User.userWithEmail("wko232@gmail.com")
+            values["user"] = user?.asDictionary()
+            print(user)
+            print(user?.name)
+            print(user?.role)
+            print(user?.expertises)
+            print(user?.project)
+            print(user?.profilePictureURL)
         
         let content = parseMustacheFromURL(indexURL, withValues: values)
         let templateContent = ["content": content] as [String: Any]
