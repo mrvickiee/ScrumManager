@@ -22,7 +22,11 @@ class Project {
     let projectDescription: String
     let imageURL: String = "" // Default image
     var productBacklog: ProductBacklog!
+    
+   // lazy var sprints: [Sprint] = try! DatabaseManager().getObjectsWithIDs(Sprint, objectIDs: self.sprintIDs)
 
+    var sprintIDs: [String] = []
+    
     init(name: String, projectDescription: String) {
         self.name = name
         self.projectDescription = projectDescription
@@ -48,17 +52,6 @@ class ProductBacklog {
 }
 
 
-
-class Task {
-    
-    var taskDescription: String
-    
-    var user: User? = nil
-    
-    init(taskDescription: String) {
-        self.taskDescription = taskDescription
-    }
-}
 
 
 

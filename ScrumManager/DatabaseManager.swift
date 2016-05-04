@@ -110,7 +110,28 @@ class DatabaseManager {
         } else {
             return nil
         }
+    }
+    
+    func getObjectsWithIDs<Collection: DBManagedObject>(collection: Collection.Type, objectIDs: [String]) -> [Collection] {
+
+        var objectIdentifiers = objectIDs.map { (objectID) -> Dictionary<JSONKey, JSONValue> in
+            return ["$oid": objectID] as Dictionary<JSONKey, JSONValue>
+        }
         
+        let query: [String: JSONValue] = ["_id": ["$in": objectIdentifiers] as [String: Any]]
+        let jsonEncode = try! JSONEncoder().encode(query)
+        
+        let cursor = database.getCollection(collection).find(try! BSON(json: jsonEncode))
+        defer {
+            cursor?.close()
+        }
+        var collections: [Collection] = []
+        
+        while let bson = cursor?.next() {
+            collections.append(Collection(bson: bson))
+        }
+        
+        return collections
     }
     
     func getObject<Collection: DBManagedObject>(collection: Collection.Type, primaryKeyValue: Int) -> Collection? {
@@ -127,6 +148,7 @@ class DatabaseManager {
         defer {
             cusor?.close()
         }
+        
         if let bson = cusor?.next() {
             return Collection(bson: bson)
         }

@@ -13,7 +13,7 @@ protocol DBManagedObject: CustomDictionaryConvertible {
     
     static var collectionName: String { get }
     
-    func keyValues() -> [String: Any]
+    var keyValues:[String: Any] { get }
     
     func document() throws -> BSON
     
@@ -51,7 +51,7 @@ extension DBManagedObject {
     
     func document() throws -> BSON {
         
-        var documentData = self.keyValues()
+        var documentData = self.keyValues
     
         if let object = self as? Object, objectID = object._objectID {
             
@@ -66,14 +66,14 @@ extension DBManagedObject {
     }
     
     var dictionary:[String: Any] {
-        return keyValues()
+        return keyValues
     }
     
-    func keyValues() -> [String: Any] {
+    var keyValues:[String: Any] {
         
         var properties: [String: Any] = [:]
-        
-        for child in Mirror(reflecting: self).children {
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
             
             if let key = child.label where key.characters[key.startIndex] != "_" && !Self.ignoredProperties.contains(key) {
                 
@@ -89,8 +89,10 @@ extension DBManagedObject {
                     
                    
                 } else {
+                   
                     properties[key] = child.value as Any
                 }
+            
             }
         }
         
