@@ -4,13 +4,6 @@
 	
 }}
 
-<div class="callout large primary">
-<div class="row column text-center">
-<h1>Blog</h1>
-<h2 class="subheader">User Profile</h2>
-</div>
-</div>
-
 <div class="row text-center profile-top-bar">
 <div class="row">
 {{#userProfile}}
@@ -51,21 +44,25 @@
 </div>
 </div>
 <br>
-<!-- Expertises -->
-<div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Expertises</div>
-<div class ="small-9 large-10 columns" data-equalizer-watch>
-<span class="profile-info-value">{{expertises}}</span>
-</div>
-</div>
-
-<br>
 <!-- Project Involved -->
 <div class = "row" data-equalizer>
 <div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Project Involved</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
-<div class="profile-project-involved">{{project}}</div>
+<div class="profile-project-involved"><a href="">{{project}}</a></div>
 </div>
+</div>
+<br>
+<!-- Expertises -->
+<div class = "row" data-equalizer>
+<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Expertises</div>
+<div class ="small-9 large-10 columns" data-equalizer-watch>
+    {{#expertisesList}}
+    <div class="profile-info-value">{{expertise}}</div>
+    {{/expertisesList}}
+
+</div>
+</div>
+<br>
 {{/userProfile}}
 </div>
 </div>

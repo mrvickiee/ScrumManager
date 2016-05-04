@@ -4,12 +4,6 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<div class="callout large primary">
-<div class="row column text-center">
-<h1>Edit Profile</h1>
-</div>
-</div>
-
 <form action="{{url}}" method="post" enctype="multipart/form-data">
 {{#user}}
 <div class="row text-center profile-top-bar">
@@ -42,7 +36,7 @@ This is the mustache template file for the tap tracker example.
 <!-- Contents for tabs -->
 <br>
 <div class="columns panel">
-<form>
+
 <!-- Profile Pic -->
 <div class = "row" data-equalizer>
 <div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Profile Picture</div>
@@ -77,6 +71,7 @@ This is the mustache template file for the tap tracker example.
 <input type="password" name="password" value="{{password}}" />
 </div>
 </div>
+<br>
 <div class = "row" data-equalizer>
 <div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Confirm Password</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
@@ -94,7 +89,7 @@ This is the mustache template file for the tap tracker example.
 </div>
 <br>
 <input type="submit" value="Submit">
-</form>
+
 </div>
 
 

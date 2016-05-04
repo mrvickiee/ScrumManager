@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */; };
+		096DE9AE1CDA57C6006F328D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = 096DE9AD1CDA57C6006F328D /* resources */; };
 		393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393BCF971CD8D95A005C94CF /* ProjectController.swift */; };
+		5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */; };
 		6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01A80A1CC1DCD00022CCDA /* Routable.swift */; };
 		6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDAFD871CC0F751006ACF2A /* Package.swift */; };
 		A319953D1CC0959A00ED8F9F /* stylesheets in Resources */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
@@ -18,8 +19,6 @@
 		A32486721CD9620200EA06E9 /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32486711CD9620200EA06E9 /* TaskController.swift */; };
 		A32486741CD97E6000EA06E9 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32486731CD97E6000EA06E9 /* ModelController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
-		A386D9541CC86833008BDA1D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
-		A386D9551CC86840008BDA1D /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
 		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
 		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
 		A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F71CC099E30042FC02 /* LoginHandler.swift */; };
@@ -70,8 +69,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintController.swift; sourceTree = "<group>"; };
+		096DE9AD1CDA57C6006F328D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		393BCF971CD8D95A005C94CF /* ProjectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectController.swift; sourceTree = "<group>"; };
+		5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintController.swift; sourceTree = "<group>"; };
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		6FDAFD871CC0F751006ACF2A /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		A319953C1CC0959A00ED8F9F /* stylesheets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = stylesheets; sourceTree = "<group>"; };
@@ -80,7 +80,6 @@
 		A32486711CD9620200EA06E9 /* TaskController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskController.swift; sourceTree = "<group>"; };
 		A32486731CD97E6000EA06E9 /* ModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
-		A386D9531CC86833008BDA1D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
 		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
@@ -187,6 +186,7 @@
 				A3EF9E521C98FB0400C3B053 /* ScrumManager.h */,
 				A3EF9E541C98FB0400C3B053 /* Info.plist */,
 				6FDAFD871CC0F751006ACF2A /* Package.swift */,
+				096DE9AD1CDA57C6006F328D /* resources */,
 				A319953C1CC0959A00ED8F9F /* stylesheets */,
 				A3FB67EE1CC08D4D00CB3A7A /* templates */,
 			);
@@ -320,6 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				096DE9AE1CDA57C6006F328D /* resources in Resources */,
 				A319953D1CC0959A00ED8F9F /* stylesheets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,8 +22,9 @@ final class User: Object {
     var authKey: String
     var profilePictureURL: String = ""
     var name: String
+    var expertises1 = "-"
     var expertises = [String]()
-    var project: String = ""
+    var project: String = "-"
     var role: String = ""
     
     init(email: String, name: String, authKey: String, role: String) {
@@ -51,18 +52,8 @@ final class User: Object {
         let pictureURL = dictionary["profilePicURL"] as? String ?? ""
         
         // Need further display to modify it
-        let roleTemp = dictionary["role"] as? NSInteger
-        var role = ""
-        // roleTemp: 0 = Scrum Master. 1 = Scrum Member, 2: PO
-        if roleTemp == 0 {
-            role = "Scrum Master"
-        }else if roleTemp == 1 {
-            role = "Scrum Member"
-        }else if roleTemp == 2{
-            role = "Product Owner"
-        }else{
-            role = ""
-        }
+        let role = dictionary["role"] as? String ?? ""
+        // FIXME: String array stuff with JSONArray
         let expertisesTemp = dictionary["expertises"] as? JSONArrayType
         var expertises = [String]()
         let jEncoder = JSONEncoder()
@@ -72,7 +63,7 @@ final class User: Object {
             results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            
+            results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
             expertises = results.componentsSeparatedByString(",")
         }catch{}
         
@@ -86,9 +77,15 @@ final class User: Object {
         
         self._objectID = id
         
+//        if expertises != "" {
+//            self.expertises = expertises
+//        }
+        
         self.expertises = expertises
-
-      //  self.project = project
+        
+        if project != "" {
+            self.project = project
+        }
         
     }
     
