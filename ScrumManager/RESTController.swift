@@ -32,7 +32,11 @@ protocol RESTController: RequestHandler {
     
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType
     
+    func actions() -> [String: (WebRequest,WebResponse, String) -> ()]
+    
 }
+
+
 
 extension RESTController {
     
@@ -44,9 +48,15 @@ extension RESTController {
         return [:]
     }
     
+    func actions() -> [String: (WebRequest,WebResponse,String) -> ()] {
+        return [:]
+    }
+    
     func parseMustacheFromURL(url: String, withValues values: [String: Any]) -> String {
         
         if let template = MustacheTemplate.FromURL(url) {
+            print("TEMPLATE \(url)")
+
             let context =  MustacheEvaluationContext(map: values)
             
             let collector = MustacheEvaluationOutputCollector()

@@ -32,8 +32,7 @@ final class User: Object {
     
     class func userWithEmail(email: String) -> User? {
         let database = try! DatabaseManager()
-        let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first!
-        
+        let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first
         return user
     }
   

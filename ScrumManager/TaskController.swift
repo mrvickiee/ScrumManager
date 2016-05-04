@@ -1,21 +1,16 @@
 //
-//  ArticleController.swift
-//  SwiftBlog
+//  TaskController.swift
+//  ScrumManager
 //
-//  Created by Benjamin Johnson on 9/02/2016.
+//  Created by Ben Johnson on 4/05/2016.
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
 //
 
-
 import PerfectLib
 
-class ProductBacklogController: AuthController {
+class TaskController: AuthController {
     
-    let modelName = "userstory"
-    
-    let modelPluralName: String = "userstories"
-    
-    //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
+    let modelName = "task"
     
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
         var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
@@ -30,87 +25,82 @@ class ProductBacklogController: AuthController {
         // Get Articles
         
         let db = try! DatabaseManager()
-        let userStories = db.executeFetchRequest(UserStory)
-        var counter = 0
-        let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
-            var userStoryDict = userStory.dictionary
-            userStoryDict["index"] = counter
-            counter += 1
-            
-            return userStoryDict
+        let tasks = db.executeFetchRequest(Task)
+        let taskJSON = tasks.map { (task) -> [String: Any] in
+            return task.dictionary
         }
         
-
-        var values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
+        let values :MustacheEvaluationContext.MapType = ["tasks": taskJSON]
         return values
     }
     
-    func getUserStoryWithIdentifier(identifier: Int) -> UserStory? {
+    func getTaskWithIdentifier(identifier: Int) -> Task? {
         let db = try! DatabaseManager()
-        guard let userStory = db.executeFetchRequest(UserStory.self, predicate: ["identifier": identifier]).first else {
+        guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": identifier]).first else {
             return nil
         }
-       
-        return userStory
+        
+        return task
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
         // Query User Story
         let id = Int(identifier)!
-        let tempUserStory: UserStory? = getUserStoryWithIdentifier(id)
-
-        guard let userStory = tempUserStory else {
+        let tempUserStory: Task? =  getTaskWithIdentifier(id)
+        
+        guard let task = tempUserStory else {
             return MustacheEvaluationContext.MapType()
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["userStory"] = userStory.dictionary
+        values["task"] = task.dictionary
         
         return values
         
     }
     
     func update(identifier: Int, request: WebRequest, response: WebResponse) {
-      
+        
         /*
-        // Handle new post request
-        if let title = request.param("title"), body = request.param("body"), existingArticle = getArticleWithIdentifier(identifier), currentAuthor = currentUser(request, response: response) where currentAuthor.email == existingArticle.author.email {
-            
-            // Update post properties
-            existingArticle.title = title
-            existingArticle.body = body
-            
-            // Save Article
-            do {
-                try! DatabaseManager().database.getCollection(UserStory).save(try existingArticle.document())
-                response.redirectTo("/\(modelName)s/\(identifier)")
-            } catch {
-                print(error)
-            }
-        }
+         // Handle new post request
+         if let title = request.param("title"), body = request.param("body"), existingArticle = getArticleWithIdentifier(identifier), currentAuthor = currentUser(request, response: response) where currentAuthor.email == existingArticle.author.email {
+         
+         // Update post properties
+         existingArticle.title = title
+         existingArticle.body = body
+         
+         // Save Article
+         do {
+         try! DatabaseManager().database.getCollection(UserStory).save(try existingArticle.document())
+         response.redirectTo("/\(modelName)s/\(identifier)")
+         } catch {
+         print(error)
+         }
+         }
          */
         let userStory = UserStory(title: "test", story: "")
         response.redirectTo("\(userStory.pathURL)")
         response.requestCompletedCallback()
     }
     
- 
+    
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-
-      
-        guard let userStory = getUserStoryWithIdentifier(Int(identifier)!) else {
+        
+        
+        guard let task = getTaskWithIdentifier(Int(identifier)!) else {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values = ["userStory": userStory.dictionary] as  MustacheEvaluationContext.MapType
+        let values = ["task": task.dictionary] as  MustacheEvaluationContext.MapType
         return values
- 
+        
     }
- 
+    
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
         
         print("New Comment")
-        guard var userStory = getUserStoryWithIdentifier(Int(identifier)!) else {
+        guard var userStory = getTaskWithIdentifier(Int(identifier)!) else {
             return response.redirectTo("/")
         }
         
@@ -132,25 +122,25 @@ class ProductBacklogController: AuthController {
     func new(request: WebRequest, response: WebResponse) {
         
         // Handle new post request
-        if let title = request.param("title"), body = request.param("body") {
+        if let body = request.param("body") {
             
             // Valid Article
-            let newUserStory = UserStory(title: title, story: body)
+            let newTask = Task(body: body)
             
             // Save Article
             do {
                 let databaseManager = try! DatabaseManager()
                 
-                newUserStory._objectID = databaseManager.generateUniqueIdentifier()
+                newTask._objectID = databaseManager.generateUniqueIdentifier()
                 // Set Identifier
-                let userStoryCount = databaseManager.countForFetchRequest(UserStory)
-                guard userStoryCount > -1 else {
+                let taskCount = databaseManager.countForFetchRequest(Task)
+                guard taskCount > -1 else {
                     throw CreateUserError.DatabaseError
                 }
                 
-                newUserStory.identifier = userStoryCount
-                try databaseManager.insertObject(newUserStory)
-                response.redirectTo("/")
+                newTask.identifier = taskCount
+                try databaseManager.insertObject(newTask)
+                response.redirectTo("/tasks")
             } catch {
                 
             }
@@ -162,12 +152,12 @@ class ProductBacklogController: AuthController {
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         /*
-        let beforeValues = beforeAction(request, response: response)
-        
-        guard var values = beforeValues else {
-            return MustacheEvaluationContext.MapType()
-        }
-        return values
+         let beforeValues = beforeAction(request, response: response)
+         
+         guard var values = beforeValues else {
+         return MustacheEvaluationContext.MapType()
+         }
+         return values
          */
         return MustacheEvaluationContext.MapType()
         

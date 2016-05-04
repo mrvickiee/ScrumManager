@@ -12,10 +12,12 @@
 		6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDAFD871CC0F751006ACF2A /* Package.swift */; };
 		A319953D1CC0959A00ED8F9F /* stylesheets in Resources */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
 		A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */ = {isa = PBXBuildFile; fileRef = A319953C1CC0959A00ED8F9F /* stylesheets */; };
+		A324866E1CD94AC800EA06E9 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324866D1CD94AC800EA06E9 /* Task.swift */; };
+		A32486701CD9544600EA06E9 /* Commentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A324866F1CD9544600EA06E9 /* Commentable.swift */; };
+		A32486721CD9620200EA06E9 /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32486711CD9620200EA06E9 /* TaskController.swift */; };
+		A32486741CD97E6000EA06E9 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32486731CD97E6000EA06E9 /* ModelController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
 		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
-		A386D9541CC86833008BDA1D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
-		A386D9551CC86840008BDA1D /* resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = A386D9531CC86833008BDA1D /* resources */; };
 		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
 		A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F71CC099E30042FC02 /* LoginHandler.swift */; };
 		A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F91CC09A660042FC02 /* UserController.swift */; };
@@ -57,7 +59,6 @@
 			dstPath = webroot;
 			dstSubfolderSpec = 16;
 			files = (
-				A386D9551CC86840008BDA1D /* resources in CopyFiles */,
 				A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */,
 				A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */,
 			);
@@ -70,9 +71,12 @@
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		6FDAFD871CC0F751006ACF2A /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		A319953C1CC0959A00ED8F9F /* stylesheets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = stylesheets; sourceTree = "<group>"; };
+		A324866D1CD94AC800EA06E9 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		A324866F1CD9544600EA06E9 /* Commentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commentable.swift; sourceTree = "<group>"; };
+		A32486711CD9620200EA06E9 /* TaskController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskController.swift; sourceTree = "<group>"; };
+		A32486731CD97E6000EA06E9 /* ModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
 		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
-		A386D9531CC86833008BDA1D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
 		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScrumManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,7 +86,6 @@
 		A3EF9E5E1C98FB0400C3B053 /* ScrumManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumManagerTests.swift; sourceTree = "<group>"; };
 		A3EF9E601C98FB0400C3B053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A3EF9E691C98FC9D00C3B053 /* PerfectHandlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerfectHandlers.swift; sourceTree = "<group>"; };
-		A3EF9E6B1C98FDDB00C3B053 /* webroot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = webroot; sourceTree = "<group>"; };
 		A3EF9E6D1C98FDF100C3B053 /* MongoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MongoDB.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/MongoDB.framework"; sourceTree = "<group>"; };
 		A3EF9E6E1C98FDF100C3B053 /* PerfectLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PerfectLib.framework; path = "../../../Library/Developer/Xcode/DerivedData/ScrumManager-dkghcuqzlvwtechelyvrzadfxmsc/Build/Products/Debug/PerfectLib.framework"; sourceTree = "<group>"; };
 		A3EF9E731C9A530D00C3B053 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -129,6 +132,7 @@
 				6F01A80A1CC1DCD00022CCDA /* Routable.swift */,
 				A3FB67E51CC06EA300CB3A7A /* RESTController.swift */,
 				A3FB67EA1CC07E3300CB3A7A /* AuthController.swift */,
+				A324866F1CD9544600EA06E9 /* Commentable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -141,6 +145,7 @@
 				A3FB67EC1CC081D700CB3A7A /* UserStory.swift */,
 				A3FB67D61CC06D2400CB3A7A /* Comment.swift */,
 				A386D94F1CC72F57008BDA1D /* Sprint.swift */,
+				A324866D1CD94AC800EA06E9 /* Task.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -177,10 +182,8 @@
 				A3EF9E521C98FB0400C3B053 /* ScrumManager.h */,
 				A3EF9E541C98FB0400C3B053 /* Info.plist */,
 				6FDAFD871CC0F751006ACF2A /* Package.swift */,
-				A386D9531CC86833008BDA1D /* resources */,
 				A319953C1CC0959A00ED8F9F /* stylesheets */,
 				A3FB67EE1CC08D4D00CB3A7A /* templates */,
-				A3EF9E6B1C98FDDB00C3B053 /* webroot */,
 			);
 			path = ScrumManager;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			children = (
 				A3EE54F71CC099E30042FC02 /* LoginHandler.swift */,
 				A3FB67E81CC07D3C00CB3A7A /* ProductBacklogController.swift */,
+				393BCF971CD8D95A005C94CF /* ProjectController.swift */,
 				A3EE54F91CC09A660042FC02 /* UserController.swift */,
 				A386D9511CC72FBC008BDA1D /* TestHandler.swift */,
 				5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */,
@@ -309,7 +313,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A386D9541CC86833008BDA1D /* resources in Resources */,
 				A319953D1CC0959A00ED8F9F /* stylesheets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -330,15 +333,18 @@
 			files = (
 				A3FB67ED1CC081D700CB3A7A /* UserStory.swift in Sources */,
 				A3FB67DC1CC06D5E00CB3A7A /* MongoExtensions.swift in Sources */,
+				393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */,
 				A3FB67DE1CC06D5E00CB3A7A /* CryptoExtensions.swift in Sources */,
 				A3EF9E6A1C98FC9D00C3B053 /* PerfectHandlers.swift in Sources */,
 				A3FB67E61CC06EA300CB3A7A /* RESTController.swift in Sources */,
+				A32486721CD9620200EA06E9 /* TaskController.swift in Sources */,
 				A3FB67EB1CC07E3300CB3A7A /* AuthController.swift in Sources */,
 				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
 				A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */,
 				6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */,
 				A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */,
 				A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */,
+				A32486701CD9544600EA06E9 /* Commentable.swift in Sources */,
 				A3FB67E91CC07D3C00CB3A7A /* ProductBacklogController.swift in Sources */,
 				6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */,
 				A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */,
@@ -348,6 +354,8 @@
 				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
 				A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */,
+				A32486741CD97E6000EA06E9 /* ModelController.swift in Sources */,
+				A324866E1CD94AC800EA06E9 /* Task.swift in Sources */,
 				A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

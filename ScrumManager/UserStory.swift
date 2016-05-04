@@ -12,7 +12,7 @@ import MongoDB
 
 
 
-final class UserStory: Object, Commentable {
+final class UserStory: Object,DBManagedObject, Commentable {
     
     var title: String
     
@@ -47,6 +47,16 @@ final class UserStory: Object, Commentable {
         
         self.identifier = identifier
         
+        // Load Comments
+        
+        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
+            
+            comments = commentsArray.map({ (commentDictionary) -> Comment in
+                let comment = commentDictionary as! JSONDictionaryType
+                return Comment(dictionary: comment.dictionary)
+            })
+        }
+ 
     }
     
     init?(identifier: String) {
@@ -59,31 +69,32 @@ final class UserStory: Object, Commentable {
     }
 }
 
-extension UserStory: DBManagedObject {
+extension UserStory {
     
     static var collectionName: String = "userstory"
     
+    var dictionary: [String: Any] {
+        return [
+            "title": title,
+            "story": story,
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+            "urlPath": pathURL
+        ]
+    }
+    /*
     static var ignoredProperties: [String] {
         return ["comments"]
     }
+ */
 }
 
 extension UserStory: Routable {
     
-    var pathURL: String { return "userstories/\(identifier)" }
+    var pathURL: String { return "/userstories/\(identifier)" }
     
-    var editURL: String { return "userstories/\(identifier)/edit" }
+    var editURL: String { return "/userstories/\(identifier)/edit" }
 }
 
-extension DBManagedObject where Self: Routable {
-    
-    func asDictionary() -> [String: Any] {
-        var dictionary = keyValues()
-        dictionary["urlPath"] = pathURL
-        
-        return dictionary
-    }
-    
-}
-    
  

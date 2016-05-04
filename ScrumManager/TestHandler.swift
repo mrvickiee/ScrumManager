@@ -14,7 +14,7 @@ class TestHandler: RequestHandler {
     func handleRequest(request: WebRequest, response: WebResponse) {
         
         let templateURL = request.documentRoot + "/templates/template.mustache"
-        let indexURL = request.documentRoot + "/templates/login.mustache"
+        let indexURL = request.documentRoot + "/templates/Project/new.mustache"
         let values = [:] as [String: Any]
         let content = parseMustacheFromURL(indexURL, withValues: values)
         let templateContent = ["content": content] as [String: Any]

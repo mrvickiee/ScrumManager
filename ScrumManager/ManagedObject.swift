@@ -17,13 +17,11 @@
 import MongoDB
 import PerfectLib
 
-protocol DBManagedObject {
+protocol DBManagedObject: CustomDictionaryConvertible {
     
     static var collectionName: String { get }
     
-    func keyValues() -> [String: Any]
-    
-    func asDictionary() -> [String: Any]
+    var keyValues:[String: Any] { get }
     
     func document() throws -> BSON
     
@@ -61,7 +59,7 @@ extension DBManagedObject {
     
     func document() throws -> BSON {
         
-        var documentData = self.keyValues()
+        var documentData = self.keyValues
     
         if let object = self as? Object, objectID = object._objectID {
             
@@ -75,18 +73,34 @@ extension DBManagedObject {
         return bson
     }
     
-    func asDictionary() -> [String: Any] {
-        return keyValues()
+    var dictionary:[String: Any] {
+        return keyValues
     }
     
-    func keyValues() -> [String: Any] {
+    var keyValues:[String: Any] {
         
         var properties: [String: Any] = [:]
-        
-        for child in Mirror(reflecting: self).children {
+        let mirror = Mirror(reflecting: self)
+        for child in mirror.children {
             
             if let key = child.label where key.characters[key.startIndex] != "_" && !Self.ignoredProperties.contains(key) {
-                properties[key] = child.value as Any
+                
+                if let value = child.value as? CustomDictionaryConvertible {
+                    properties[key] = value.dictionary
+                } else if let array = child.value as? Array<Any>  {
+                     let dictionaryConvertibleArray = array.map({ (element) -> [String: Any] in
+                        let dictionaryConvertible = element as! CustomDictionaryConvertible
+                    
+                        return dictionaryConvertible.dictionary
+                    })
+                    properties[key] =  dictionaryConvertibleArray
+                    
+                   
+                } else {
+                   
+                    properties[key] = child.value as Any
+                }
+            
             }
         }
         

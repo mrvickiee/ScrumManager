@@ -16,7 +16,7 @@ class UserController: RESTController {
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         var values = MustacheEvaluationContext.MapType()
         values["users"] = try! DatabaseManager().executeFetchRequest(User).map({ (user) -> [String: Any] in
-            return user.asDictionary()
+            return user.dictionary
         })
         
         return values
@@ -47,7 +47,7 @@ class UserController: RESTController {
         }
         
         
-        let values: [String:Any] = ["user": requestedAuthor.keyValues()]
+        let values: [String:Any] = ["user": requestedAuthor.keyValues]
         
         return values
         
@@ -89,7 +89,7 @@ class UserController: RESTController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values: [String:Any] = ["author": post.keyValues()]
+        let values: [String:Any] = ["author": post.dictionary]
         
         return values
     }
