@@ -6,6 +6,14 @@
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
 //
 
+/*
+ ManagedObject protocol is for objects that are inserted and retrieved from mongoDB. 
+ 
+ The function keyValues converts the objects properties into a key value dictionary representation for saving to mongo (Uses property names as keys).
+ asDictionary is used for generating the key values for our controllers (pages), this exists to expand upon the object properties so that urls can be added in here and is seperate from keyValues as we don't want to write these urls to the database.
+ Document creates the special BSON format that MongoDB uses, by encoding the keyValues() result.
+ */
+
 import MongoDB
 import PerfectLib
 
