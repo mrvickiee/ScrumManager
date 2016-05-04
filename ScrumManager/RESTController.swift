@@ -6,6 +6,7 @@
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
 //
 
+
 import PerfectLib
 import MongoDB
 
@@ -34,6 +35,8 @@ protocol RESTController: RequestHandler {
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()]
     
 }
+
+
 
 extension RESTController {
     

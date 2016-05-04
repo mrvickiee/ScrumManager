@@ -9,7 +9,10 @@
 import Foundation
 import PerfectLib
 
-protocol AuthController: RESTController {
+protocol AuthController: RESTController, RoutableController {
+    
+ //   associatedtype DBManagedObject
+
     
     func currentUser(request: WebRequest, response: WebResponse) -> User?
     
@@ -67,6 +70,7 @@ extension AuthController {
         
         // Add logged in user information to provided values for templates
         var values: MustacheEvaluationContext.MapType = ["user":["name": user.name] as [String: Any]]
+        values.update(routeDictionary)
         
         if let identifier = request.urlVariables["id"] {
             

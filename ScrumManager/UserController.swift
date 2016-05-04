@@ -248,12 +248,13 @@ class UserController: AuthController {
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
+        
         // Get Articles
                 
         let user = currentUser(request, response: response)!
         
         
-        let values :MustacheEvaluationContext.MapType = ["userProfile": user.asDictionary()]
+        let values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
         return values
     }
     
@@ -276,7 +277,7 @@ class UserController: AuthController {
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["user"] = user.asDictionary()
+        values["user"] = user.dictionary
 
         return values
         
@@ -315,7 +316,7 @@ class UserController: AuthController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values = ["user": user.asDictionary()] as  MustacheEvaluationContext.MapType
+        let values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
         return values
         
     }

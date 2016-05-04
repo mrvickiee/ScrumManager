@@ -10,39 +10,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 <title>Scrum Manager</title>
-<link rel="stylesheet" href="/stylesheets/foundation.min.css">
+<link rel="stylesheet" href="/stylesheets/foundation.css">
 <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
 <body>
-<div class="top-bar">
-<div class="top-bar-left">
-<ul class="menu">
-<li class="menu-text">Scrum Manager</li>
-{{#user}}
-<li><a href="/userstories/new">New User Story</a></li>
-{{/user}}
-</ul>
-</div>
+    <div class="top-bar" style="top-margin:0px;">
+        <div class="top-bar-left">
+            <ul class="menu">
+            <li class="menu-text">Scrum Manager</li>
+            {{#user}}
+            <li><a href="/userstories/new">New User Story</a></li>
+            {{/user}}
+            </ul>
+        </div>
 
-{{#user}}
-<div class="top-bar-right">
-<ul class="dropdown menu" data-dropdown-menu>
-<li>
-<a>{{name}}</a>
-<ul class="menu">
-<li><a href="/users/0/edit">Edit Profile</a></li>
-<li><a href="/logout">Log out</a></li>
-
-</ul>
-</li>
-
-</ul>
-
-
-</div>
-{{/user}}
-
-</div>
+        {{#user}}
+        <div class="top-bar-right">
+            <ul class="dropdown menu" data-dropdown-menu>
+                <li>
+                    <a>{{name}}</a>
+                    <ul class="menu">
+                        <li><a href="/users/0/edit">Edit Profile</a></li>
+                        <li><a href="/logout">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        {{/user}}
+    </div>
 
 {{#error}}
 <div class="callout alert">

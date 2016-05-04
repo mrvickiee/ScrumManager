@@ -30,7 +30,8 @@ class DatabaseManager {
     }
     
     init() throws {
-            try mongo =  MongoClient(uri: DatabaseManager.mongoURI)
+        
+            mongo =  try MongoClient(uri: DatabaseManager.mongoURI)
             let status = mongo.serverStatus()
             
             switch status {
@@ -42,6 +43,19 @@ class DatabaseManager {
                 print("Status doc: \(doc)")
                 assert(true)
                 
+            default:
+                assert(false, "Strange reply type \(status)")
+            }
+        
+            switch status {
+            
+            case .Error(let domain, let code, let message):
+                assert(false, "Error connecting to mongo: \(domain) \(code) \(message). Did you start MongoDB with mongod in terminal?")
+            
+            case .ReplyDoc(let doc):
+                print("Status doc: \(doc)")
+                assert(true)
+            
             default:
                 assert(false, "Strange reply type \(status)")
             }
@@ -58,11 +72,12 @@ class DatabaseManager {
     }
     
  
-    func update(collection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
-        let collection = database.getCollection(collection)
-        let updateBSON = try! BSON(dictionary: update)
-        
-        collection.update(try! BSON(dictionary: predicate), selector: updateBSON)
+    func update(objectCollection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
+        let collection = database.getCollection(objectCollection)
+        let updateBSON = try! BSON(dictionary: ["$set":update] as [String: Any])
+        let resut = collection.update(updateBSON, selector: try! BSON(dictionary: predicate))
+       //let resut =  collection.update(try! BSON(), selector: updateBSON)
+        print(resut)
     }
     
     func executeFetchRequest<Collection: DBManagedObject>(collection: Collection.Type, predicate: [String: Any] = [:]) -> [Collection] {
@@ -109,7 +124,28 @@ class DatabaseManager {
         } else {
             return nil
         }
+    }
+    
+    func getObjectsWithIDs<Collection: DBManagedObject>(collection: Collection.Type, objectIDs: [String]) -> [Collection] {
+
+        var objectIdentifiers = objectIDs.map { (objectID) -> Dictionary<JSONKey, JSONValue> in
+            return ["$oid": objectID] as Dictionary<JSONKey, JSONValue>
+        }
         
+        let query: [String: JSONValue] = ["_id": ["$in": objectIdentifiers] as [String: Any]]
+        let jsonEncode = try! JSONEncoder().encode(query)
+        
+        let cursor = database.getCollection(collection).find(try! BSON(json: jsonEncode))
+        defer {
+            cursor?.close()
+        }
+        var collections: [Collection] = []
+        
+        while let bson = cursor?.next() {
+            collections.append(Collection(bson: bson))
+        }
+        
+        return collections
     }
     
     func getObject<Collection: DBManagedObject>(collection: Collection.Type, primaryKeyValue: Int) -> Collection? {
@@ -126,6 +162,7 @@ class DatabaseManager {
         defer {
             cusor?.close()
         }
+        
         if let bson = cusor?.next() {
             return Collection(bson: bson)
         }
