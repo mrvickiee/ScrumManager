@@ -16,12 +16,11 @@ enum Priority: Int {
 
 typealias TimeInterval = Double
 
-class Project {
+final class Project {
     
     let name: String
     let projectDescription: String
-    let imageURL: String = "" // Default image
-    var productBacklog: ProductBacklog!
+
 
     init(name: String, projectDescription: String) {
         self.name = name

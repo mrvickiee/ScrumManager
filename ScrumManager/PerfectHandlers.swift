@@ -24,16 +24,17 @@ public func PerfectServerModuleInit() {
     
     Routing.addRoutesForRESTController(UserController())
     Routing.addRoutesForRESTController(ProductBacklogController())
+    Routing.addRoutesForRESTController(ProjectController())
    // Routing.addRoutesForRESTController(SprintController())
     
     Routing.Routes["GET", "/"] = { _ in return ProductBacklogController() }
-    
+   
     // Add access to stylesheets
     Routing.Routes["GET", "/stylesheets/*"] = {_  in StaticFileHandler() }
     
     Routing.Routes["/login"] = { _ in LoginHandler() }
     Routing.Routes["/logout"] = { _ in LogoutHandler() }
-    Routing.Routes["/test"] = { _ in TestHandler() }
+   // Routing.Routes["/test"] = { _ in TestHandler() }
     
 
     
