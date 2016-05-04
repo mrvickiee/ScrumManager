@@ -11,7 +11,6 @@ import PerfectLib
 import MongoDB
 
 
-
 final class UserStory: Object,DBManagedObject, Commentable {
     
     var title: String
@@ -27,11 +26,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         self.story = story
     }
     
-    convenience init(bson: BSON) {
-        
-        let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
-        
-        let dictionary = json.dictionary
+    convenience init(dictionary: [String : Any]) {
         
         let title = dictionary["title"] as! String
         
@@ -42,7 +37,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         let identifier = dictionary["identifier"] as! Int
         
         self.init(title: title, story: story)
-                
+        
         self._objectID = id
         
         self.identifier = identifier
@@ -56,7 +51,17 @@ final class UserStory: Object,DBManagedObject, Commentable {
                 return Comment(dictionary: comment.dictionary)
             })
         }
- 
+
+    }
+    
+    convenience init(bson: BSON) {
+        
+        let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
+        
+        let dictionary = json.dictionary
+        
+        self.init(dictionary: dictionary)
+      
     }
     
     init?(identifier: String) {

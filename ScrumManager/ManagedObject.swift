@@ -9,7 +9,7 @@
 import MongoDB
 import PerfectLib
 
-protocol DBManagedObject: CustomDictionaryConvertible {
+protocol DBManagedObject: CustomDictionaryConvertible, DictionarySerializable {
     
     static var collectionName: String { get }
     
@@ -20,8 +20,6 @@ protocol DBManagedObject: CustomDictionaryConvertible {
     static var ignoredProperties: [String] { get }
     
     init(bson: BSON)
-    
-    init?(identifier: String)
     
     static var primaryKey: String? { get }
     
