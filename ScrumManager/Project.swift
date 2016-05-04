@@ -22,6 +22,8 @@ final class Project {
     let projectDescription: String
 
 
+    var sprintIDs: [String] = []
+    
     init(name: String, projectDescription: String) {
         self.name = name
         self.projectDescription = projectDescription
@@ -47,17 +49,6 @@ class ProductBacklog {
 }
 
 
-
-class Task {
-    
-    var taskDescription: String
-    
-    var user: User? = nil
-    
-    init(taskDescription: String) {
-        self.taskDescription = taskDescription
-    }
-}
 
 
 

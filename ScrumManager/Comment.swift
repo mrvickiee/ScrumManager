@@ -7,14 +7,9 @@
 //
 
 import Foundation
+import PerfectLib
 
-// Protocol for objects that contain comments from users
-protocol Commentable {
-    
-    var comments: [Comment] {get set}
-    
-    mutating func addComment(comment: Comment)
-}
+
 
 protocol DictionarySerializable {
     
@@ -26,21 +21,6 @@ protocol DictionarySerializable {
     var dictionary: [String: Any] { get }
  }
 
-extension Commentable where Self: DBManagedObject {
-    mutating func addComment(comment: Comment) {
-        
-        comments.append(comment)
-        
-        // Update comments in database
-        let commentsArray = comments.map { (comment) -> [String: Any] in
-            return comment.dictionary
-        }
-        
-    //    try! DatabaseManager().updateObject(self, updateValues:["$set": ["comments": commentsArray] as [String: Any]] as [String: Any])
-         try! DatabaseManager().updateObject(self, updateValues:["comments": commentsArray] as [String: Any])
-        
-    }
-}
 
 
 final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible {
@@ -49,7 +29,7 @@ final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible
     
     private let userID: String // User who made the comment
     
-    lazy var user: User? = User(identifier: self.userID)
+    lazy var user: User? = try! DatabaseManager().getObjectWithID(User.self, objectID: self.userID)
     
     init(comment: String, userID: String) {
         self.comment = comment
@@ -69,7 +49,12 @@ final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible
     }
     
     var dictionary: [String : Any] {
-        return ["comment": comment, "userID": userID]
+        var dict = ["comment": comment, "userID": userID] as [String: Any]
+        if let user = user {
+            dict["user"] = user.dictionary
+        }
+        
+        return dict
     }
     
 }

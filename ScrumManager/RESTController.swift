@@ -35,6 +35,8 @@ protocol RESTController: RequestHandler {
     
 }
 
+
+
 extension RESTController {
     
     var modelPluralName: String {

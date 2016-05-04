@@ -57,7 +57,6 @@ final class UserStory: Object,DBManagedObject, Commentable {
             })
         }
  
-        
     }
     
     init?(identifier: String) {
@@ -98,15 +97,4 @@ extension UserStory: Routable {
     var editURL: String { return "/userstories/\(identifier)/edit" }
 }
 
-extension DBManagedObject where Self: Routable {
-    
-    var dictionary:[String: Any] {
-        var dictionary = keyValues()
-        dictionary["urlPath"] = pathURL
-        
-        return dictionary
-    }
-    
-}
-    
  

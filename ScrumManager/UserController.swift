@@ -47,7 +47,7 @@ class UserController: RESTController {
         }
         
         
-        let values: [String:Any] = ["user": requestedAuthor.keyValues()]
+        let values: [String:Any] = ["user": requestedAuthor.keyValues]
         
         return values
         
@@ -89,7 +89,7 @@ class UserController: RESTController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values: [String:Any] = ["author": post.keyValues()]
+        let values: [String:Any] = ["author": post.dictionary]
         
         return values
     }
