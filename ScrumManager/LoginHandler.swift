@@ -64,7 +64,7 @@ class LoginHandler: RequestHandler {
                     session["user_id"] = user._objectID
                     //∂session.commit()
                     
-                    response.redirectTo("/index")
+                    response.redirectTo("/")
                 }
             }
             

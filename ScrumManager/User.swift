@@ -22,7 +22,7 @@ final class User: Object {
     var authKey: String
     var profilePictureURL: String = ""
     var name: String
-    var expertises = ""
+    var expertises = [String]()
     var project: String = ""
     var role: String = ""
     
@@ -64,7 +64,7 @@ final class User: Object {
             role = ""
         }
         let expertisesTemp = dictionary["expertises"] as? JSONArrayType
-        var expertises = ""
+        var expertises = [String]()
         let jEncoder = JSONEncoder()
         do{
             var results = try jEncoder.encode(expertisesTemp!)
@@ -72,7 +72,8 @@ final class User: Object {
             results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            expertises = results
+            
+            expertises = results.componentsSeparatedByString(",")
         }catch{}
         
         let project = dictionary["currentProject"] as? String ?? ""
@@ -86,8 +87,8 @@ final class User: Object {
         self._objectID = id
         
         self.expertises = expertises
-        
-        self.project = project
+
+      //  self.project = project
         
     }
     

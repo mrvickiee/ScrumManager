@@ -36,9 +36,9 @@ public func PerfectServerModuleInit() {
     Routing.Routes["/login"] = { _ in LoginHandler() }
     Routing.Routes["/logout"] = { _ in LogoutHandler() }
     Routing.Routes["/index"] = { _ in UserIndexHandler() }
-    Routing.Routes["/new"] = { _ in UserNewHandler() }
-    Routing.Routes["/show"] = { _ in UserShowHandler() }
-    Routing.Routes["/edit"] = { _ in UserEditHandler() }
+//    Routing.Routes["/new"] = { _ in UserNewHandler() }
+//    Routing.Routes["/show"] = { _ in UserShowHandler() }
+//    Routing.Routes["/edit"] = { _ in UserEditHandler() }
     
     Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
 
