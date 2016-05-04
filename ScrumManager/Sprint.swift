@@ -49,13 +49,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
      
         self.init(dictionary: dictionary)
         /*
-        let title = dictionary["title"] as! String
-        
-        self.init(body: "", title: "Sprint Title")
-        
-        self._objectID = id
-        
-        /*
          let title = dictionary["title"] as! String
          
          let story = dictionary["story"] as! String

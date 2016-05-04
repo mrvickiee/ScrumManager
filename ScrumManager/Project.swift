@@ -44,13 +44,40 @@ final class Project: Object, DBManagedObject {
 
     convenience init(dictionary: [String : Any]) {
         
-        let title = dictionary["title"] as! String
+        let name = dictionary["name"] as! String
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(name: title, projectDescription: "")
+        let projectDesc = dictionary["projectDescription"] as? String
+        
+        let identifier = dictionary["identifier"] as! Int
+        
+        let scrumManagerIdentifier = dictionary["scrumManagerID"] as? String
+        
+        let productOwnerIdentifier = dictionary["productOwnerID"] as? String
+        
+        self.init(name: title, projectDescription: description ?? projectDesc)
         
         self._objectID = id
+        
+        self.identifier = identifier
+        
+        self.scrumManagerID = scrumManagerIdentifier
+        
+        self.productOwnerID = productOwnerID
+        
+        if let startDateEpoch = dictionary["startDate"] as? Int {
+            startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
+        }
+        
+        if let endDateEpoch = dictionary["endDate"] as? Int {
+            endDate = NSDate(timeIntervalSince1970: Double(endDateEpoch))
+        }
+        
+        if let teamIDs = dictionary["teamMemberIDs"] as? [String] {
+            teamMemberIDs = teamIDs
+        }
+        
     }
     
      convenience init(bson: BSON) {
