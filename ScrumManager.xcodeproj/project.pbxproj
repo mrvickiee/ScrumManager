@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */; };
 		393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393BCF971CD8D95A005C94CF /* ProjectController.swift */; };
 		6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01A80A1CC1DCD00022CCDA /* Routable.swift */; };
 		6FDAFD881CC0F751006ACF2A /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDAFD871CC0F751006ACF2A /* Package.swift */; };
@@ -67,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintController.swift; sourceTree = "<group>"; };
 		393BCF971CD8D95A005C94CF /* ProjectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectController.swift; sourceTree = "<group>"; };
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
 		6FDAFD871CC0F751006ACF2A /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				393BCF971CD8D95A005C94CF /* ProjectController.swift */,
 				A3EE54F91CC09A660042FC02 /* UserController.swift */,
 				A386D9511CC72FBC008BDA1D /* TestHandler.swift */,
+				5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */,
 				A32486711CD9620200EA06E9 /* TaskController.swift */,
 				A32486731CD97E6000EA06E9 /* ModelController.swift */,
 			);
@@ -351,6 +354,7 @@
 				A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */,
 				A3FB67DD1CC06D5E00CB3A7A /* PerfectExtensions.swift in Sources */,
 				A3FB67D51CBF2DA900CB3A7A /* User.swift in Sources */,
+				5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */,
 				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
 				A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */,

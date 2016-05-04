@@ -51,18 +51,25 @@ final class Sprint: Object, DBManagedObject, Commentable {
         /*
         let title = dictionary["title"] as! String
         
-        let story = dictionary["story"] as! String
-        
-        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
-        
-        let identifier = dictionary["identifier"] as! Int
-        
-        self.init(title: title, story: story)
+        self.init(body: "", title: "Sprint Title")
         
         self._objectID = id
         
-        self.identifier = identifier
- */
+        /*
+         let title = dictionary["title"] as! String
+         
+         let story = dictionary["story"] as! String
+         
+         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
+         
+         let identifier = dictionary["identifier"] as! Int
+         
+         self.init(title: title, story: story)
+         
+         self._objectID = id
+         
+         self.identifier = identifier
+         */
         // Load Tasks
         if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
             
@@ -84,7 +91,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     }
     
     init?(identifier: String) {
-   
+        
         title = ""
         body = ""
         
@@ -97,5 +104,5 @@ final class Sprint: Object, DBManagedObject, Commentable {
 extension Sprint {
     
     static var collectionName: String = "sprint"
-
+    
 }
