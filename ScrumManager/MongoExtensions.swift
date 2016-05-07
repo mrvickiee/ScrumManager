@@ -36,7 +36,7 @@ extension MongoDatabase {
 
 extension BSON {
     convenience init(dictionary: [String: Any]) throws {
-        let json = try JSONEncoder().encode(dictionary)
+        let json = try JSON().encode(dictionary)
         try self.init(json: json)
     }
     

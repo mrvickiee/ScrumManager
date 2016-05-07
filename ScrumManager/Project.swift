@@ -43,7 +43,7 @@ final class Project: Object, DBManagedObject {
         
         let productOwnerIdentifier = dictionary["productOwnerID"] as? String
         
-        self.init(name: title, projectDescription: description ?? projectDesc)
+        self.init(name: name, projectDescription: projectDesc ?? "")
         
         self._objectID = id
         
@@ -51,7 +51,7 @@ final class Project: Object, DBManagedObject {
         
         self.scrumManagerID = scrumManagerIdentifier
         
-        self.productOwnerID = productOwnerID
+        self.productOwnerID = productOwnerIdentifier
         
         if let startDateEpoch = dictionary["startDate"] as? Int {
             startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))

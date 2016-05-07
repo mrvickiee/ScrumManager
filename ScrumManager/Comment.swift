@@ -58,6 +58,13 @@ final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible
     }
     
 }
+ 
+ extension Comment:CustomJSONConvertible {
+    var jsonValue: JSONConvertible {
+        return dictionary
+    }
+    
+ }
 
 
 
