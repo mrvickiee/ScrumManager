@@ -27,33 +27,42 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.body = body
     }
     
+    convenience init(dictionary: [String : Any]) {
+        
+        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
+        
+        self.init(body: "", title: "Sprint Title")
+        
+        self._objectID = id
+        
+        
+
+        
+    }
+    
     convenience init(bson: BSON) {
         
         let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
         
         let dictionary = json.dictionary
         
-        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
-
-        self.init(body: "", title: "Sprint Title")
-        
-        self._objectID = id
-
+     
+        self.init(dictionary: dictionary)
         /*
-        let title = dictionary["title"] as! String
-        
-        let story = dictionary["story"] as! String
-        
-        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
-        
-        let identifier = dictionary["identifier"] as! Int
-        
-        self.init(title: title, story: story)
-        
-        self._objectID = id
-        
-        self.identifier = identifier
- */
+         let title = dictionary["title"] as! String
+         
+         let story = dictionary["story"] as! String
+         
+         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
+         
+         let identifier = dictionary["identifier"] as! Int
+         
+         self.init(title: title, story: story)
+         
+         self._objectID = id
+         
+         self.identifier = identifier
+         */
         // Load Tasks
         if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
             
@@ -62,7 +71,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
                 return Task(dictionary: taskDict.dictionary)
             })
         }
-        
         
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
@@ -76,7 +84,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     }
     
     init?(identifier: String) {
-   
+        
         title = ""
         body = ""
         
@@ -89,5 +97,5 @@ final class Sprint: Object, DBManagedObject, Commentable {
 extension Sprint {
     
     static var collectionName: String = "sprint"
-
+    
 }
