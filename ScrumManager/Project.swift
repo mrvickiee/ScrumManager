@@ -20,10 +20,12 @@ final class Project {
     
     let name: String
     let projectDescription: String
-
-
-    var sprintIDs: [String] = []
+    let imageURL: String = "" // Default image
+    var productBacklog: ProductBacklog!
     
+   // lazy var sprints: [Sprint] = try! DatabaseManager().getObjectsWithIDs(Sprint, objectIDs: self.sprintIDs)
+
+
     init(name: String, projectDescription: String) {
         self.name = name
         self.projectDescription = projectDescription

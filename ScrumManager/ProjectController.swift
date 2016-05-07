@@ -53,11 +53,5 @@ class ProjectController: AuthController {
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType{
          return [:]
     }
-    
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()]{
-        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
-        
-        return modelActions
-    }
 
 }
