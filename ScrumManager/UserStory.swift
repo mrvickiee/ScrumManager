@@ -74,9 +74,25 @@ final class UserStory: Object,DBManagedObject, Commentable {
     }
 }
 
+
+
 extension UserStory {
     
     static var collectionName: String = "userstory"
+    
+    var keyValues:[String: Any] {
+        return [
+            "title": title,
+            "story": story,
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+            "urlPath": pathURL,
+            "identifier": identifier
+        ]
+        
+    }
+    
     
     var dictionary: [String: Any] {
         return [

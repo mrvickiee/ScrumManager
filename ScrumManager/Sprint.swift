@@ -14,9 +14,9 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var comments: [Comment] = []
     
-    lazy var tasks: [Task] = try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: self.taskIDs)
-    
     var taskIDs: [String] = []
+    
+    var userStoryIDs: [String] = []
     
     var title: String
     
@@ -46,23 +46,17 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let dictionary = json.dictionary
         
-     
         self.init(dictionary: dictionary)
+      
+        // Load User Stories
+        let userStoryIdentifier = dictionary["userStoryIDs"] as! [String]
+        userStoryIDs = userStoryIdentifier
+        
+        let taskIdentifiers = dictionary["taskIDs"] as! [String]
+        taskIDs = taskIdentifiers
+        
+        
         /*
-         let title = dictionary["title"] as! String
-         
-         let story = dictionary["story"] as! String
-         
-         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
-         
-         let identifier = dictionary["identifier"] as! Int
-         
-         self.init(title: title, story: story)
-         
-         self._objectID = id
-         
-         self.identifier = identifier
-         */
         // Load Tasks
         if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
             
@@ -71,16 +65,8 @@ final class Sprint: Object, DBManagedObject, Commentable {
                 return Task(dictionary: taskDict.dictionary)
             })
         }
-        
-        // Load Comments
-        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
-            
-            comments = commentsArray.map({ (commentDictionary) -> Comment in
-                let comment = commentDictionary as! JSONDictionaryType
-                return Comment(dictionary: comment.dictionary)
-            })
-        }
-        
+ */
+        comments = loadCommentsFromDictionary(dictionary)
     }
     
     init?(identifier: String) {
@@ -97,5 +83,9 @@ final class Sprint: Object, DBManagedObject, Commentable {
 extension Sprint {
     
     static var collectionName: String = "sprint"
+
+    var tasks: [Task] { return try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: self.taskIDs) }
+
+    var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
     
 }
