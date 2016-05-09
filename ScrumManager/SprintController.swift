@@ -8,42 +8,13 @@
 
 import Foundation
 import PerfectLib
-import MongoDB
 
-class SprintController: RESTController  {
+class SprintController: AuthController  {
     
     let modelName = "userstory"
     
     let modelPluralName: String = "userstories"
     
-    //create new sprint
-    func new(request: WebRequest, response: WebResponse) {
-        if let description = request.param("description"), expectedDuration = request.param("expectedDuration"), duration = Int(expectedDuration), projectID = request.param("projectID") {
-            
-
-            
-            
-            let sprint = Sprint(body: description, title: modelName)
-            
-            do{
-                let databaseManager = try! DatabaseManager()
-                
-                sprint._objectID = databaseManager.generateUniqueIdentifier()
-                
-                
-                
-                try databaseManager.insertObject(sprint)
-                
-                //let project = try! DatabaseManager().getObjectWithID(projectID)
-                //project.addSprint()
-                
-                
-                response.redirectTo("/")
-            }catch{
-                
-            }
-        }
-        
 
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
@@ -83,5 +54,7 @@ class SprintController: RESTController  {
     func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
         return [:]
     }
-
-}
+    
+   }
+ 
+ 
