@@ -12,7 +12,9 @@ import MongoDB
 
 class SprintController: RESTController  {
     
-    let modelName = "Sprint"
+    let modelName = "userstory"
+    
+    let modelPluralName: String = "userstories"
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
@@ -43,17 +45,43 @@ class SprintController: RESTController  {
         }
         
 
-    }
-   
     
-    //selected user stories = getUserstorywithID
-    func getUserStoryWithIdentifier(identifier: Int) -> UserStory? {
+    func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
+        // Get Articles
+        
         let db = try! DatabaseManager()
-        guard let userStory = db.executeFetchRequest(UserStory.self, predicate: ["identifier": identifier]).first else {
-            return nil
+        let tasks = db.executeFetchRequest(Task)
+        let taskJSON = tasks.map { (task) -> [String: Any] in
+            return task.dictionary
         }
         
-        return userStory
+        let values :MustacheEvaluationContext.MapType = ["tasks": taskJSON]
+        return values
+    }
+    
+    func create(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        return [:]
+    }
+    
+    func edit(identifier: Int, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        return [:]
+    }
+    
+    func show(identifier: Int, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        return [:]
+    }
+    
+    func new(request: WebRequest, response: WebResponse) {
+        
+    }
+    
+    func delete(identifier: Int, request: WebRequest, response: WebResponse) {
+        
+    }
+    
+    func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
+        return [:]
     }
 
 }

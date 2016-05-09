@@ -30,8 +30,8 @@ class DatabaseManager {
     }
     
     init() throws {
-        do{
-            mongo =  try MongoClient(uri: DatabaseManager.mongoURI)
+       
+            mongo =  try! MongoClient(uri: DatabaseManager.mongoURI)
             let status = mongo.serverStatus()
         
             switch status {
@@ -46,7 +46,7 @@ class DatabaseManager {
             default:
                 assert(false, "Strange reply type \(status)")
             }
-        }catch{}
+ 
       
     }
     
