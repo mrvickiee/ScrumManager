@@ -51,6 +51,10 @@ class SprintController: AuthController  {
         
     }
     
+    func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType {
+        return [:]
+    }
+    
     func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
         return [:]
     }
