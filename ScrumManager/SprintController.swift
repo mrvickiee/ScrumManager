@@ -9,18 +9,19 @@
 import Foundation
 import PerfectLib
 import MongoDB
-/*
-class SprintController: AuthController  {
+
+class SprintController: RESTController  {
     
     let modelName = "Sprint"
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let description = request.param("description"), expectedDuration = request.param("expectedDuration"), duration = Int(expectedDuration) {
+        if let description = request.param("description"), expectedDuration = request.param("expectedDuration"), duration = Int(expectedDuration), projectID = request.param("projectID") {
+            
+
             
             
-            
-            let sprint = Sprint(description: description, expectedDuration: duration)
+            let sprint = Sprint(body: description, title: modelName)
             
             do{
                 let databaseManager = try! DatabaseManager()
@@ -30,6 +31,11 @@ class SprintController: AuthController  {
                 
                 
                 try databaseManager.insertObject(sprint)
+                
+                //let project = try! DatabaseManager().getObjectWithID(projectID)
+                //project.addSprint()
+                
+                
                 response.redirectTo("/")
             }catch{
                 
@@ -49,5 +55,5 @@ class SprintController: AuthController  {
         
         return userStory
     }
-    
-}*/
+
+}
