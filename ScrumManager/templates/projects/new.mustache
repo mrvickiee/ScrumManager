@@ -1,4 +1,4 @@
-<form>
+<form action="/projects" method="post">
     <div class = "row">
         <div class= "medium-6 columns">
             <label>Project Title
@@ -8,8 +8,33 @@
                 <textarea name="projectDescription"></textarea>
             </label>
             <label> End date
-                <input type="date" name= "endDate"/>
+            <input type="text" name="endDate"/>
             </label>
+
+            <label> Scrum master
+            <select name="scrumMaster">
+                {{#users}}
+                <option value="{{objectID}}">{{name}}</option>
+                {{/users}}
+            </select>
+
+            </label>
+            <label> Product Owner
+            <select name="productOwner">
+            {{#users}}
+            <option value="{{objectID}}">{{name}}</option>
+            {{/users}}
+            </select>
+            </label>
+
+            <label> Team members
+                <select name="teamMembers" multiple>
+                {{#users}}
+                <option value="{{objectID}}">{{name}}</option>
+                {{/users}}
+                </select>
+            </label>
+            <input type="submit" value="Submit">
         </div>
     </div>
 </form>

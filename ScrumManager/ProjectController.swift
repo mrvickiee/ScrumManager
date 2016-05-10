@@ -31,10 +31,56 @@ class ProjectController: AuthController {
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-         return [:]
+        
+        
+        //if let project = try! DatabaseManager().executeFetchRequest(Project).first {
+            
+        let teamMembers = try! DatabaseManager().executeFetchRequest(User)
+        
+        let teamMembersJSON = teamMembers.map { (user) -> [String:Any] in
+            var userDictionary = user.dictionary
+            userDictionary["objectID"] = user._objectID!
+            
+            return userDictionary
+        }
+        let values: MustacheEvaluationContext.MapType = ["users" : teamMembersJSON]
+        
+        return values
     }
     
     func new(request: WebRequest, response: WebResponse){
+        //get all the input from the form
+        
+        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"){
+            
+            let database = try! DatabaseManager()
+            
+            guard let scrumMaster = database.getObjectWithID(User.self, objectID: scrumMasterID) else {
+                response.requestCompletedCallback()
+                return
+            }
+            
+            let projectCount = database.countForFetchRequest(Project)
+            
+            
+            let project = Project(name: projectTitle, projectDescription: projectDesc)
+            project.scrumMaster = scrumMaster
+            project.identifier = projectCount
+            project._objectID = database.generateUniqueIdentifier()
+            project.startDate = NSDate()
+            project.endDate = NSDate() // tmp
+            project.productOwnerID = productOwner
+            
+            do {
+                try database.insertObject(project)
+                print("insert success")
+            }catch{
+                print("Fail to add new project")
+            }
+            
+        }else{
+            response.requestCompletedCallback()
+        }
         
     }
     
