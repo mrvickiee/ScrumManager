@@ -47,14 +47,19 @@ class UserController: AuthController {
         // Query User Story
         let tempUserList = getUserList()
         var userList = [[String:Any]]()
-        
+        var visibility = "none"
+        let existingUser = currentUser(request, response: response)
+        if existingUser?.role == "Scrum Master" || existingUser?.role == "System Admin"{
+            visibility = "run-in"
+        }
         // FIXME: Identifier in Show for every users
         for user in tempUserList{
-            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL,"identifier":0])
+            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL,"identifier":0, "visibility": visibility])
         }
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList
-
+        
+        
         return values
         
     }
@@ -212,6 +217,12 @@ class UserController: AuthController {
 //        }
 //        response.requestCompletedCallback()
         // FIXME: Redirect to Show page after delete the users
+        let deleteUser = currentUser(request, response: response)
+        let dataManager = try! DatabaseManager()
+        do{
+           try dataManager.deleteObject(deleteUser!)
+        }catch{}
+        
         response.redirectTo("/users/0")
         response.requestCompletedCallback()
     }
