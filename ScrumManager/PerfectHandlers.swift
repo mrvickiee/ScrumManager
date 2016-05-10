@@ -36,6 +36,7 @@ public func PerfectServerModuleInit() {
     
     Routing.Routes["/login"] = { _ in LoginHandler() }
     Routing.Routes["/logout"] = { _ in LogoutHandler() }
+    
    // Routing.Routes["/test"] = { _ in TestHandler() }
     
 
