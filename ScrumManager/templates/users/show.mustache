@@ -4,43 +4,28 @@
 	
 }}
 
-
-<div class="callout large primary">
-<div class="row column text-center">
-<h1>Blog</h1>
-<h2 class="subheader">A collection of random thoughts</h2>
+<!-- Content of side menu -->
+<div class="large-10 columns">
+{{#userList}}
+<div class="row collapse user-list-column" data-equalizer>
+<div class="small-2 large-2 columns text-center user-list-delete-button"">
+<a method="post" href="{{identifier}}/edit" style="display:{{visibility}}>
+<input type="image" src="/resources/edit.svg" width="20" height="20" alt="Update">
+</a>
+<a method="post" href="{{identifier}}/delete" style="display:{{visibility}}>
+<input type="image" src="/resources/delete.jpg" width="20" height="20" alt="Delete">
+</a>
+<img src={{profilePicUrl}} class="show-profile-image">
 </div>
-</div>
-
-<div class="row medium-8 large-7 columns">
-
-<div class="blog-post">
-
-<div class="author">
-{{#author}}
-<div class="photo"> <img src="{{pictureURL}}" /></div>
-<h3>{{name}}</h3>
-<p>{{bio}}</p>
-
-<h3>Posts</h3>
-{{#articles}}
-
-{{/articles}}
-
-{{/author}}
-
-</div>
-</div>
-
-</div>
-
+<div class="small-10 large-10 columns" data-equalizer-watch>
+<a href="#">
+{{name}}<br>
+<span style="font-size: small">{{email}}</span>
+</a>
 </div>
 
 
-
-
-
-
-
-
-
+</div>
+{{/userList}}
+</div>
+</div>
