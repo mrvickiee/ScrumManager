@@ -42,7 +42,7 @@ class UserController: AuthController {
         var userList = [[String:Any]]()
         
         for user in tempUserList{
-            userList.append(["name":user.name, "email": user.email])
+            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL])
         }
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList

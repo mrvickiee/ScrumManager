@@ -142,6 +142,12 @@ body {
     min-width: 40%;
     padding: 3%;
 }
+
+.show-profile-image{
+    width:40px;
+    height:40px;
+    border-radius: 100%;
+}
 /* Side bar menu height according to the screen*/
 @media screen and (max-width: 1024px) { /* Specific to this particular image */
     .user-management-side-menu {
