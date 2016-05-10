@@ -161,6 +161,8 @@ class ProductBacklogController: AuthController {
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
+        
+        
         /*
         let beforeValues = beforeAction(request, response: response)
         
@@ -169,8 +171,10 @@ class ProductBacklogController: AuthController {
         }
         return values
          */
-        return MustacheEvaluationContext.MapType()
         
+        return [:]
+        
+       
     }
     
     func delete(identifier: Int, request: WebRequest, response: WebResponse) {
