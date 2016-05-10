@@ -17,7 +17,7 @@
 import MongoDB
 import PerfectLib
 
-protocol DBManagedObject: CustomDictionaryConvertible {
+protocol DBManagedObject: CustomDictionaryConvertible, DictionarySerializable, JSONConvertible {
     
     static var collectionName: String { get }
     
@@ -29,8 +29,6 @@ protocol DBManagedObject: CustomDictionaryConvertible {
     
     init(bson: BSON)
     
-    init?(identifier: String)
-    
     static var primaryKey: String? { get }
     
  //   var urlPath: String { get }
@@ -38,6 +36,13 @@ protocol DBManagedObject: CustomDictionaryConvertible {
 }
 
 typealias ObjectID = Dictionary<JSONKey, JSONValue>
+
+extension DBManagedObject where Self: DictionarySerializable {
+    var jsonValue: JSONConvertible {
+        return dictionary
+    }
+}
+
 
 extension DBManagedObject {
     
@@ -67,7 +72,7 @@ extension DBManagedObject {
             documentData["_id"] = identifierDict
         }
         
-        let json = try JSONEncoder().encode(documentData)
+        let json = try JSON().encode(documentData)
         let bson = try BSON(json: json)
         
         return bson

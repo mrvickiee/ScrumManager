@@ -54,10 +54,6 @@ class ProjectController: AuthController {
          return [:]
     }
     
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()]{
-        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
-        
-        return modelActions
-    }
+    
 
 }

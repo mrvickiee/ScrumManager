@@ -41,7 +41,7 @@ class ProductBacklogController: AuthController {
         }
         
 
-        var values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
+        let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
     }
     
