@@ -51,7 +51,7 @@ class ProjectController: AuthController {
     func new(request: WebRequest, response: WebResponse){
         //get all the input from the form
         
-        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"){
+        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"),members = request.params("teamMembers"){
             
             let database = try! DatabaseManager()
             
@@ -62,18 +62,18 @@ class ProjectController: AuthController {
             
             let projectCount = database.countForFetchRequest(Project)
             
-            
-            let project = Project(name: projectTitle, projectDescription: projectDesc)
+            let project = Project(name: projectTitle, projectDescription: projectDesc)      //create new project object
             project.scrumMaster = scrumMaster
             project.identifier = projectCount
             project._objectID = database.generateUniqueIdentifier()
-            project.startDate = NSDate()
-            project.endDate = NSDate() // tmp
+            project.startDate = "19-05-2016"
+            project.endDate = endDate// tmp
             project.productOwnerID = productOwner
+            //project.teamMemberIDs = members
             
             do {
                 try database.insertObject(project)
-                print("insert success")
+                response.redirectTo("/projects")
             }catch{
                 print("Fail to add new project")
             }
@@ -86,6 +86,33 @@ class ProjectController: AuthController {
     
     func update(identifier: Int, request: WebRequest, response: WebResponse){
         
+        
+        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"),members = request.params("teamMembers"){
+            
+            let databaseManager = try! DatabaseManager()
+            
+            let projectID = "5731dfe812b2232e16193d72"      //replace with dynamic var
+            let oldProject : Project = databaseManager.getObjectWithID(Project.self, objectID: projectID)!
+           
+            guard let scrumMaster = databaseManager.getObjectWithID(User.self, objectID: scrumMasterID) else {
+                response.requestCompletedCallback()
+                return
+          
+            }
+            let newProject = Project(name:projectTitle,projectDescription: projectDesc)
+            newProject.scrumMaster = scrumMaster
+            newProject.identifier = oldProject.identifier
+            newProject._objectID = oldProject._objectID
+            newProject.startDate = "19-05-2016"
+            newProject.endDate = endDate// tmp
+            newProject.productOwnerID = productOwner
+            
+            databaseManager.updateObject(oldProject, updateValues: newProject.dictionary)
+            
+        }else{
+            response.requestCompletedCallback()
+        }
+        
     }
     
     func delete(identifier: Int, request: WebRequest, response: WebResponse){
@@ -93,11 +120,32 @@ class ProjectController: AuthController {
     }
     
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-         return [:]
+        let databaseManager = try! DatabaseManager()
+        let projectID = "5731dfe812b2232e16193d72"      //replace with dynamic var
+        
+        let users  = databaseManager.executeFetchRequest(User)
+        let project : Project = databaseManager.getObjectWithID(Project.self, objectID: projectID)!
+        
+        let curScrumMaster: User
+            = databaseManager.getObjectWithID(User.self, objectID: (project.scrumMasterID)!)!
+        
+        let userDict = users.map { (user) -> [String:Any] in
+            var userDictionary = user.dictionary
+            userDictionary["objectID"] = user._objectID
+            
+            return userDictionary
+        }
+        
+        
+        
+        
+        var projectDict = project.dictionary
+        projectDict["curScrumMaster"] = curScrumMaster.name
+        
+        let value :[String:Any] = ["project":projectDict, "user":userDict]
+        
+        return value
     }
     
-    func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType{
-         return [:]
-    }
 
 }
