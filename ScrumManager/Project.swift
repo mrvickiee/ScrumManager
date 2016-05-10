@@ -1,3 +1,4 @@
+
 //
 //  Project.swift
 //  ScrumManager
@@ -14,6 +15,7 @@ final class Project: Object, DBManagedObject {
     
     static var collectionName = "project"
     
+    // - attribute tht will be written to db
     let name: String
     
     let projectDescription: String
@@ -28,20 +30,20 @@ final class Project: Object, DBManagedObject {
     
     var sprintIDs: [String] = []
     
-    var scrumManagerID: String?
+    var scrumMasterID: String?
     
     var productOwnerID: String?
     
     var startDate: NSDate?
     
     var endDate: NSDate?
-    
+    //------- END Attribute
     init(name: String, projectDescription: String) {
         self.name = name
         self.projectDescription = projectDescription
         
     }
-
+    
     convenience init(dictionary: [String : Any]) {
         
         let name = dictionary["name"] as! String
@@ -62,7 +64,7 @@ final class Project: Object, DBManagedObject {
         
         self.identifier = identifier
         
-        self.scrumManagerID = scrumManagerIdentifier
+        self.scrumMasterID = scrumManagerIdentifier
         
         self.productOwnerID = productOwnerIdentifier
         
@@ -80,7 +82,7 @@ final class Project: Object, DBManagedObject {
         
     }
     
-     convenience init(bson: BSON) {
+    convenience init(bson: BSON) {
         
         let json = try! (JSONDecoder().decode(bson.asString) as! JSONDictionaryType)
         
@@ -99,7 +101,7 @@ final class Project: Object, DBManagedObject {
         return false
     }
     
-   
+    
 }
 
 extension Project {
@@ -120,21 +122,21 @@ extension Project {
         }
     }
     
-    var scurmManager: User? {
+    var scrumMaster: User? {
         get {
-            if let scrumManagerID = scrumManagerID {
-                return try! DatabaseManager().getObjectWithID(User.self, objectID: scrumManagerID)
+            if let scrumMasterID = scrumMasterID {
+                return try! DatabaseManager().getObjectWithID(User.self, objectID: scrumMasterID)
             }
             return nil
         }
         set {
             if let objectID = newValue?._objectID {
-                scrumManagerID = objectID
+                scrumMasterID = objectID
             } else {
-                scrumManagerID = nil
+                scrumMasterID = nil
             }
         }
-      
+        
     }
     
     var sprints: [Sprint] {

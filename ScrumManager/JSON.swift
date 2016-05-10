@@ -175,6 +175,8 @@ public class JSON {
 			return try encodeArray(ja.array)
         case let a as [[String: Any]]:
             return try  encodeArrayDict(a)
+        case let a as Array<String>:
+            return try encodeArray(a)
         case let a as Array<Any>:
             return try encodeArray(a)
 		case let jd as JSONDictionaryType:
