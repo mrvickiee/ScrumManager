@@ -147,8 +147,8 @@
 		6F35E1701CC125BF008D711D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A3EF9E731C9A530D00C3B053 /* Project.swift */,
 				A3FB67D41CBF2DA900CB3A7A /* User.swift */,
+				A3EF9E731C9A530D00C3B053 /* Project.swift */,
 				A3FB67EC1CC081D700CB3A7A /* UserStory.swift */,
 				A3FB67D61CC06D2400CB3A7A /* Comment.swift */,
 				A386D94F1CC72F57008BDA1D /* Sprint.swift */,
