@@ -30,22 +30,9 @@ class DatabaseManager {
     }
     
     init() throws {
-        
-            mongo =  try MongoClient(uri: DatabaseManager.mongoURI)
+       
+            mongo =  try! MongoClient(uri: DatabaseManager.mongoURI)
             let status = mongo.serverStatus()
-            
-            switch status {
-                
-            case .Error(let domain, let code, let message):
-                assert(false, "Error connecting to mongo: \(domain) \(code) \(message). Did you start MongoDB with mongod in terminal?")
-                
-            case .ReplyDoc(let doc):
-                print("Status doc: \(doc)")
-                assert(true)
-                
-            default:
-                assert(false, "Strange reply type \(status)")
-            }
         
             switch status {
             
@@ -59,7 +46,7 @@ class DatabaseManager {
             default:
                 assert(false, "Strange reply type \(status)")
             }
-        
+ 
       
     }
     

@@ -15,6 +15,13 @@ class UserController: AuthController {
     
     let modelPluralName: String = "users"
     
+    func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
+        var modelActions:[String: (WebRequest, WebResponse, String)->()]=[:]
+        
+        modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
+        modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
+        return modelActions
+    }
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         // Get User
@@ -41,8 +48,9 @@ class UserController: AuthController {
         let tempUserList = getUserList()
         var userList = [[String:Any]]()
         
+        // FIXME: Identifier in Show for every users
         for user in tempUserList{
-            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL])
+            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL,"identifier":0])
         }
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList
@@ -52,39 +60,98 @@ class UserController: AuthController {
     }
     
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse) {
-        print("erer")
-        /*
-         // Handle new post request
-         if let title = request.param("title"), body = request.param("body"), existingArticle = getArticleWithIdentifier(identifier), currentAuthor = currentUser(request, response: response) where currentAuthor.email == existingArticle.author.email {
-         
-         // Update post properties
-         existingArticle.title = title
-         existingArticle.body = body
-         
-         // Save Article
-         do {
-         try! DatabaseManager().database.getCollection(UserStory).save(try existingArticle.document())
-         response.redirectTo("/\(modelName)s/\(identifier)")
-         } catch {
-         print(error)
-         }
-         }
-//         */
-//        let user = UserStory(title: "test", story: "")
-//        response.redirectTo("\(userStory.pathURL)")
-//        response.requestCompletedCallback()
+    func update(identifier: String, request: WebRequest, response: WebResponse) {
+        // Get the information for the page
+        if let name = request.param("name"),
+            email = request.param("email"),
+            password = request.param("password"),
+            password2 = request.param("password2"),
+            expertises = request.param("expertises"),
+            // FIXME: Temporary Use current users when update
+            exisitingUser = currentUser(request, response: response){
+            var profilePic = ""
+            // Get Profile Picture
+            if let uploadedFile = request.fileUploads.first {
+                
+                let fileName = uploadedFile.fileName
+                print("Profile Pic uploaded: \(fileName)")
+                
+                // Save profile picture to disk
+                if let file = uploadedFile.file {
+                    // Copy file
+                    do {
+                        let saveLocation = request.documentRoot + "/resources/pictures/" + uploadedFile.fileName
+                        profilePic = uploadedFile.fileName
+                        print(saveLocation)
+                        
+                        try file.copyTo(saveLocation, overWrite: true)
+                    } catch {
+                        print(error)
+                    }
+                }
+                
+            }
+            
+            guard password == password2 else {
+                response.setStatus(500, message: "The passwords did not match.")
+                return
+            }
+            
+            guard email != "" else {
+                response.setStatus(500, message: "The email is empty.")
+                return
+            }
+
+            
+            var expertisesTemp = expertises.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
+            
+            var query : [String: Any] = [:]
+            if exisitingUser.email != email {
+                query["email"] =  email
+            }
+            if exisitingUser.name != name{
+                query["name"] =  name
+            }
+            if exisitingUser.authKey != User.encodeRawPassword(email, password: password) && password != ""{
+                query["authKey"] = User.encodeRawPassword(email, password: password)
+            }
+            if exisitingUser.expertises != resultExpertises {
+                query["expertises"] = resultExpertises
+            }
+            if profilePic != "" {
+                query["profilePictureURL"] = profilePic
+            }
+            print(query)
+            
+            try! DatabaseManager().updateObject(exisitingUser, updateValues: query)
+            response.redirectTo("/users")
+            response.requestCompletedCallback()
+            
+        }
     }
     
     // When load edit page
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
-        
+        // FIXME: Temporary use current users when load edit page
         guard let user = currentUser(request, response: response) else {
             return MustacheEvaluationContext.MapType()
         }
+//        let databaseManager = try! DatabaseManager()
+//        guard let user = databaseManager.getObjectWithID(User.self, objectID: identifier) else {
+//            return MustacheEvaluationContext.MapType()
+//        }
         
-        let values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
+        var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
+        if user.role != "Scrum Master" || user.role != "System Admin"{
+            values["visibility"] = "none"
+        }else{
+            values["visibility"] = "run-in"
+        }
         return values
         
     }
@@ -137,14 +204,16 @@ class UserController: AuthController {
         return MustacheEvaluationContext.MapType()
     }
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse) {
+    func delete(identifier: String, request: WebRequest, response: WebResponse) {
 //        let databseManager = try! DatabaseManager()
 //        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: identifier) {
 //            try! databseManager.deleteObject(userStory)
 //            
 //        }
 //        response.requestCompletedCallback()
-        print("ee")
+        // FIXME: Redirect to Show page after delete the users
+        response.redirectTo("/users/0")
+        response.requestCompletedCallback()
     }
     
     

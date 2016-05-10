@@ -33,8 +33,12 @@
 {{#userList}}
 <div class="row collapse user-list-column" data-equalizer>
 <div class="small-2 large-2 columns text-center user-list-delete-button">
-<img src="/resources/delete.jpg" style="cursor:pointer;">
-<img src="/resources/edit.svg" width="20" height="20">
+<a method="post" href="edit">
+<input type="image" src="/resources/delete.jpg" width="20" height="20" alt="Update">
+</a>
+<a method="post" href="delete">
+<input type="image" src="/resources/edit.svg" width="20" height="20" alt="Delete">
+</a>
 <img src={{profilePicUrl}} class="show-profile-image">
 </div>
 <div class="small-10 large-10 columns" data-equalizer-watch>

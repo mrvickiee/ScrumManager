@@ -4,7 +4,7 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<form action="{{url}}" method="post" enctype="multipart/form-data">
+<form action="{{url}}/update" method="post" enctype="multipart/form-data">
 {{#user}}
 <div class="row text-center profile-top-bar">
 <div class="row">
@@ -61,6 +61,19 @@ This is the mustache template file for the tap tracker example.
 <div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Email</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
 <input type="text" name="email" value="{{email}}" />
+</div>
+</div>
+<br>
+<!-- Role -->
+<div class = "row" data-equalizer style="display:{{visibility}}">
+<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Roles</div>
+<div class ="small-9 large-10 columns" data-equalizer-watch id="rolesField">
+<select name="role">
+<option value="Scrum Member">Scrum Member</option>
+<option value="Scrum Master">Scrum Master</option>
+<option value="Product Owner">Product Owner</option>
+<option value="System Admin">System Admin</option>
+</select>
 </div>
 </div>
 <br>
