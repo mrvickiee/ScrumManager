@@ -13,6 +13,15 @@ class ProjectController: AuthController {
     
     var modelPluralName: String = "projects"
     
+    func actions() -> [String : (WebRequest, WebResponse, Int) -> ()] {
+        var modelActions:[String: (WebRequest, WebResponse, Int)->()]=[:]
+        
+        modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
+        modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
+        return modelActions
+    }
+
+    
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         
         return [:]
@@ -20,12 +29,13 @@ class ProjectController: AuthController {
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         let db = try! DatabaseManager()
-        let userStories = db.executeFetchRequest(UserStory)
-        let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
-            return userStory.dictionary
-        }
+        let project = db.executeFetchRequest(Project).first
         
-        let values :MustacheEvaluationContext.MapType = ["projects": userStoriesJSON]
+        
+        var projectDictionary = project?.dictionary
+        projectDictionary!["ScrumMasterName"] = project?.scrumMaster?.name
+        
+        let values :MustacheEvaluationContext.MapType = ["project": projectDictionary]
         return values
       
     }
@@ -69,7 +79,7 @@ class ProjectController: AuthController {
             project.startDate = "19-05-2016"
             project.endDate = endDate// tmp
             project.productOwnerID = productOwner
-            //project.teamMemberIDs = members
+            project.teamMemberIDs = members
             
             do {
                 try database.insertObject(project)
@@ -147,5 +157,6 @@ class ProjectController: AuthController {
         return value
     }
     
+  
 
 }

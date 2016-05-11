@@ -57,7 +57,7 @@ final class User: Object {
         let expertisesTemp = dictionary["expertises"] as? JSONArrayType
         let json = JSON()
         var expertises = [String]()
-        do{
+      /*  do{
             var results = try json.encode(expertisesTemp!)
             // Replace the regex of '[ OR ] OR "' that get from database
             results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -65,7 +65,7 @@ final class User: Object {
             results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
             expertises = results.componentsSeparatedByString(",")
-        }catch{}
+        }catch{}*/
         
         let project = dictionary["currentProject"] as? String ?? ""
         
