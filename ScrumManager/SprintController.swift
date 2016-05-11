@@ -48,6 +48,41 @@ import PerfectLib
         response.requestCompletedCallback()
     }
     
+    func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
+    {
+        
+        
+        let userStories = try! DatabaseManager().executeFetchRequest(UserStory)
+        let userStoriesJSON = userStories.map { (user) -> [String:Any] in
+            var userDictionary = user.dictionary
+            userDictionary["objectID"] = user._objectID!
+            
+            return userDictionary
+        }
+        let values: MustacheEvaluationContext.MapType = ["userStories" : userStoriesJSON]
+        
+        
+        
+        // what's the usage ???
+        
+        return values
+        
+    }
+    
+    func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
+        
+        guard let sprint = getSprintWithID(Int(identifier)!) else {
+            return MustacheEvaluationContext.MapType()
+        }
+        
+        var values: MustacheEvaluationContext.MapType = [:]
+        values["sprint"] = sprint.dictionary
+        
+        return values
+        
+    }
+    
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         //list sprints
@@ -58,27 +93,11 @@ import PerfectLib
             return sprint.dictionary
         }
         
-        return ["sprints": sprintJSON];
+        return ["sprints": sprintJSON]
         
     }
     
-    func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
-        
-        guard let sprint = getSprintWithID(Int(identifier)!) else {
-            return MustacheEvaluationContext.MapType()
-        }
 
-        
-        
-        
-        
-        var values: MustacheEvaluationContext.MapType = [:]
-        values["sprint"] = sprint.dictionary
-        
-        return values
-        
-    }
 
     
     func getSprintWithID(identifier: Int) -> Sprint? {
@@ -107,7 +126,7 @@ import PerfectLib
             response.redirectTo(sprint)
             
         }
-        
+        response.requestCompletedCallback()
         
     }
 
@@ -146,31 +165,12 @@ import PerfectLib
         var values: MustacheEvaluationContext.MapType = [:]
             values["sprint"] = sprint.dictionary
 
-        
+        response.requestCompletedCallback()
         return values
         
     }
     
-    func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
-    {
-        
-        
-        let userStories = try! DatabaseManager().executeFetchRequest(UserStory)
-        let userStoriesJSON = userStories.map { (user) -> [String:Any] in
-            var userDictionary = user.dictionary
-            userDictionary["objectID"] = user._objectID!
-            
-            return userDictionary
-        }
-        let values: MustacheEvaluationContext.MapType = ["userStories" : userStoriesJSON]
-        
-        
-        
-        // what's the usage ??? 
-        
-        return values
-        
-    }
+
 
     
     func update(identifier: String,request: WebRequest, response: WebResponse) {

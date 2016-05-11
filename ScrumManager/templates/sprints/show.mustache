@@ -7,22 +7,22 @@ This is the mustache template file for the tap tracker example.
 <div class="row medium-8 large-7 columns">
 
 {{#sprint}}
-<article class="blog-post">
+    <article class="blog-post">
 
-<a href="#"><h3>{{title}}</h3></a>
-<p>{{body}}</p>
+        <a href="#"><h3>{{title}}</h3></a>
+        <p>{{body}}</p>
 
-<h3>User Stories</h3>
-{{#userstory}}
+    <h3>User Stories</h3>
+    {{#userstory}}
 
-{{#user}}
-<p><strong>{{name}}</strong></p>
-{{/user}}
+        {{#user}}
+            <p><strong>{{name}}</strong></p>
+        {{/user}}
 
-<p>{{userstory}}</p>
-{{/userstory}}
+        <p>{{userstory}}</p>
+    {{/userstory}}
 
-</article>
+    </article>
 {{/sprint}}
 
 </div>
