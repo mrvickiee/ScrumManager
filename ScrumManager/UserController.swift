@@ -24,16 +24,6 @@ class UserController: AuthController {
     }
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        //usernameGet User
-//        let user = currentUser(request, response: response)!
-//        
-//        var values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
-//        var expertises = [[String:Any]]()
-//        for expertise in user.expertises{
-//            expertises.append(["expertise":expertise])
-//        }
-//        values["expertisesList"] = expertises
-//        return values
         let tempUserList = getUserList()
         var userList = [[String:Any]]()
         var visibility = "none"
@@ -179,7 +169,7 @@ class UserController: AuthController {
         
     }
     
-    // After Create Button is clicked
+    // After Create New User Button of is clicked
     func new(request: WebRequest, response: WebResponse) {
         if let error = request.param("error") {
             print(error)
@@ -214,11 +204,12 @@ class UserController: AuthController {
                 return
             }
             
-            // FIXME: redirectPath
-            response.redirectTo("/")
+            response.redirectTo("/users")
+            
+            response.requestCompletedCallback()
         }
-        
         response.requestCompletedCallback()
+        
     }
     
     // When create page is load
@@ -227,6 +218,8 @@ class UserController: AuthController {
         return MustacheEvaluationContext.MapType()
     }
     
+    
+    // Function to delete user
     func delete(identifier: String, request: WebRequest, response: WebResponse) {
         guard let deleteUser = User.userWithUsername(identifier) else {
             response.setStatus(404, message: "The file \(request.requestURI()) was not found.")

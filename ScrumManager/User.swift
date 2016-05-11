@@ -43,11 +43,12 @@ final class User: Object {
     
     var username: String!
     
-    init(email: String, name: String, authKey: String, role: Int) {
+    init(email: String, name: String, authKey: String, role: Int, profilePictureURL: String) {
         self.email = email
         self.name = name
         self.authKey = authKey
         self.role = UserRole(rawValue: role)!
+        self.profilePictureURL = profilePictureURL
     }
     
     class func userWithEmail(email: String) -> User? {
@@ -98,16 +99,13 @@ final class User: Object {
                 expertises = results.componentsSeparatedByString(",")
             }catch{}
         }
-      
         
         let project = dictionary["currentProject"] as? String ?? ""
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw)
-        
-        self.profilePictureURL = pictureURL
-        
+        self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw, profilePictureURL: pictureURL)
+                
         self._objectID = id
         
         self.expertises = expertises
@@ -163,13 +161,14 @@ extension User: DBManagedObject {
             throw CreateUserError.EmailExists
         }
         
+        
         guard password.length > 5 else {
             throw CreateUserError.InvalidPassword
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey, role: role)
-        
+        let user = User(email: email, name: name, authKey: authKey, role: role, profilePictureURL: pictureURL)
+        user.username = User.usernameFromName(name)
         do {
             try DatabaseManager().insertObject(user)
             return user
