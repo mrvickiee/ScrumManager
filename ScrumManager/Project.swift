@@ -37,11 +37,16 @@ final class Project: Object, DBManagedObject {
     var startDate: NSDate?
     
     var endDate: NSDate?
+    
+    
     //------- END Attribute
     init(name: String, projectDescription: String) {
         self.name = name
         self.projectDescription = projectDescription
         
+        startDate = NSDate()
+        endDate = NSDate()
+
     }
     
     convenience init(dictionary: [String : Any]) {

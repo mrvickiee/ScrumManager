@@ -1,0 +1,18 @@
+{{% handler:TTHandler}}{{!
+
+This is the mustache template file for the tap tracker example.
+
+}}
+{
+"sprints": [
+{{#sprint}}
+{
+"title": "{{title}}",
+"body": "{{body}}",
+"duration: "{{duration}}"
+}
+{{/sprint}}
+]
+}
+
+

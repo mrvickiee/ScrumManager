@@ -69,19 +69,22 @@ final class User: Object {
         
         // Need further display to modify it
         let role = dictionary["role"] as? String ?? ""
-        // FIXME: String array stuff with JSONArray
-        let expertisesTemp = dictionary["expertises"] as? JSONArrayType
+   
         let json = JSON()
         var expertises = [String]()
-        do{
-            var results = try json.encode(expertisesTemp!)
-            // Replace the regex of '[ OR ] OR "' that get from database
-            results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            expertises = results.componentsSeparatedByString(",")
-        }catch{}
+        // FIXME: String array stuff with JSONArray
+        if let expertisesTemp = dictionary["expertises"] as? JSONArrayType {
+            do{
+                var results = try json.encode(expertisesTemp)
+                // Replace the regex of '[ OR ] OR "' that get from database
+                results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                expertises = results.componentsSeparatedByString(",")
+            }catch{}
+        }
+      
         
         let project = dictionary["currentProject"] as? String ?? ""
         

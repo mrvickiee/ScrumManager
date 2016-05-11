@@ -102,8 +102,16 @@ extension DBManagedObject {
                     
                    
                 } else {
+                    let mi = Mirror(reflecting: child.value)
+                    if mi.displayStyle != .Optional {
+                        properties[key] = child.value as Any
+                    }
+                    else if mi.children.count == 0 { properties[key] = NSNull() }
+                    else {
+                        let (_, some) = mi.children.first!
+                        properties[key] = some
+                    }
                    
-                    properties[key] = child.value as Any
                 }
             
             }

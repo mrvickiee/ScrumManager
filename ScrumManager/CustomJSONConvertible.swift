@@ -42,3 +42,5 @@ extension Vehicle: CustomJSONConvertible {
         return ["wheels": numberOfWheels]
     }
 }
+
+ 
