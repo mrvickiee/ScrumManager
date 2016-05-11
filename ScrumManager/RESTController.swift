@@ -24,9 +24,9 @@ protocol RESTController: RequestHandler {
     
     func new(request: WebRequest, response: WebResponse)
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse)
+    func update(identifier: String, request: WebRequest, response: WebResponse)
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse)
+    func delete(identifier: String, request: WebRequest, response: WebResponse)
     
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     
@@ -181,7 +181,7 @@ extension RESTController {
         return MustacheEvaluationContext.MapType()
     }
     
-    func update(identifier: Int,request: WebRequest, response: WebResponse) {
+    func update(identifier: String,request: WebRequest, response: WebResponse) {
         
         response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
         response.requestCompletedCallback()

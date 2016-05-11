@@ -42,11 +42,11 @@ class DashboardController: AuthController {
         
     }
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse){
+    func update(identifier: String, request: WebRequest, response: WebResponse){
         
     }
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse){
+    func delete(identifier: String, request: WebRequest, response: WebResponse){
         
     }
     
