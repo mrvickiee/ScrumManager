@@ -24,15 +24,22 @@ class UserController: AuthController {
     }
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        // Get User
-        let user = currentUser(request, response: response)!
-        
-        var values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
-        var expertises = [[String:Any]]()
-        for expertise in user.expertises{
-            expertises.append(["expertise":expertise])
+        let tempUserList = getUserList()
+        var userList = [[String:Any]]()
+        var visibility = "none"
+        let existingUser = currentUser(request, response: response)!
+        if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
+            visibility = "run-in"
         }
-        values["expertisesList"] = expertises
+        // FIXME: Identifier in Show for every users
+        for user in tempUserList{
+            userList.append(user.dictionary)
+        }
+        var values: MustacheEvaluationContext.MapType = [:]
+        values["userList"] = userList
+        values["visibility"] = visibility
+        
+        
         return values
     }
     
@@ -44,36 +51,39 @@ class UserController: AuthController {
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        // Query User Story
-        let tempUserList = getUserList()
-        var userList = [[String:Any]]()
-        var visibility = "none"
-        let existingUser = currentUser(request, response: response)
-        if existingUser?.role == "Scrum Master" || existingUser?.role == "System Admin"{
-            visibility = "run-in"
-        }
-        // FIXME: Identifier in Show for every users
-        for user in tempUserList{
-            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL,"identifier":0, "visibility": visibility])
-        }
-        var values: MustacheEvaluationContext.MapType = [:]
-        values["userList"] = userList
         
+        // Get User
+        guard let user = User.userWithUsername(identifier) else {
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+
+            return ["identifier":identifier]
+        }
         
+        var values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
+        var expertises = [[String:Any]]()
+        for expertise in user.expertises{
+            expertises.append(["expertise":expertise])
+        }
+        values["expertisesList"] = expertises
         return values
-        
     }
     
-    
+    // When Submit button in edit page is clicked
     func update(identifier: String, request: WebRequest, response: WebResponse) {
         // Get the information for the page
         if let name = request.param("name"),
             email = request.param("email"),
             password = request.param("password"),
             password2 = request.param("password2"),
-            expertises = request.param("expertises"),
-            // FIXME: Temporary Use current users when update
-            exisitingUser = currentUser(request, response: response){
+            expertises = request.param("expertises"){
+            guard let user = User.userWithUsername(identifier) else {
+                response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+                response.requestCompletedCallback()
+                
+                return
+            }
+
             var profilePic = ""
             // Get Profile Picture
             if let uploadedFile = request.fileUploads.first {
@@ -85,8 +95,8 @@ class UserController: AuthController {
                 if let file = uploadedFile.file {
                     // Copy file
                     do {
-                        let saveLocation = request.documentRoot + "/resources/pictures/" + uploadedFile.fileName
-                        profilePic = uploadedFile.fileName
+                        let saveLocation = "/resources/pictures/" + uploadedFile.fileName
+                        profilePic = saveLocation
                         print(saveLocation)
                         
                         try file.copyTo(saveLocation, overWrite: true)
@@ -115,16 +125,16 @@ class UserController: AuthController {
             let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
             
             var query : [String: Any] = [:]
-            if exisitingUser.email != email {
+            if user.email != email {
                 query["email"] =  email
             }
-            if exisitingUser.name != name{
+            if user.name != name{
                 query["name"] =  name
             }
-            if exisitingUser.authKey != User.encodeRawPassword(email, password: password) && password != ""{
+            if user.authKey != User.encodeRawPassword(email, password: password) && password != ""{
                 query["authKey"] = User.encodeRawPassword(email, password: password)
             }
-            if exisitingUser.expertises != resultExpertises {
+            if user.expertises != resultExpertises {
                 query["expertises"] = resultExpertises
             }
             if profilePic != "" {
@@ -132,7 +142,7 @@ class UserController: AuthController {
             }
             print(query)
             
-            try! DatabaseManager().updateObject(exisitingUser, updateValues: query)
+            try! DatabaseManager().updateObject(user, updateValues: query)
             response.redirectTo("/users")
             response.requestCompletedCallback()
             
@@ -142,17 +152,15 @@ class UserController: AuthController {
     // When load edit page
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
-        // FIXME: Temporary use current users when load edit page
-        guard let user = currentUser(request, response: response) else {
-            return MustacheEvaluationContext.MapType()
+        guard let user = User.userWithUsername(identifier) else {
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+            
+            return ["identifier":identifier]
         }
-//        let databaseManager = try! DatabaseManager()
-//        guard let user = databaseManager.getObjectWithID(User.self, objectID: identifier) else {
-//            return MustacheEvaluationContext.MapType()
-//        }
         
         var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
-        if user.role != "Scrum Master" || user.role != "System Admin"{
+        if user.role != .ScrumMaster && user.role != .Admin {
             values["visibility"] = "none"
         }else{
             values["visibility"] = "run-in"
@@ -161,12 +169,12 @@ class UserController: AuthController {
         
     }
     
-    // After Create Button is clicked
+    // After Create New User Button of is clicked
     func new(request: WebRequest, response: WebResponse) {
         if let error = request.param("error") {
             print(error)
         }
-        
+
         // Handle new post request
         if let email = request.param("email"),
             name = request.param("name"),
@@ -179,13 +187,13 @@ class UserController: AuthController {
                 response.setStatus(500, message: "The passwords did not match.")
                 return
             }
-            
+
             // Default pic
             let pictureURL: String = "/resources/default.jpg"
             
             do {
                 
-                _ = try User.create(name, email: email, password: password, pictureURL: pictureURL, role: role)
+                _ = try User.create(name, email: email, password: password, pictureURL: pictureURL, role: Int(role)!)
                 
             } catch {
                 print(error)
@@ -196,11 +204,12 @@ class UserController: AuthController {
                 return
             }
             
-            // FIXME: redirectPath
-            response.redirectTo("/")
+            response.redirectTo("/users")
+            
+            response.requestCompletedCallback()
         }
-        
         response.requestCompletedCallback()
+        
     }
     
     // When create page is load
@@ -209,21 +218,27 @@ class UserController: AuthController {
         return MustacheEvaluationContext.MapType()
     }
     
+    
+    // Function to delete user
     func delete(identifier: String, request: WebRequest, response: WebResponse) {
-//        let databseManager = try! DatabaseManager()
-//        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: identifier) {
-//            try! databseManager.deleteObject(userStory)
-//            
-//        }
-//        response.requestCompletedCallback()
-        // FIXME: Redirect to Show page after delete the users
-        let deleteUser = currentUser(request, response: response)
+        guard let deleteUser = User.userWithUsername(identifier) else {
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+            return
+        }
+        let loginUser = currentUser(request, response: response)
+        
+        if loginUser?.username == deleteUser.username{
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+            return
+        }
         let dataManager = try! DatabaseManager()
         do{
-           try dataManager.deleteObject(deleteUser!)
+           try dataManager.deleteObject(deleteUser)
         }catch{}
         
-        response.redirectTo("/users/0")
+        response.redirectTo("/users")
         response.requestCompletedCallback()
     }
     

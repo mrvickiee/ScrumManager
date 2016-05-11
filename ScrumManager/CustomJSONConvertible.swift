@@ -30,6 +30,13 @@ extension NSDate: CustomJSONConvertible {
     }
 }
 
+extension UserRole: CustomJSONConvertible {
+    var jsonValue: JSONConvertible {
+        return self.rawValue
+    }
+}
+
+
 
 
 class Vehicle {
