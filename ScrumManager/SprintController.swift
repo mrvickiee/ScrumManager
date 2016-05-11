@@ -145,14 +145,9 @@ import PerfectLib
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
-        /*
-         let beforeValues = beforeAction(request, response: response)
-         
-         guard var values = beforeValues else {
-         return MustacheEvaluationContext.MapType()
-         }
-         return values
-         */
+        
+        // what's the usage ??? 
+        
         return MustacheEvaluationContext.MapType()
         
     }
@@ -187,9 +182,7 @@ import PerfectLib
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
         
         var modelActions:[String: (WebRequest, WebResponse, String)->()] = [:]
-        
-        
-        
+    
         modelActions["comments"] = {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
         
         
