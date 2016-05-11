@@ -28,7 +28,7 @@ public func PerfectServerModuleInit() {
     Routing.addRoutesForRESTController(ProductBacklogController())
     Routing.addRoutesForRESTController(ProjectController())
     Routing.addRoutesForRESTController(TaskController())
-    
+    Routing.addRoutesForRESTController(DashboardController())
    // Routing.addRoutesForRESTController(SprintController())
     
     Routing.Routes["GET", "/"] = { _ in return ProductBacklogController() }
@@ -45,7 +45,5 @@ public func PerfectServerModuleInit() {
     Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
     
     print("\(Routing.Routes.description)")
-        
-   
     
 }

@@ -114,6 +114,23 @@ public class JSON {
 		return s
 	}
     
+    /// Encode an Array of objects into a JSON string
+    /// - throws: A `JSONError.UnhandledType` exception
+    public func encodeStringArray(a: [String]) throws -> String {
+        var s = "["
+        var c = false
+        for value in a {
+            if c {
+                s.appendContentsOf(",")
+            } else {
+                c = true
+            }
+            s.appendContentsOf(try encodeValue(value))
+        }
+        s.appendContentsOf("]")
+        return s
+    }
+    
     public func encodeArrayDict(a: [[String: Any]]) throws -> String {
         var s = "["
         var c = false
@@ -190,7 +207,7 @@ public class JSON {
         case let a as [[String: Any]]:
             return try  encodeArrayDict(a)
         case let a as Array<String>:
-            return try encodeArray(a)
+            return try encodeStringArray(a)
         case let a as Array<Any>:
             return try encodeArray(a)
 		case let jd as JSONDictionaryType:
