@@ -13,6 +13,13 @@ class DashboardController: AuthController {
     
     var modelPluralName: String = "dashboard"
     
+    func generateBurnDownChart() {
+        
+        
+        
+        
+    }
+    
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         
         return [:]
