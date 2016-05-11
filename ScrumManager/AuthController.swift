@@ -115,8 +115,12 @@ extension AuthController {
                         
                         
                       
+
+                    } else if requestMethod == .POST {
                         
-                    }else {
+                        update(identifier, request: request, response: response)
+                        
+                    } else {
                         
                         let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
 
