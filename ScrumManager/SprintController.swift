@@ -17,7 +17,7 @@ import PerfectLib
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , body = request.param("body"), duration = request.param("duration") {
+        if let title = request.param("title") , body = request.param("body"), duration = request.param("duration"), userStoryIDs = request.params("userStoryID"), taskID = request.params("taskID") {
             
             let sprint = Sprint(body: body, title: title, duration: duration)
  
@@ -28,13 +28,18 @@ import PerfectLib
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
                 let sprintIndex = databaseManager.countForFetchRequest(Sprint)
+                print("got index \(sprintIndex)")
                 guard sprintIndex > -1 else{
                     throw CreateUserError.DatabaseError
                 }
                 
                 sprint.identifier = sprintIndex
+                sprint.userStoryIDs = userStoryIDs
+                sprint.taskIDs = taskID
+                
                 try databaseManager.insertObject(sprint)
-                response.redirectTo("/\(modelPluralName)")
+                
+                response.redirectTo(sprint)
                 
             }catch{
  
@@ -64,6 +69,9 @@ import PerfectLib
             return MustacheEvaluationContext.MapType()
         }
 
+        
+        
+        
         
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
@@ -104,10 +112,10 @@ import PerfectLib
     }
 
  
-    func delete(identifier: Int,request: WebRequest, response: WebResponse) {
+    func delete(identifier: String,request: WebRequest, response: WebResponse) {
         
         let db = try! DatabaseManager()
-        if let sprint = db.getObject(Sprint.self, primaryKeyValue: identifier){
+        if let sprint = db.getObject(Sprint.self, primaryKeyValue: Int(identifier)!){
             try! db.deleteObject(sprint)
         }
         response.requestCompletedCallback()
@@ -146,9 +154,21 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
+        
+        let userStories = try! DatabaseManager().executeFetchRequest(UserStory)
+        let userStoriesJSON = userStories.map { (user) -> [String:Any] in
+            var userDictionary = user.dictionary
+            userDictionary["objectID"] = user._objectID!
+            
+            return userDictionary
+        }
+        let values: MustacheEvaluationContext.MapType = ["userStories" : userStoriesJSON]
+        
+        
+        
         // what's the usage ??? 
         
-        return MustacheEvaluationContext.MapType()
+        return values
         
     }
 

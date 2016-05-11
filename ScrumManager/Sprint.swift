@@ -32,6 +32,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.duration = duration
     }
     
+    
     convenience init(dictionary: [String : Any]) {
         let title = dictionary["title"] as! String
         
@@ -50,11 +51,12 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.comments = loadCommentsFromDictionary(dictionary)
        
         // Load User Stories
-        let userStoryIdentifier = dictionary["userStoryID"] as! [String]
+      let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
         userStoryIDs = userStoryIdentifier
-        
-        let taskIdentifiers = dictionary["taskID"] as! [String]
+        print("\(userStoryIDs)")
+       let taskIdentifiers = dictionary["task"] as? [String] ?? []
         taskIDs = taskIdentifiers
+        print("\(taskIDs)")
  
 
         
@@ -93,6 +95,18 @@ final class Sprint: Object, DBManagedObject, Commentable {
     }
 }
 
+extension Sprint {
+    
+    var userStories: [UserStory] {
+        // Query Database
+        return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
+    }
+    
+    
+    
+    
+}
+
 extension Sprint : Routable {
     
     static var collectionName: String = "sprint"
@@ -102,6 +116,23 @@ extension Sprint : Routable {
     
     var tasks: [Task] { return try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: self.taskIDs) }
 
-    var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
+  //  var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
+    
+    static var ignoredProperties: [String] {
+        return ["comments"] //["urlPath"]
+    }
+    
+    var dictionary: [String: Any] {
+        var dict = keyValues
+        dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
+            return userStory.dictionary
+        })
+        
+        
+        return dict
+        
+        
+    }
+    
     
 }

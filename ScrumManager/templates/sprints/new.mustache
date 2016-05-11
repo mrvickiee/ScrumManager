@@ -26,6 +26,22 @@ This is the mustache template file for the tap tracker example.
 <label>Sprint Duration
 <input type="text" name="duration" />
 
+<div class="row">
+<div class="large-12 columns">
+<label>Selected User Stories
+<select name="teamMembers" multiple>
+{{#userStories}}
+<option value="{{objectID}}">{{title}}</option>
+{{/userStories}}
+</select>
+</label>
+
+<div class="row">
+<div class="large-12 columns">
+<label>tasks included
+<input type="text" name="taskID" />
+
+
 </label>
 <input type="submit" value="Submit">
 
