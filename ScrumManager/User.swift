@@ -16,6 +16,15 @@ enum CreateUserError: ErrorType {
     case DatabaseError
 }
 
+enum UserRole: Int {
+    case TeamMember     //0
+    case ScrumMaster    //1
+    case ProductOwner   //2
+    case Admin          //3
+    
+  
+}
+
 final class User: Object {
     
     var email: String
@@ -30,17 +39,15 @@ final class User: Object {
     
     var project: String = "-"
     
-    var role: String = ""
+    var role: UserRole = UserRole.TeamMember
     
-    var usernamePath: String
+    var username: String!
     
-    init(email: String, name: String, authKey: String, role: String) {
+    init(email: String, name: String, authKey: String, role: Int) {
         self.email = email
         self.name = name
         self.authKey = authKey
-        self.role = role
-        self.usernamePath = User.usernameFromName(name)
-        
+        self.role = UserRole(rawValue: role)!
     }
     
     class func userWithEmail(email: String) -> User? {
@@ -51,8 +58,14 @@ final class User: Object {
     
     class func userWithUsername(username: String) -> User? {
         let database = try! DatabaseManager()
-        let user = database.executeFetchRequest(User.self, predicate: ["usernamePath": username]).first
+        let user = database.executeFetchRequest(User.self, predicate: ["username": username]).first
         return user
+    }
+    
+    class func userWithRole(role: UserRole) -> [User] {
+        let database = try! DatabaseManager()
+        let users = database.executeFetchRequest(User.self, predicate: ["role": role.rawValue])
+        return users
     }
   
     convenience init(dictionary: [String: Any]) {
@@ -63,13 +76,14 @@ final class User: Object {
         
         let authKey = dictionary["authKey"] as! String
         
-        let pictureURL = dictionary["profilePicURL"] as? String ?? ""
+        let pictureURL = dictionary["profilePictureURL"] as? String ?? ""
         
-        let usernamePath = dictionary["usernamePath"] as? String ?? User.usernameFromName(name)
+        let username = dictionary["username"] as? String ?? User.usernameFromName(name)
         
         // Need further display to modify it
-        let role = dictionary["role"] as? String ?? ""
-   
+        let roleTypeRaw = dictionary["role"] as! Int
+    
+        
         let json = JSON()
         var expertises = [String]()
         // FIXME: String array stuff with JSONArray
@@ -90,7 +104,7 @@ final class User: Object {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(email: email, name: name, authKey: authKey, role: role)
+        self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw)
         
         self.profilePictureURL = pictureURL
         
@@ -98,7 +112,7 @@ final class User: Object {
         
         self.expertises = expertises
         
-        self.usernamePath = usernamePath
+        self.username = username
         
         if project != "" {
             self.project = project
@@ -142,7 +156,7 @@ extension User: DBManagedObject {
         
     }
     
-    static func create(name: String, email: String, password: String, pictureURL: String, role: String) throws -> User {
+    static func create(name: String, email: String, password: String, pictureURL: String, role: Int) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -173,8 +187,8 @@ extension User: DBManagedObject {
 
 extension User: Routable {
     
-    var pathURL: String { return "/users/\(usernamePath)" }
+    var pathURL: String { return "/users/\(username)" }
     
-    var editURL: String { return "/users/\(usernamePath)/edit" }
+    var editURL: String { return "/users/\(username)/edit" }
 }
 
