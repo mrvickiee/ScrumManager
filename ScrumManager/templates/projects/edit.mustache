@@ -1,0 +1,48 @@
+  {{#project}}
+<form action="{{url}}" method="post" enctype="multipart/form-data">
+    <div class = "row">
+        <div class= "medium-6 columns">
+
+            <label>Project Title
+            <input type="text" name="projectTitle" value="{{name}}"/>
+            </label>
+
+            <label>Description
+            <textarea name="projectDescription">{{projectDescription}}</textarea>
+            </label>
+
+            <label> End date
+            <input type="text" name="endDate" value="{{endDate}}"/>
+            </label>
+
+
+
+            <label> Scrum master
+            <select name="scrumMaster">
+            {{#user}}
+            <option value="{{objectID}}"> {{name}}</option>
+            {{/user}}
+
+            </select>
+            </label>
+
+            <label> Product Owner
+            <select name="productOwner">
+            {{#user}}
+            <option value="{{objectID}}">{{name}}</option>
+            {{/user}}
+            </select>
+            </label>
+
+            <label> Team members
+            <select name="teamMembers" multiple>
+            {{#user}}
+            <option value="{{objectID}}">{{name}}</option>
+            {{/user}}
+            </select>
+            </label>
+{{/project}}
+            <input type="submit" value="Edit">
+        </div>
+    </div>
+</form>

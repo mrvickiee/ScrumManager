@@ -16,9 +16,9 @@ final class Project: Object, DBManagedObject {
     static var collectionName = "project"
     
     // - attribute tht will be written to db
-    let name: String
+    var name: String
     
-    let projectDescription: String
+    var projectDescription: String
     
     var identifier: Int = 0
     
@@ -57,11 +57,11 @@ final class Project: Object, DBManagedObject {
         
         let projectDesc = dictionary["projectDescription"] as? String
         
-        let identifier = dictionary["identifier"] as! Int
+        let identifier:Int = dictionary["identifier"] as! Int
         
-        let scrumManagerIdentifier = dictionary["scrumManagerID"] as? String
+        let scrumMasterIdentifier:String = (dictionary["scrumMasterID"] as? String)!
         
-        let productOwnerIdentifier = dictionary["productOwnerID"] as? String
+        let productOwnerIdentifier:String = (dictionary["productOwnerID"] as? String!)!
         
         self.init(name: name, projectDescription: projectDesc ?? "")
         
@@ -69,7 +69,7 @@ final class Project: Object, DBManagedObject {
         
         self.identifier = identifier
         
-        self.scrumMasterID = scrumManagerIdentifier
+        self.scrumMasterID = scrumMasterIdentifier
         
         self.productOwnerID = productOwnerIdentifier
         
@@ -80,6 +80,9 @@ final class Project: Object, DBManagedObject {
         if let endDateEpoch = dictionary["endDate"] as? Int {
             endDate = NSDate(timeIntervalSince1970: Double(endDateEpoch))
         }
+    
+       // startDate = (dictionary["startDate"] as? String)!
+        //endDate = (dictionary["endDate"] as? String)!
         
         if let teamIDs = dictionary["teamMemberIDs"] as? [String] {
             teamMemberIDs = teamIDs

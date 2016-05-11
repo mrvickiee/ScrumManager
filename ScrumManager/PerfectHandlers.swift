@@ -29,6 +29,8 @@ public func PerfectServerModuleInit() {
     Routing.addRoutesForRESTController(ProjectController())
     Routing.addRoutesForRESTController(TaskController())
     Routing.addRoutesForRESTController(DashboardController())
+    Routing.addRoutesForRESTController(SprintController())
+    
    // Routing.addRoutesForRESTController(SprintController())
     
     Routing.Routes["GET", "/"] = { _ in return ProductBacklogController() }
