@@ -34,9 +34,11 @@ final class Project: Object, DBManagedObject {
     
     var productOwnerID: String?
     
-    var startDate: String?
+    var startDate: NSDate?
     
-    var endDate: String?
+    var endDate: NSDate?
+    
+    
     //------- END Attribute
     init(name: String, projectDescription: String) {
         self.name = name
@@ -71,16 +73,16 @@ final class Project: Object, DBManagedObject {
         
         self.productOwnerID = productOwnerIdentifier
         
-//        if let startDateEpoch = dictionary["startDate"] as? Int {
-//            startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
-//        }
-//        
-//        if let endDateEpoch = dictionary["endDate"] as? Int {
-//            endDate = NSDate(timeIntervalSince1970: Double(endDateEpoch))
-//        }
+        if let startDateEpoch = dictionary["startDate"] as? Int {
+            startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
+        }
+        
+        if let endDateEpoch = dictionary["endDate"] as? Int {
+            endDate = NSDate(timeIntervalSince1970: Double(endDateEpoch))
+        }
     
-        startDate = (dictionary["startDate"] as? String)!
-        endDate = (dictionary["endDate"] as? String)!
+       // startDate = (dictionary["startDate"] as? String)!
+        //endDate = (dictionary["endDate"] as? String)!
         
         if let teamIDs = dictionary["teamMemberIDs"] as? [String] {
             teamMemberIDs = teamIDs

@@ -16,8 +16,8 @@ class ProjectController: AuthController {
     func actions() -> [String : (WebRequest, WebResponse, Int) -> ()] {
         var modelActions:[String: (WebRequest, WebResponse, Int)->()]=[:]
         
-        modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
-        modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
+      //  modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
+      //  modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
         return modelActions
     }
 
@@ -76,8 +76,8 @@ class ProjectController: AuthController {
             project.scrumMaster = scrumMaster
             project.identifier = projectCount
             project._objectID = database.generateUniqueIdentifier()
-            project.startDate = "19-05-2016"
-            project.endDate = endDate// tmp
+            project.startDate = NSDate()
+            project.endDate = NSDate()// tmp
             project.productOwnerID = productOwner
             project.teamMemberIDs = members
             
@@ -113,8 +113,8 @@ class ProjectController: AuthController {
             newProject.scrumMaster = scrumMaster
             newProject.identifier = oldProject.identifier
             newProject._objectID = oldProject._objectID
-            newProject.startDate = "19-05-2016"
-            newProject.endDate = endDate// tmp
+            newProject.startDate = NSDate()
+            newProject.endDate = NSDate()// tmp
             newProject.productOwnerID = productOwner
             
             databaseManager.updateObject(oldProject, updateValues: newProject.dictionary)

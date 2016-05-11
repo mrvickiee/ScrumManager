@@ -1,7 +1,8 @@
-<form action="update" method="post" enctype="multipart/form-data">
+  {{#project}}
+<form action="{{url}}" method="post" enctype="multipart/form-data">
     <div class = "row">
         <div class= "medium-6 columns">
-        {{#project}}
+
             <label>Project Title
             <input type="text" name="projectTitle" value="{{name}}"/>
             </label>
