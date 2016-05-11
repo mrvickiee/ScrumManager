@@ -114,6 +114,23 @@ public class JSON {
 		return s
 	}
     
+    /// Encode an Array of objects into a JSON string
+    /// - throws: A `JSONError.UnhandledType` exception
+    public func encodeStringArray(a: [String]) throws -> String {
+        var s = "["
+        var c = false
+        for value in a {
+            if c {
+                s.appendContentsOf(",")
+            } else {
+                c = true
+            }
+            s.appendContentsOf(try encodeValue(value))
+        }
+        s.appendContentsOf("]")
+        return s
+    }
+    
     public func encodeArrayDict(a: [[String: Any]]) throws -> String {
         var s = "["
         var c = false
@@ -134,7 +151,20 @@ public class JSON {
 	public func encode(a: JSONDictionaryType) throws -> String {
 		return try encode(a.dictionary)
 	}
-	
+	/*
+    func unwrap(any:Any) -> Any {
+        
+        let mi = Mirror(reflecting: any)
+        if mi.displayStyle != .Optional {
+            return any
+        }
+        
+        if mi.children.count == 0 { return NSNull() }
+        let (_, some) = mi.children.first!
+        return some
+        
+    }
+    */
 	/// Encode a Dictionary into a JSON string
 	/// - throws: A `JSONError.UnhandledType` exception
 	public func encode(d: [String:JSONValue]) throws -> String {
@@ -146,23 +176,24 @@ public class JSON {
 			} else {
 				c = true
 			}
+            
+            let unwrappedValue = value // unwrap(value)
+            
 			s.appendContentsOf(encodeString(key))
 			s.appendContentsOf(":")
-			s.appendContentsOf(try encodeValue(value))
+			s.appendContentsOf(try encodeValue(unwrappedValue))
 		}
 		s.appendContentsOf("}")
 		return s
 	}
 	
+    
+    
     /// Encode a `JSONValue` into a JSON string
     /// - throws: A `JSONError.UnhandledType` exception
-	func encodeValue(value: Any?) throws -> String {
-        guard let jsonValue = value else {
-            return "null"
-        }
+	func encodeValue(value: Any) throws -> String {
         
-        
-		switch(jsonValue) {
+		switch(value) {
 		case let b as Bool:
 			return b ? "true" : "false"
 		case let i as Int:
@@ -176,7 +207,7 @@ public class JSON {
         case let a as [[String: Any]]:
             return try  encodeArrayDict(a)
         case let a as Array<String>:
-            return try encodeArray(a)
+            return try encodeStringArray(a)
         case let a as Array<Any>:
             return try encodeArray(a)
 		case let jd as JSONDictionaryType:
@@ -192,8 +223,10 @@ public class JSON {
       //       return try encodeArray(jsonAble)
 		case _ as JSONNull:
 			return "null"
+        case _ as NSNull:
+            return "null"
 		default:
-			throw JSONError.UnhandledType("The type \(jsonValue.dynamicType) was not handled")
+			throw JSONError.UnhandledType("The type \(value.dynamicType) was not handled")
 		}
 	}
 	

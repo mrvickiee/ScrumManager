@@ -22,11 +22,16 @@ final class User: Object {
     var authKey: String
     var profilePictureURL: String = ""
     var name: String
+    var expertises1 = "-"
+    var expertises = [String]()
+    var project: String = "-"
+    var role: String = ""
     
-    init(email: String, name: String, authKey: String) {
+    init(email: String, name: String, authKey: String, role: String) {
         self.email = email
         self.name = name
         self.authKey = authKey
+        self.role = role
         
     }
     
@@ -44,16 +49,47 @@ final class User: Object {
         
         let authKey = dictionary["authKey"] as! String
         
-        let pictureURL = dictionary["pictureURL"] as? String ?? ""
+        let pictureURL = dictionary["profilePicURL"] as? String ?? ""
+        
+        // Need further display to modify it
+        let role = dictionary["role"] as? String ?? ""
+   
+        let json = JSON()
+        var expertises = [String]()
+        // FIXME: String array stuff with JSONArray
+        if let expertisesTemp = dictionary["expertises"] as? JSONArrayType {
+            do{
+                var results = try json.encode(expertisesTemp)
+                // Replace the regex of '[ OR ] OR "' that get from database
+                results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                expertises = results.componentsSeparatedByString(",")
+            }catch{}
+        }
+      
+        
+        let project = dictionary["currentProject"] as? String ?? ""
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.init(email: email, name: name, authKey: authKey)
+        self.init(email: email, name: name, authKey: authKey, role: role)
         
         self.profilePictureURL = pictureURL
         
         self._objectID = id
-
+        
+//        if expertises != "" {
+//            self.expertises = expertises
+//        }
+        
+        self.expertises = expertises
+        
+        if project != "" {
+            self.project = project
+        }
+        
     }
     
     convenience init(bson: BSON) {
@@ -75,7 +111,7 @@ extension User: DBManagedObject {
     
     static var collectionName = "user"
     
-    static func create(name: String, email: String, password: String, pictureURL: String = "") throws -> User {
+    static func create(name: String, email: String, password: String, pictureURL: String, role: String) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -87,7 +123,7 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey)
+        let user = User(email: email, name: name, authKey: authKey, role: role)
         
         do {
             try DatabaseManager().insertObject(user)

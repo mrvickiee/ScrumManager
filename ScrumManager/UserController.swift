@@ -9,111 +9,72 @@
 
 import PerfectLib
 
-class UserController: RESTController {
+class UserController: AuthController {
     
     let modelName = "user"
     
-    func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        var values = MustacheEvaluationContext.MapType()
-        values["users"] = try! DatabaseManager().executeFetchRequest(User).map({ (user) -> [String: Any] in
-            return user.dictionary
-        })
+    let modelPluralName: String = "users"
+    
+    func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
+        var modelActions:[String: (WebRequest, WebResponse, String)->()]=[:]
         
+        modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
+        modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
+        return modelActions
+    }
+    
+    func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        // Get User
+        let user = currentUser(request, response: response)!
+        
+        var values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
+        var expertises = [[String:Any]]()
+        for expertise in user.expertises{
+            expertises.append(["expertise":expertise])
+        }
+        values["expertisesList"] = expertises
         return values
     }
     
-    func getUserWithIdentifier(identifier: Int) -> User? {
-        
-        let user = try! DatabaseManager().getObject(User.self, primaryKeyValue: identifier);
+    func getUserList() -> ArraySlice<User> {
+        let db = try! DatabaseManager()
+        let user = db.executeFetchRequest(User).suffixFrom(0)
+
         return user
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
-        // Query Article
-        let user: User?
-        
-        if let id = Int(identifier)  {
-            user = getUserWithIdentifier(id)
-        } else {
-            fatalError()
-            //author = Author(username: identifier)
+        // Query User Story
+        let tempUserList = getUserList()
+        var userList = [[String:Any]]()
+        var visibility = "none"
+        let existingUser = currentUser(request, response: response)
+        if existingUser?.role == "Scrum Master" || existingUser?.role == "System Admin"{
+            visibility = "run-in"
         }
-        
-        // Query Article
-        // Get Articles
-        guard let requestedAuthor = user else {
-            return MustacheEvaluationContext.MapType()
+        // FIXME: Identifier in Show for every users
+        for user in tempUserList{
+            userList.append(["name":user.name, "email": user.email, "profilePicUrl": user.profilePictureURL,"identifier":0, "visibility": visibility])
         }
+        var values: MustacheEvaluationContext.MapType = [:]
+        values["userList"] = userList
         
-        
-        let values: [String:Any] = ["user": requestedAuthor.keyValues]
         
         return values
         
     }
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse) {
-        /*
-        // Handle new post request
-        if let title = request.param("title"), body = request.param("body"), existingArticle = getUserWithIdentifier(identifier) {
-            
-            // Update post properties
-            existingArticle.title = title
-            existingArticle.body = body
-            
-            // Save Article
-            do {
-                DatabaseManager().database.getCollection(Article).save(try existingArticle.document())
-                response.redirectTo("/\(modelName)s/\(identifier)")
-            } catch {
-                print(error)
-            }
-        }
-        */
-        response.requestCompletedCallback()
-    }
     
-    func getModelWithIdentifier(identifier: String) -> User? {
-
-        if let id = Int(identifier)  {
-            return getUserWithIdentifier(id)
-        } else {
-            return nil
-        }
-    }
-    
-    func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
-        guard let post = getModelWithIdentifier(identifier) else {
-            return MustacheEvaluationContext.MapType()
-        }
-        
-        let values: [String:Any] = ["author": post.dictionary]
-        
-        return values
-    }
-    
-    
-    func new(request: WebRequest, response: WebResponse) {
-        
-        if let error = request.param("error") {
-            print(error)
-        }
-        
-        // Handle new post request
-        if let email = request.param("email"),
-            name = request.param("name"),
+    func update(identifier: String, request: WebRequest, response: WebResponse) {
+        // Get the information for the page
+        if let name = request.param("name"),
+            email = request.param("email"),
             password = request.param("password"),
-            password2 = request.param("password2")
-        {
-            
-            // Valid Article
-            guard password == password2 else {
-                response.setStatus(500, message: "The passwords did not match.")
-                return
-            }
-            var pictureURL: String = ""
+            password2 = request.param("password2"),
+            expertises = request.param("expertises"),
+            // FIXME: Temporary Use current users when update
+            exisitingUser = currentUser(request, response: response){
+            var profilePic = ""
             // Get Profile Picture
             if let uploadedFile = request.fileUploads.first {
                 
@@ -122,10 +83,10 @@ class UserController: RESTController {
                 
                 // Save profile picture to disk
                 if let file = uploadedFile.file {
-                    // Copy file 
+                    // Copy file
                     do {
                         let saveLocation = request.documentRoot + "/resources/pictures/" + uploadedFile.fileName
-                        pictureURL = uploadedFile.fileName
+                        profilePic = uploadedFile.fileName
                         print(saveLocation)
                         
                         try file.copyTo(saveLocation, overWrite: true)
@@ -136,49 +97,134 @@ class UserController: RESTController {
                 
             }
             
+            guard password == password2 else {
+                response.setStatus(500, message: "The passwords did not match.")
+                return
+            }
+            
+            guard email != "" else {
+                response.setStatus(500, message: "The email is empty.")
+                return
+            }
+
+            
+            var expertisesTemp = expertises.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            expertisesTemp = expertisesTemp.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
+            
+            var query : [String: Any] = [:]
+            if exisitingUser.email != email {
+                query["email"] =  email
+            }
+            if exisitingUser.name != name{
+                query["name"] =  name
+            }
+            if exisitingUser.authKey != User.encodeRawPassword(email, password: password) && password != ""{
+                query["authKey"] = User.encodeRawPassword(email, password: password)
+            }
+            if exisitingUser.expertises != resultExpertises {
+                query["expertises"] = resultExpertises
+            }
+            if profilePic != "" {
+                query["profilePictureURL"] = profilePic
+            }
+            print(query)
+            
+            try! DatabaseManager().updateObject(exisitingUser, updateValues: query)
+            response.redirectTo("/users")
+            response.requestCompletedCallback()
+            
+        }
+    }
+    
+    // When load edit page
+    func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
+        // FIXME: Temporary use current users when load edit page
+        guard let user = currentUser(request, response: response) else {
+            return MustacheEvaluationContext.MapType()
+        }
+//        let databaseManager = try! DatabaseManager()
+//        guard let user = databaseManager.getObjectWithID(User.self, objectID: identifier) else {
+//            return MustacheEvaluationContext.MapType()
+//        }
+        
+        var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
+        if user.role != "Scrum Master" || user.role != "System Admin"{
+            values["visibility"] = "none"
+        }else{
+            values["visibility"] = "run-in"
+        }
+        return values
+        
+    }
+    
+    // After Create Button is clicked
+    func new(request: WebRequest, response: WebResponse) {
+        if let error = request.param("error") {
+            print(error)
+        }
+        
+        // Handle new post request
+        if let email = request.param("email"),
+            name = request.param("name"),
+            password = request.param("password"),
+            password2 = request.param("password2"),
+            role = request.param("role")
+        {
+            // Valid Article
+            guard password == password2 else {
+                response.setStatus(500, message: "The passwords did not match.")
+                return
+            }
+            
+            // Default pic
+            let pictureURL: String = "/resources/default.jpg"
+            
             do {
                 
-                let user = try User.create(name, email: email, password: password, pictureURL: pictureURL)
-                // Create Session
-                let session = response.getSession("user")
-                session["user_id"] = user._objectID
+                _ = try User.create(name, email: email, password: password, pictureURL: pictureURL, role: role)
                 
             } catch {
                 print(error)
                 response.setStatus(500, message: "The user was not able to be created.")
-
+                
                 response.redirectTo(request.requestURI() + "?error=bad")
                 response.requestCompletedCallback()
                 return
             }
-          
             
+            // FIXME: redirectPath
             response.redirectTo("/")
         }
         
         response.requestCompletedCallback()
     }
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse) {
-        /*
-        if let postBSON = try! DatabaseManager().database.getCollection(Article).find(identifier) {
-            
-            do {
-                
-                let post = Article(bson: postBSON)
-                let query: [String: JSONValue] = ["_id": post.identifierDictionary!]
-                let jsonEncode = try JSONEncoder().encode(query)
-                
-                try! DatabaseManager().database.getCollection(Article).remove(try! BSON(json: jsonEncode))
-                
-            } catch {
-                print(error)
-            }
-            
-            
-        }
+    // When create page is load
+    func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
+    {
+        return MustacheEvaluationContext.MapType()
+    }
+    
+    func delete(identifier: String, request: WebRequest, response: WebResponse) {
+//        let databseManager = try! DatabaseManager()
+//        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: identifier) {
+//            try! databseManager.deleteObject(userStory)
+//            
+//        }
+//        response.requestCompletedCallback()
+        // FIXME: Redirect to Show page after delete the users
+        let deleteUser = currentUser(request, response: response)
+        let dataManager = try! DatabaseManager()
+        do{
+           try dataManager.deleteObject(deleteUser!)
+        }catch{}
+        
+        response.redirectTo("/users/0")
         response.requestCompletedCallback()
- */
     }
     
     

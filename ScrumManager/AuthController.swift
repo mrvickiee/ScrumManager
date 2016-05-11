@@ -60,7 +60,7 @@ extension AuthController {
         print(request.requestURI())
         
         let requestMethod = RequestMethod(rawValue: request.requestMethod())!
-        
+
         // Redirect to login if no logged in user
         guard let user = currentUser(request, response: response) else {
             response.redirectTo("/login")
@@ -73,7 +73,7 @@ extension AuthController {
         values.update(routeDictionary)
         
         if let identifier = request.urlVariables["id"] {
-            
+
             switch(requestMethod) {
             case .PATCH, .PUT:
                 fatalError()
@@ -94,7 +94,7 @@ extension AuthController {
                     // Call Show
                     values.update(try! create(request, response: response))
                     response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                    
+                
                 default:
                     
                     if let action = request.urlVariables["action"]{
@@ -116,7 +116,7 @@ extension AuthController {
                         
                       
                         
-                    } else {
+                    }else {
                         
                         let templateURL = request.documentRoot + "/templates/\(modelPluralName)/show.mustache"
 
