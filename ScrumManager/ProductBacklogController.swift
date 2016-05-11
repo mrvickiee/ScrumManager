@@ -70,7 +70,7 @@ class ProductBacklogController: AuthController {
         
     }
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse) {
+    func update(identifier: String, request: WebRequest, response: WebResponse) {
       
         /*
         // Handle new post request
@@ -177,9 +177,9 @@ class ProductBacklogController: AuthController {
        
     }
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse) {
+    func delete(identifier: String, request: WebRequest, response: WebResponse) {
         let databseManager = try! DatabaseManager()
-        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: identifier) {
+        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: Int(identifier)!) {
             try! databseManager.deleteObject(userStory)
             
         }

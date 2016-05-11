@@ -94,7 +94,7 @@ class ProjectController: AuthController {
         
     }
     
-    func update(identifier: Int, request: WebRequest, response: WebResponse){
+    func update(identifier: String, request: WebRequest, response: WebResponse){
         
         
         if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"),members = request.params("teamMembers"){
@@ -125,7 +125,7 @@ class ProjectController: AuthController {
         
     }
     
-    func delete(identifier: Int, request: WebRequest, response: WebResponse){
+    func delete(identifier: String, request: WebRequest, response: WebResponse){
         
     }
     
