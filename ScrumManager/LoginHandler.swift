@@ -10,7 +10,6 @@ import Foundation
 import PerfectLib
 
 
-
 class LogoutHandler: RequestHandler {
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -46,6 +45,7 @@ class LoginHandler: RequestHandler {
             print(request.urlVariables)
             
             if let email = request.param("email"), password = request.param("password") {
+
                 // Get User with Email
                 guard let user = User.userWithEmail(email) else {
                     
@@ -55,6 +55,7 @@ class LoginHandler: RequestHandler {
                 
                 // Encrpyt provided password
                 let authKey = User.encodeRawPassword(email, password: password)
+
                 if user.authKey == authKey {
                     // Successful
                     
@@ -62,7 +63,6 @@ class LoginHandler: RequestHandler {
                     let session = response.getSession("user")
                     session["user_id"] = user._objectID
                     //∂session.commit()
-                    
                     
                     response.redirectTo("/")
                 }
