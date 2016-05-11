@@ -44,6 +44,26 @@ class UserController: AuthController {
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
+        // Get User
+        guard let user = User.userWithUsername(identifier) else {
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+
+            return ["identifier":identifier]
+        }
+        
+        var values :MustacheEvaluationContext.MapType = ["userProfile": user.dictionary]
+        var expertises = [[String:Any]]()
+        for expertise in user.expertises{
+            expertises.append(["expertise":expertise])
+        }
+        values["expertisesList"] = expertises
+        return values
+        
+        
+        
+        /*
         // Query User Story
         let tempUserList = getUserList()
         var userList = [[String:Any]]()
@@ -61,7 +81,7 @@ class UserController: AuthController {
         
         
         return values
-        
+        */
     }
     
     

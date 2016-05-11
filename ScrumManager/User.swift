@@ -19,25 +19,39 @@ enum CreateUserError: ErrorType {
 final class User: Object {
     
     var email: String
+    
     var authKey: String
+    
     var profilePictureURL: String = ""
+    
     var name: String
-    var expertises1 = "-"
+    
     var expertises = [String]()
+    
     var project: String = "-"
+    
     var role: String = ""
+    
+    var usernamePath: String
     
     init(email: String, name: String, authKey: String, role: String) {
         self.email = email
         self.name = name
         self.authKey = authKey
         self.role = role
+        self.usernamePath = User.usernameFromName(name)
         
     }
     
     class func userWithEmail(email: String) -> User? {
         let database = try! DatabaseManager()
         let user = database.executeFetchRequest(User.self, predicate: ["email": email]).first
+        return user
+    }
+    
+    class func userWithUsername(username: String) -> User? {
+        let database = try! DatabaseManager()
+        let user = database.executeFetchRequest(User.self, predicate: ["usernamePath": username]).first
         return user
     }
   
@@ -50,6 +64,8 @@ final class User: Object {
         let authKey = dictionary["authKey"] as! String
         
         let pictureURL = dictionary["profilePicURL"] as? String ?? ""
+        
+        let usernamePath = dictionary["usernamePath"] as? String ?? User.usernameFromName(name)
         
         // Need further display to modify it
         let role = dictionary["role"] as? String ?? ""
@@ -77,11 +93,9 @@ final class User: Object {
         
         self._objectID = id
         
-//        if expertises != "" {
-//            self.expertises = expertises
-//        }
-        
         self.expertises = expertises
+        
+        self.usernamePath = usernamePath
         
         if project != "" {
             self.project = project
@@ -107,6 +121,23 @@ final class User: Object {
 extension User: DBManagedObject {
     
     static var collectionName = "user"
+    
+    static func usernameFromName(name: String) -> String {
+        
+        let username = name.lowercaseString.stringByReplacingOccurrencesOfString(" ", withString: ".")
+        var userWithExistingNameCount = 1
+        
+        guard let _ = User.userWithUsername(username) else  {
+            return username
+        }
+        
+        while let _ = User.userWithUsername("\(username)\(userWithExistingNameCount)")  {
+            userWithExistingNameCount += 1
+        }
+        
+        return "\(username)\(userWithExistingNameCount)"
+        
+    }
     
     static func create(name: String, email: String, password: String, pictureURL: String, role: String) throws -> User {
         
@@ -135,11 +166,12 @@ extension User: DBManagedObject {
         let bytes = "\(email):\(realm):\(password)".md5
         return toHex(bytes)
     }
- 
-    
-
-    
-    
-    
-    
 }
+
+extension User: Routable {
+    
+    var pathURL: String { return "/users/\(usernamePath)" }
+    
+    var editURL: String { return "/users/\(usernamePath)/edit" }
+}
+
