@@ -23,21 +23,29 @@ class ProjectController: AuthController {
 
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
+        let databaseManager = try! DatabaseManager()
         
+        guard let project = databaseManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first else {
+            
+            // Status 404
+            response.requestCompletedCallback()
+            return [:]
+            
+        }
+        
+        
+        var projectDictionary = project.dictionary
+        projectDictionary["ScrumMasterName"] = project.scrumMaster?.name
+        
+        let values :MustacheEvaluationContext.MapType = ["project": projectDictionary]
+        return values
+        
+
         return [:]
     }
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-        let db = try! DatabaseManager()
-        let project = db.executeFetchRequest(Project).first
-        
-        
-        var projectDictionary = project?.dictionary
-        projectDictionary!["ScrumMasterName"] = project?.scrumMaster?.name
-        
-        let values :MustacheEvaluationContext.MapType = ["project": projectDictionary]
-        return values
-      
+        return [:]
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
@@ -101,23 +109,31 @@ class ProjectController: AuthController {
             
             let databaseManager = try! DatabaseManager()
             
-            let projectID = "5731dfe812b2232e16193d72"      //replace with dynamic var
-            let oldProject : Project = databaseManager.getObjectWithID(Project.self, objectID: projectID)!
+            guard let oldProject = databaseManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first else {
+                
+                // Status 404
+                response.requestCompletedCallback()
+                return
+            }
+            
            
             guard let scrumMaster = databaseManager.getObjectWithID(User.self, objectID: scrumMasterID) else {
                 response.requestCompletedCallback()
                 return
           
             }
-            let newProject = Project(name:projectTitle,projectDescription: projectDesc)
-            newProject.scrumMaster = scrumMaster
-            newProject.identifier = oldProject.identifier
-            newProject._objectID = oldProject._objectID
-            newProject.startDate = NSDate()
-            newProject.endDate = NSDate()// tmp
-            newProject.productOwnerID = productOwner
             
-            databaseManager.updateObject(oldProject, updateValues: newProject.dictionary)
+            oldProject.name = projectTitle
+            oldProject.projectDescription = projectDesc
+            oldProject.scrumMaster = scrumMaster
+           // oldProject._objectID = oldProject._objectID
+            oldProject.startDate = NSDate()
+            oldProject.endDate = NSDate()// tmp
+            oldProject.productOwnerID = productOwner
+            oldProject.teamMemberIDs = members
+            
+            databaseManager.updateObject(oldProject, updateValues: oldProject.dictionary)
+            response.redirectTo(oldProject)
             
         }else{
             response.requestCompletedCallback()
@@ -131,10 +147,16 @@ class ProjectController: AuthController {
     
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         let databaseManager = try! DatabaseManager()
-        let projectID = "5731dfe812b2232e16193d72"      //replace with dynamic var
+    
+        guard let project = databaseManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first else {
+            
+            // Status 404
+            response.requestCompletedCallback()
+            return [:]
+        }
+
         
         let users  = databaseManager.executeFetchRequest(User)
-        let project : Project = databaseManager.getObjectWithID(Project.self, objectID: projectID)!
         
         let curScrumMaster: User
             = databaseManager.getObjectWithID(User.self, objectID: (project.scrumMasterID)!)!

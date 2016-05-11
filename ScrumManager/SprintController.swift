@@ -104,10 +104,10 @@ import PerfectLib
     }
 
  
-    func delete(identifier: Int,request: WebRequest, response: WebResponse) {
+    func delete(identifier: String,request: WebRequest, response: WebResponse) {
         
         let db = try! DatabaseManager()
-        if let sprint = db.getObject(Sprint.self, primaryKeyValue: identifier){
+        if let sprint = db.getObject(Sprint.self, primaryKeyValue: Int(identifier)!){
             try! db.deleteObject(sprint)
         }
         response.requestCompletedCallback()
@@ -153,13 +153,13 @@ import PerfectLib
     }
 
     
-    func update(identifier: Int,request: WebRequest, response: WebResponse) {
+    func update(identifier: String,request: WebRequest, response: WebResponse) {
         
         var values : MustacheEvaluationContext.MapType?
         
         if let newTitle = request.param("title"), newBody = request.param("body"), newDuration = request.param("duration") {
             
-            let sp : Sprint? = getSprintWithID(identifier)
+            let sp : Sprint? = getSprintWithID(Int(identifier)!)
             
             if let sprint = sp {
                 sprint.title = newTitle

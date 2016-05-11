@@ -16,9 +16,9 @@ final class Project: Object, DBManagedObject {
     static var collectionName = "project"
     
     // - attribute tht will be written to db
-    let name: String
+    var name: String
     
-    let projectDescription: String
+    var projectDescription: String
     
     var identifier: Int = 0
     
