@@ -42,6 +42,9 @@ final class Project: Object, DBManagedObject {
         self.name = name
         self.projectDescription = projectDescription
         
+        startDate = NSDate()
+        endDate = NSDate()
+
     }
     
     convenience init(dictionary: [String : Any]) {

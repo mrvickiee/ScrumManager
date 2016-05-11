@@ -53,8 +53,7 @@ final class User: Object {
         
         // Need further display to modify it
         let role = dictionary["role"] as? String ?? ""
-        // FIXME: String array stuff with JSONArray
-        let expertisesTemp = dictionary["expertises"] as? JSONArrayType
+   
         let json = JSON()
         var expertises = [String]()
       /*  do{
