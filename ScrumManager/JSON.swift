@@ -131,6 +131,21 @@ public class JSON {
         return s
     }
     
+    func encodeConvertibleArray(a: [CustomJSONConvertible]) throws -> String {
+        var s = "["
+        var c = false
+        for value in a {
+            if c {
+                s.appendContentsOf(",")
+            } else {
+                c = true
+            }
+            s.appendContentsOf(try encodeValue(value))
+        }
+        s.appendContentsOf("]")
+        return s
+    }
+    
     public func encodeArrayDict(a: [[String: Any]]) throws -> String {
         var s = "["
         var c = false
@@ -187,6 +202,17 @@ public class JSON {
 		return s
 	}
 	
+    func convertArray<T>(array:[T]) -> [CustomJSONConvertible]? {
+        var newArray: [CustomJSONConvertible] = []
+        for element in array {
+            if let convertedElement = element as? CustomJSONConvertible {
+                newArray.append(convertedElement)
+            } else {
+                return nil
+            }
+        }
+        return newArray
+    }
     
     
     /// Encode a `JSONValue` into a JSON string
@@ -209,11 +235,18 @@ public class JSON {
         case let a as Array<String>:
             return try encodeStringArray(a)
         case let a as Array<Any>:
-            return try encodeArray(a)
+            if let jsonConvertibleArray = convertArray(a) {
+                return try encodeConvertibleArray(jsonConvertibleArray)
+            } else {
+                return try encodeArray(a)
+            }
+            // Convert Array
+           
 		case let jd as JSONDictionaryType:
 			return try encodeDictionary(jd.dictionary)
 		case let d as Dictionary<String, JSONValue>:
 			return try encodeDictionary(d)
+            
             
         case let convertible as CustomJSONConvertible:
             return try encodeValue(convertible.jsonValue)
