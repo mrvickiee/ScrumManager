@@ -20,6 +20,16 @@ This is the mustache template file for the tap tracker example.
         {{/user}}
 
         <p>{{userStory}}</p>
+
+        <h3>Comments</h3>
+            {{#comments}}
+                {{#user}}
+                <p><strong>{{name}}</strong></p>
+                {{/user}}
+                    <p>{{comment}}</p>
+            {{/comments}}
+
+<form action="{{url}}/comments" method="post">
     {{/userStories}}
 
     </article>

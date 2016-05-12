@@ -46,8 +46,18 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.init(body: body, title: title, duration: duration)
         self._objectID = id
         self.identifier = identifier
-        self.comments = loadCommentsFromDictionary(dictionary)
+       // self.comments = loadCommentsFromDictionary(dictionary)
        
+        // Load Comments
+        
+        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
+            
+            comments = commentsArray.map({ (commentDictionary) -> Comment in
+                let comment = commentDictionary as! JSONDictionaryType
+                return Comment(dictionary: comment.dictionary)
+            })
+        }
+        
         // Load User Stories
       let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
         userStoryIDs = userStoryIdentifier
@@ -96,6 +106,19 @@ extension Sprint {
         // Query Database
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
+    
+    var keyValues:[String: Any] {
+        return [
+            "title": title,
+            "body": body,
+            "comments": comments,
+            "urlPath": pathURL,
+            "identifier": identifier,
+            "userStories":userStories
+        ]
+        
+    }
+
     
     
     

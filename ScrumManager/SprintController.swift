@@ -50,7 +50,7 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
-        
+        /*
         let userStories = try! DatabaseManager().executeFetchRequest(UserStory)
         let userStoriesJSON = userStories.map { (user) -> [String:Any] in
             var userDictionary = user.dictionary
@@ -59,12 +59,18 @@ import PerfectLib
             return userDictionary
         }
         let values: MustacheEvaluationContext.MapType = ["userStories" : userStoriesJSON]
+       */
+        let sprints = try! DatabaseManager().executeFetchRequest(Sprint)
+        let sprintJSON = sprints.map { (sprint) -> [String:Any] in
+            var sprintDictionary = sprint.dictionary
+            sprintDictionary["objectID"] = sprint._objectID!
+            
+            return sprintDictionary
+        }
         
-        
-        
-        // what's the usage ???
-        
-        return values
+        var value : MustacheEvaluationContext.MapType = ["sprints" : sprintJSON]
+                
+        return value
         
     }
     
@@ -78,6 +84,7 @@ import PerfectLib
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
         
+        response.requestCompletedCallback()
         return values
         
     }
