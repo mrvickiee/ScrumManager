@@ -14,8 +14,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var comments: [Comment] = []
     
-    var taskIDs: [String] = []
-    
     var userStoryIDs: [String] = []
     
     var title: String
@@ -54,9 +52,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
       let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
         userStoryIDs = userStoryIdentifier
         print("\(userStoryIDs)")
-       let taskIdentifiers = dictionary["task"] as? [String] ?? []
-        taskIDs = taskIdentifiers
-        print("\(taskIDs)")
  
 
         
@@ -114,7 +109,6 @@ extension Sprint : Routable {
     var pathURL : String { return "/sprints/\(identifier)" }
     var editURL : String { return "/sprints/\(identifier)/edit" }
     
-    var tasks: [Task] { return try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: self.taskIDs) }
 
   //  var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
     

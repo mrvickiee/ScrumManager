@@ -17,7 +17,7 @@ import PerfectLib
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , body = request.param("body"), duration = request.param("duration"), userStoryIDs = request.params("userStoryID"), taskID = request.params("taskID") {
+        if let title = request.param("title") , body = request.param("body"), duration = request.param("duration"), userStoryIDs = request.params("userStoryID"){
             
             let sprint = Sprint(body: body, title: title, duration: duration)
  
@@ -35,7 +35,6 @@ import PerfectLib
                 
                 sprint.identifier = sprintIndex
                 sprint.userStoryIDs = userStoryIDs
-                sprint.taskIDs = taskID
                 
                 try databaseManager.insertObject(sprint)
                 
