@@ -12,9 +12,9 @@ import MongoDB
 
 final class Sprint: Object, DBManagedObject, Commentable {
     
-    static var collectionName: String = "sprint"
-    
     var comments: [Comment] = []
+    
+
     
     var userStoryIDs: [String] = []
     
@@ -48,21 +48,11 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.init(body: body, title: title, duration: duration)
         self._objectID = id
         self.identifier = identifier
+        self.comments = loadCommentsFromDictionary(dictionary)
         
+        // Load User Stories
         let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
         userStoryIDs = userStoryIdentifier
-        print("\(userStoryIDs)")
-        
-        // Load Comments
-        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
-            
-            comments = commentsArray.map({ (commentDictionary) -> Comment in
-                let comment = commentDictionary as! JSONDictionaryType
-                return Comment(dictionary: comment.dictionary)
-            })
-        }
-
-
         print("\(userStoryIDs)")
 
         
@@ -105,29 +95,19 @@ final class Sprint: Object, DBManagedObject, Commentable {
 
 extension Sprint {
     
-    
     var userStories: [UserStory] {
+        // Query Database
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
     
     
-    var sprintkeyValues: [String:Any] {
-        return [
-            "title" : title,
-            "body" : body,
-            "comments" : comments.map( {(comment) -> [String:Any] in
-                return comment.dictionary
-            }),
-            "urlPath": pathURL,
-        ]
-    }
     
-
     
 }
 
 extension Sprint : Routable {
     
+    static var collectionName: String = "sprint"
     
     var pathURL : String { return "/sprints/\(identifier)" }
     var editURL : String { return "/sprints/\(identifier)/edit" }
@@ -140,11 +120,15 @@ extension Sprint : Routable {
     }
     
     var dictionary: [String: Any] {
-        var dict = sprintkeyValues
+        var dict = keyValues
         dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
             return userStory.dictionary
         })
+        
+        
         return dict
+        
+        
     }
     
     
