@@ -15,6 +15,14 @@ class UserController: AuthController {
     
     let modelPluralName: String = "users"
     
+    var anonymousUserCanView: Bool {
+        if (try! DatabaseManager().countForFetchRequest(User.self)) == 0 {
+            return true
+        } else  {
+            return false
+        }
+    }
+    
     func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
         var modelActions:[String: (WebRequest, WebResponse, String)->()]=[:]
         

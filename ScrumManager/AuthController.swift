@@ -18,13 +18,13 @@ protocol AuthController: RESTController, RoutableController {
     
     func getUserInformation(request: WebRequest, response: WebResponse) -> [String: Any]
     
-    var anoymousUserCanView: Bool { get }
-
+    var anonymousUserCanView: Bool { get }
+    
 }
 
 extension AuthController {
     
-    var anoymousUserCanView: Bool {
+    var anonymousUserCanView: Bool {
         return false
     }
     
@@ -35,6 +35,11 @@ extension AuthController {
         print(currentSession["user_id"])
         
         guard let currentUserID = currentSession["user_id"] as? String, let user = try! DatabaseManager().getObjectWithID(User.self, objectID: currentUserID) else {
+            
+            if anonymousUserCanView {
+                return User(email: "", name: "anonymous", authKey: "", role: 0, profilePictureURL: "")
+            }
+            
             return  nil
         }
         
@@ -60,7 +65,7 @@ extension AuthController {
         print(request.requestURI())
         
         let requestMethod = RequestMethod(rawValue: request.requestMethod())!
-
+      
         // Redirect to login if no logged in user
         guard let user = currentUser(request, response: response) else {
             response.redirectTo("/login")

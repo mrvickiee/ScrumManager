@@ -10,11 +10,21 @@ import Foundation
 import MongoDB
 import PerfectLib
 
+
+enum TaskStatus: Int {
+    case Unassigned
+    case Todo
+    case InProgress
+    case Testing
+}
+
 final class Task: Object, DBManagedObject, DictionarySerializable, CustomDictionaryConvertible, Commentable {
     
     var body: String
     
     var comments: [Comment] = []
+    
+    var status: TaskStatus = .Unassigned
     
     var identifier: Int = 0
     
@@ -32,8 +42,6 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     }
     
     init?(identifier: String) {
-        
-        
         
         body = ""
         super.init()
@@ -53,14 +61,26 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         self.userID = dictionary["userID"] as? String
         
-        // Load Comments 
+        self.identifier = dictionary["identifier"] as! Int
         
+        let rawStatus = dictionary["status"] as! Int
+        
+        self.status = TaskStatus(rawValue: rawStatus)!
+        
+        // Load Comments 
         self.comments = loadCommentsFromDictionary(dictionary)
 
     }
   
     var keyValues: [String : Any] {
-        return ["body": body]
+        return ["body": body,
+                "comments": comments.map({ (comment) -> [String:Any] in
+                    return comment.dictionary
+                }),
+                "identifier": 0,
+                "status": status.rawValue,
+                "userID": userID
+        ]
     }
 }
 
@@ -72,6 +92,20 @@ extension Task {
         
         return ["user", "userID"]
         
+    }
+    
+    var user: User? {
+        get {
+            if let userID = userID {
+                return try! DatabaseManager().getObjectWithID(User.self, objectID: userID)
+            }
+            return nil
+        }
+        
+        set {
+            userID = user?._objectID
+            status = .InProgress
+        }
     }
 }
 
