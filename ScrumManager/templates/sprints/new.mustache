@@ -25,20 +25,21 @@ This is the mustache template file for the tap tracker example.
         <div class="large-12 columns">
             <label>Sprint Duration
                 <input type="text" name="duration" />
-
+            </label>
         <div class="row">
         <div class="large-12 columns">
-            <label>Selected User Stories
-                <select name="teamMembers" multiple>
+            <label>Select User Stories
+                <select name="userStories" multiple>
                     {{#userStories}}
                         <option value="{{objectID}}">{{title}}</option>
                     {{/userStories}}
                 </select>
             </label>
+            <input type="submit" value="Submit">
         </div>
     </div>
 
-    <input type="submit" value="Submit">
+
 
 </form>
 

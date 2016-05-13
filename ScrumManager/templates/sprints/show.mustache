@@ -28,9 +28,18 @@ This is the mustache template file for the tap tracker example.
                 {{/user}}
                     <p>{{comment}}</p>
             {{/comments}}
+    {{/userStories}}
 
 <form action="{{url}}/comments" method="post">
-    {{/userStories}}
+
+    <div class="row">
+        <div class="large-12 columns">
+            <label>Comment
+            <input type="text" name="comment"/>
+            </label>
+        </div>
+    </div>
+    <input type="submit" value="Post">"
 
     </article>
 {{/sprint}}

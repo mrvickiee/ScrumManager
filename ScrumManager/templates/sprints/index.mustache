@@ -6,21 +6,18 @@ This is the mustache template file for the tap tracker example.
 
 
 <div class="callout large primary">
-<div class="row column text-center">
-<h1>Sprints</h1>
+    <div class="row column text-center">
+        <h1>Sprints</h1>
+    </div>
 </div>
-</div>
+
 
 <div class="row medium-8 large-7 columns">
 
-{{#sprints}}
-<article class="blog-post">
-
-<a href="{{urlPath}}"><h3>{{title}}</h3></a>
-<p>{{sprint}}</p>
-
-
-</article>
-{{/sprints}}
-
+    {{#sprints}}
+        <article class="blog-post">
+            <a href="{{urlPath}}"><h3>{{title}}</h3></a>
+            <p>{{body}}</p>
+        </article>
+    {{/sprints}}
 </div>
