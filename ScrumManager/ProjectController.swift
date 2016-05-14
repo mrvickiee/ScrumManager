@@ -45,7 +45,20 @@ class ProjectController: AuthController {
     }
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-        return [:]
+        
+        let database = try! DatabaseManager()
+        
+        let projects = database.executeFetchRequest(Project)
+        
+        let projectJSON = projects.map { (project) -> [String:Any] in
+            var dictionary = project.dictionary
+            dictionary["objectID"] = project._objectID
+            return dictionary
+        }
+        
+        let values:MustacheEvaluationContext.MapType = ["projects" : projectJSON]
+        
+        return values
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
@@ -95,6 +108,10 @@ class ProjectController: AuthController {
                 return
             }
             
+            //convert string to nsDate
+            var dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            
             let projectCount = database.countForFetchRequest(Project)
             
             let project = Project(name: projectTitle, projectDescription: projectDesc)      //create new project object
@@ -102,7 +119,7 @@ class ProjectController: AuthController {
             project.identifier = projectCount
             project._objectID = database.generateUniqueIdentifier()
             project.startDate = NSDate()
-            project.endDate = NSDate()// tmp
+            project.endDate = dateFormatter.dateFromString(endDate)// tmp
             project.productOwnerID = productOwner
             project.teamMemberIDs = members
             
