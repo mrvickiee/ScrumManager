@@ -10,11 +10,10 @@ import Foundation
 import PerfectLib
 import MongoDB
 
+
 final class Sprint: Object, DBManagedObject, Commentable {
     
     var comments: [Comment] = []
-    
-
     
     var userStoryIDs: [String] = []
     
@@ -51,8 +50,10 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.comments = loadCommentsFromDictionary(dictionary)
         
         // Load User Stories
-        let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
-        userStoryIDs = userStoryIdentifier
+        if let userStoryIdentifier = dictionary["userStories"] as? [String] {
+            userStoryIDs = userStoryIdentifier
+ 
+        }
         print("\(userStoryIDs)")
 
         
@@ -82,15 +83,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
     }
     
-    init?(identifier: String) {
-        
-        title = ""
-        body = ""
-        duration = ""
-        super.init()
-        
-        return nil
-    }
 }
 
 extension Sprint {
@@ -100,8 +92,26 @@ extension Sprint {
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
     
+    var keyValues:[String: Any] {
+        return [
+            "title": title,
+            "body": body,
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+            "urlPath": pathURL,
+            "identifier": identifier
+        ]
+        
+    }
     
-    
+    var dictionary: [String: Any] {
+        var dict = keyValues
+        dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
+            return userStory.dictionary
+        })
+        return dict
+    }
     
 }
 
@@ -115,21 +125,9 @@ extension Sprint : Routable {
     
     //  var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
     
-    static var ignoredProperties: [String] {
-        return ["comments"] //["urlPath"]
-    }
-    
-    var dictionary: [String: Any] {
-        var dict = keyValues
-        dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
-            return userStory.dictionary
-        })
-        
-        
-        return dict
-        
-        
-    }
+  //  static var ignoredProperties: [String] {
+    //    return ["comments"] //["urlPath"]
+    //}
     
     
 }

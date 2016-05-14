@@ -81,16 +81,18 @@ import PerfectLib
     }
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
-        //list sprints
         let db = try! DatabaseManager()
         let sprints = db.executeFetchRequest(Sprint)
-        let sprintJSON = sprints.map{
-            (sprint) -> [String:Any] in
-            return sprint.dictionary
+        var counter = 0
+        let sprintJSONs = sprints.map { (sprint) -> [String:Any] in
+            var sprintDictionary = sprint.dictionary
+            sprintDictionary["index"] = counter
+            counter += 1
+            return sprintDictionary
         }
         
-        return ["sprints": sprintJSON];
+        let values : MustacheEvaluationContext.MapType = ["sprints":sprintJSONs]
+        return values
         
     }
     
