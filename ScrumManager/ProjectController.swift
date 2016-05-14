@@ -49,19 +49,36 @@ class ProjectController: AuthController {
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-        
-        
-        //if let project = try! DatabaseManager().executeFetchRequest(Project).first {
-            
-        let teamMembers = try! DatabaseManager().executeFetchRequest(User)
+
+        let teamMembers = User.userWithRole(UserRole.TeamMember)
+        let productOwners = User.userWithRole(UserRole.ProductOwner)
+        let scrumMasters = User.userWithRole(UserRole.ScrumMaster)
         
         let teamMembersJSON = teamMembers.map { (user) -> [String:Any] in
             var userDictionary = user.dictionary
             userDictionary["objectID"] = user._objectID!
-            
             return userDictionary
         }
-        let values: MustacheEvaluationContext.MapType = ["users" : teamMembersJSON]
+        
+        let productOwnerJSON = productOwners.map { (user) -> [String:Any] in
+            var productOwnerDic = user.dictionary
+            productOwnerDic["objectID"] = user._objectID
+            return productOwnerDic
+        }
+        
+        let scrumMasterJSON = scrumMasters.map { (user) -> [String:Any] in
+            var scrumMasterDic = user.dictionary
+            scrumMasterDic["objectID"] = user._objectID
+            return scrumMasterDic
+        }
+        
+        
+        
+        
+        
+        let values: MustacheEvaluationContext.MapType = ["teamMembers" : teamMembersJSON,
+                                                         "productOwners" : productOwnerJSON,
+                                                         "scrumMasters":scrumMasterJSON]
         
         return values
     }

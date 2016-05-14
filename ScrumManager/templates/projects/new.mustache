@@ -1,40 +1,41 @@
-<form action="/projects" method="post">
-    <div class = "row">
-        <div class= "medium-6 columns">
-            <label>Project Title
-                <input type="text" name="projectTitle"/>
-            </label>
-            <label>Description
-                <textarea name="projectDescription"></textarea>
-            </label>
-            <label> End date
-            <input type="text" name="endDate"/>
-            </label>
 
-            <label> Scrum master
-            <select name="scrumMaster">
-                {{#users}}
-                <option value="{{objectID}}">{{name}}</option>
-                {{/users}}
-            </select>
+    <form action="/projects" method="post">
+        <div class = "row align-center">
+<div class= "medium-6 columns" style="margin-left:25%">
+                <label>Project Title
+                    <input type="text" name="projectTitle"/>
+                </label>
+                <label>Description
+                    <textarea name="projectDescription"></textarea>
+                </label>
+                <label> End date
+                <input type="text" name="endDate"/>
+                </label>
 
-            </label>
-            <label> Product Owner
-            <select name="productOwner">
-            {{#users}}
-            <option value="{{objectID}}">{{name}}</option>
-            {{/users}}
-            </select>
-            </label>
-
-            <label> Team members
-                <select name="teamMembers" multiple>
-                {{#users}}
-                <option value="{{objectID}}">{{name}}</option>
-                {{/users}}
+                <label> Scrum master
+                <select name="scrumMaster">
+                    {{#scrumMasters}}
+                    <option value="{{objectID}}">{{name}}</option>
+                    {{/scrumMasters}}
                 </select>
-            </label>
-            <input type="submit" value="Submit">
+
+                </label>
+                <label> Product Owner
+                <select name="productOwner">
+                {{#productOwners}}
+                <option value="{{objectID}}">{{name}}</option>
+                {{/productOwners}}
+                </select>
+                </label>
+
+                <label> Team members
+                    <select name="teamMembers" multiple>
+                    {{#teamMembers}}
+                    <option value="{{objectID}}">{{name}}</option>
+                    {{/teamMembers}}
+                    </select>
+                </label>
+                <input type="submit" value="Submit">
+            </div>
         </div>
-    </div>
-</form>
+    </form>
