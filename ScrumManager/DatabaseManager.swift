@@ -58,7 +58,10 @@ class DatabaseManager {
     }
     }
     
- 
+    func updateObject(object: DBManagedObject) {
+        updateObject(object, updateValues: object.dictionary)
+    }
+    
     func update(objectCollection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {
         let collection = database.getCollection(objectCollection)
         let updateBSON = try! BSON(dictionary: ["$set":update] as [String: Any])

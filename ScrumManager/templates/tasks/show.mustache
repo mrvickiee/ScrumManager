@@ -1,0 +1,43 @@
+{{% handler:NewPost}}{{!
+
+This is the mustache template file for the tap tracker example.
+
+}}
+
+<div class="row medium-8 large-7 columns">
+
+{{#task}}
+<article class="blog-post">
+
+<p>{{body}}</p>
+
+<h3>Comments</h3>
+{{#comments}}
+{{#user}}
+<p><strong>{{name}}</strong></p>
+{{/user}}
+<p>{{comment}}</p>
+{{/comments}}
+
+<form action="{{url}}/comments" method="post">
+
+<div class="row">
+<div class="large-12 columns">
+<label>Comment
+<input type="text" name="comment" />
+</label>
+</div>
+</div>
+<input type="submit" value="Post">
+
+</form>
+
+</article>
+{{/task}}
+
+</div>
+
+
+
+
+

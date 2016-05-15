@@ -37,6 +37,8 @@ final class User: Object {
     
     var expertises = [String]()
     
+    var assignedTaskIDs = [String]()
+    
     var project: String = "-"
     
     var role: UserRole = UserRole.TeamMember
@@ -181,6 +183,17 @@ extension User: DBManagedObject {
     static func encodeRawPassword(email: String, password: String, realm: String = AUTH_REALM) -> String {
         let bytes = "\(email):\(realm):\(password)".md5
         return toHex(bytes)
+    }
+}
+
+extension User {
+    var tasks: [Task] {
+        let db = try! DatabaseManager()
+        return db.getObjectsWithIDs(Task.self, objectIDs: assignedTaskIDs)
+    }
+    
+    func addTask(task: Task) {
+        assignedTaskIDs.append(task._objectID!)
     }
 }
 

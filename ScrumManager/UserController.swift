@@ -16,11 +16,7 @@ class UserController: AuthController {
     let modelPluralName: String = "users"
     
     var anonymousUserCanView: Bool {
-        if (try! DatabaseManager().countForFetchRequest(User.self)) == 0 {
-            return true
-        } else  {
-            return false
-        }
+        return (try! DatabaseManager().countForFetchRequest(User.self)) == 0
     }
     
     func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
@@ -167,6 +163,13 @@ class UserController: AuthController {
             return ["identifier":identifier]
         }
         
+        // Check that the current user is editting owns profile
+        guard let cUser = currentUser(request, response: response) where cUser.username == user.username else {
+            response.requestCompletedCallback()
+            return [:]
+        }
+        
+    
         var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
         if user.role != .ScrumMaster && user.role != .Admin {
             values["visibility"] = "none"

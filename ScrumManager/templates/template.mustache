@@ -11,17 +11,16 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/stylesheets/foundation.css">
 <link rel="stylesheet" href="/stylesheets/main.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.js"></script>
-
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/stylesheets/foundation.min.js"></script>
 <script src="/stylesheets/foundation-datepicker.js"></script>
-<script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.min.js"></script>
+<script src="/stylesheets/Chart.min.js"></script>
 
 
 <title>Scrum Manager</title>
 </head>
 <body>
+
     <div class="top-bar" style="top-margin:0px;">
         <div class="top-bar-left">
             <ul class="menu">
@@ -54,6 +53,24 @@
 <a href="#">It's dangerous to go alone, take this.</a>
 </div>
 {{/error}}
+
+<ul id="sideNav" class="vertical accordion-menu menu" data-accordion-menu>
+<li class="singleItem">
+<a href="/dashboard"> Dashboard </a>
+</li>
+<li class="singleItem">
+<a href="/userstories">User Stories</a>
+</li>
+<li class="singleItem">
+<a href="/projects">Projects</a>
+</li>
+<li class="singleItem">
+<a href="/sprints">Sprints</a>
+</li>
+<li class="singleItem">
+<a href="/users/0">User Profile</a>
+</li>
+</ul>
 
 {{{content}}}
 

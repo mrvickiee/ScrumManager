@@ -13,15 +13,6 @@ class ProjectController: AuthController {
     
     var modelPluralName: String = "projects"
     
-    func actions() -> [String : (WebRequest, WebResponse, Int) -> ()] {
-        var modelActions:[String: (WebRequest, WebResponse, Int)->()]=[:]
-        
-      //  modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
-      //  modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
-        return modelActions
-    }
-
-    
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         let databaseManager = try! DatabaseManager()
         
@@ -39,13 +30,18 @@ class ProjectController: AuthController {
         
         let values :MustacheEvaluationContext.MapType = ["project": projectDictionary]
         return values
-        
-
-        return [:]
     }
     
-    func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
-        return [:]
+    func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
+        
+        let databaseManager = try! DatabaseManager()
+
+        let projects = databaseManager.executeFetchRequest(Project.self)
+        let projectsJSON = projects.map { (project) -> [String: Any] in
+            return project.dictionary
+        }
+        
+        return ["projects": projectsJSON]
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{

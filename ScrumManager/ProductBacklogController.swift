@@ -72,25 +72,26 @@ class ProductBacklogController: AuthController {
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
       
-        /*
+        let id = Int(identifier)!
+        
         // Handle new post request
-        if let title = request.param("title"), body = request.param("body"), existingArticle = getArticleWithIdentifier(identifier), currentAuthor = currentUser(request, response: response) where currentAuthor.email == existingArticle.author.email {
+        if let title = request.param("title"), body = request.param("body"), userStory =  getUserStoryWithIdentifier(id) {
             
             // Update post properties
-            existingArticle.title = title
-            existingArticle.body = body
+            userStory.title = title
+            userStory.story = body
             
             // Save Article
             do {
-                try! DatabaseManager().database.getCollection(UserStory).save(try existingArticle.document())
+                try! DatabaseManager().updateObject(userStory, updateValues: userStory.dictionary)
                 response.redirectTo("/\(modelName)s/\(identifier)")
+                response.redirectTo(userStory)
             } catch {
                 print(error)
             }
         }
-         */
-        let userStory = UserStory(title: "test", story: "")
-        response.redirectTo("\(userStory.pathURL)")
+        
+     
         response.requestCompletedCallback()
     }
     
@@ -161,20 +162,7 @@ class ProductBacklogController: AuthController {
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
-        
-        
-        /*
-        let beforeValues = beforeAction(request, response: response)
-        
-        guard var values = beforeValues else {
-            return MustacheEvaluationContext.MapType()
-        }
-        return values
-         */
-        
         return [:]
-        
-       
     }
     
     func delete(identifier: String, request: WebRequest, response: WebResponse) {

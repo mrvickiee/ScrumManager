@@ -10,12 +10,6 @@ import Foundation
 import PerfectLib
 import MongoDB
 
-enum BacklogType: Int {
-    case ProductBacklog
-    case ReleaseBacklog
-}
-
-
 final class UserStory: Object,DBManagedObject, Commentable {
     
     var title: String
@@ -28,7 +22,9 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var backlog: BacklogType = .ProductBacklog
     
-    var estimate: Int?
+    var priority: UserStoryPriority?
+    
+    var estimatedDuration: Int?
     
     init(title: String, story: String) {
         self.title = title
@@ -45,7 +41,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let identifier = dictionary["identifier"] as! Int
         
-        let timeEstimate = dictionary["estimate"] as? Int
+        let timeEstimate = dictionary["estimatedDuration"] as? Int
         
         self.init(title: title, story: story)
         
@@ -53,7 +49,11 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         self.identifier = identifier
         
-        self.estimate = timeEstimate
+        self.estimatedDuration = timeEstimate
+        
+        if let priority = dictionary["priority"] as? Int {
+            self.priority = UserStoryPriority(rawValue: priority)!
+        }
         
         // Load Comments
         

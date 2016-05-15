@@ -10,14 +10,6 @@ import Foundation
 import MongoDB
 import PerfectLib
 
-
-enum TaskStatus: Int {
-    case Unassigned
-    case Todo
-    case InProgress
-    case Testing
-}
-
 final class Task: Object, DBManagedObject, DictionarySerializable, CustomDictionaryConvertible, Commentable {
     
     var body: String
@@ -28,7 +20,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var identifier: Int = 0
     
-    private var userID: String? // User who is assigned to task
+    var userID: String? // User who is assigned to task
 
    // lazy var user: User? = try! DatabaseManager().getObjectWithID(User.self, objectID: self.userID ?? "")
     
@@ -106,6 +98,21 @@ extension Task {
             userID = user?._objectID
             status = .InProgress
         }
+    }
+    
+    
+    
+    func assignUser(newUser: User) {
+        user = newUser
+        
+        // Update task
+        let db = try! DatabaseManager()
+        db.updateObject(self)
+        
+        // Update User
+        newUser.addTask(self)
+        db.updateObject(newUser)
+        
     }
 }
 
