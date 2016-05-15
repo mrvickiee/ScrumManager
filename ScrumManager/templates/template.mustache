@@ -74,20 +74,27 @@
 
 {{{content}}}
 
-<script src="/stylesheets/jquery.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.js"></script>
+<script src="/stylesheets/foundation.min.js"></script>
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.min.js">
+</script>
 <script src="/stylesheets/what-input.js"></script>
-<script src="/stylesheets/app.js"></script>
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
 
 <script>
-$(document).foundation();
 $("document").ready(function(){
-
+$(document).foundation();
 //User Management: Edit Profile
 $("#image").change(function() {
 document.getElementById('profileImage').innerHTML =  document.getElementById("image").files[0].name;
 });
+
+$("#endDate").datepicker();
+
+
+
 });
 
 </script>

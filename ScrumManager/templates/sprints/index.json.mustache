@@ -4,13 +4,13 @@ This is the mustache template file for the tap tracker example.
 
 }}
 {
-"sprints": [
-{{#sprint}}
+"posts": [
+{{#post}}
 {
 "title": "{{title}}",
-"body": "{{body}}",
-"duration": "{{duration}}"
+"author": "{{author}}",
+"body": "{{body}}"
 }
-{{/sprint}}
+{{/post}}
 ]
 }

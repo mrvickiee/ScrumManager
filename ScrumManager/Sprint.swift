@@ -10,6 +10,7 @@ import Foundation
 import PerfectLib
 import MongoDB
 
+
 final class Sprint: Object, DBManagedObject, Commentable {
     
     var comments: [Comment] = []
@@ -47,13 +48,16 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self._objectID = id
         self.identifier = identifier
         self.comments = loadCommentsFromDictionary(dictionary)
-       
+        
         // Load User Stories
-      let userStoryIdentifier = dictionary["userstory"] as? [String] ?? []
-        userStoryIDs = userStoryIdentifier
-        print("\(userStoryIDs)")
+        if let userStoryIdentifier = dictionary["userStories"] as? [String] {
+            userStoryIDs = userStoryIdentifier
  
+        }
+        print("\(userStoryIDs)")
 
+        
+        
         
     }
     
@@ -64,30 +68,21 @@ final class Sprint: Object, DBManagedObject, Commentable {
         let dictionary = json.dictionary
         
         self.init(dictionary: dictionary)
-
+        
         
         /*
-        // Load Tasks
-        if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
-            
-            tasks = taskArray.map({ (taskDictionary) -> Task in
-                let taskDict = taskDictionary as! JSONDictionaryType
-                return Task(dictionary: taskDict.dictionary)
-            })
-        }
- */
-
+         // Load Tasks
+         if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
+         
+         tasks = taskArray.map({ (taskDictionary) -> Task in
+         let taskDict = taskDictionary as! JSONDictionaryType
+         return Task(dictionary: taskDict.dictionary)
+         })
+         }
+         */
+        
     }
     
-    init?(identifier: String) {
-        
-        title = ""
-        body = ""
-        duration = ""
-        super.init()
-        
-        return nil
-    }
 }
 
 extension Sprint {
@@ -97,23 +92,17 @@ extension Sprint {
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
     
-    
-    
-    
-}
-
-extension Sprint : Routable {
-    
-    static var collectionName: String = "sprint"
-
-    var pathURL : String { return "/sprints/\(identifier)" }
-    var editURL : String { return "/sprints/\(identifier)/edit" }
-    
-
-  //  var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
-    
-    static var ignoredProperties: [String] {
-        return ["comments"] //["urlPath"]
+    var keyValues:[String: Any] {
+        return [
+            "title": title,
+            "body": body,
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+            "urlPath": pathURL,
+            "identifier": identifier
+        ]
+        
     }
     
     var dictionary: [String: Any] {
@@ -121,12 +110,24 @@ extension Sprint : Routable {
         dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
             return userStory.dictionary
         })
-        
-        
         return dict
-        
-        
     }
+    
+}
+
+extension Sprint : Routable {
+    
+    static var collectionName: String = "sprint"
+    
+    var pathURL : String { return "/sprints/\(identifier)" }
+    var editURL : String { return "/sprints/\(identifier)/edit" }
+
+    
+    //  var userStories: [UserStory] { return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: self.userStoryIDs) }
+    
+  //  static var ignoredProperties: [String] {
+    //    return ["comments"] //["urlPath"]
+    //}
     
     
 }
