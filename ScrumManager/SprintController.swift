@@ -51,15 +51,21 @@ import PerfectLib
     {
         
         
-        let userStories = try! DatabaseManager().executeFetchRequest(UserStory)
-        let userStoriesJSON = userStories.map { (user) -> [String:Any] in
-            var userDictionary = user.dictionary
-            userDictionary["objectID"] = user._objectID!
+        let db = try! DatabaseManager()
+        let userStories = db.executeFetchRequest(UserStory)
+        var counter = 0
+        let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
+            var userStoryDict = userStory.dictionary
+            userStoryDict["index"] = counter
+            counter += 1
             
-            return userDictionary
+            return userStoryDict
         }
-        let values: MustacheEvaluationContext.MapType = ["userStories" : userStoriesJSON]
+        
+        
+        let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
+
         
     }
     
@@ -161,10 +167,7 @@ import PerfectLib
         }
         
             
-        var values: MustacheEvaluationContext.MapType = [:]
-            values["sprint"] = sprint.dictionary
-
-        response.requestCompletedCallback()
+        let values = ["sprint": sprint.dictionary] as MustacheEvaluationContext.MapType
         return values
         
     }
@@ -174,24 +177,25 @@ import PerfectLib
     
     func update(identifier: String,request: WebRequest, response: WebResponse) {
         
-        var values : MustacheEvaluationContext.MapType?
-        
-        if let newTitle = request.param("title"), newBody = request.param("body"), newDuration = request.param("duration") {
+        if let newTitle = request.param("title"), newBody = request.param("body"), newDuration = request.param("duration"), newUserStoryIDs = request.params("userStories") {
             
-            let sp : Sprint? = getSprintWithID(Int(identifier)!)
+            let databaseManager = try! DatabaseManager()
             
-            if let sprint = sp {
-                sprint.title = newTitle
-                sprint.body = newBody
-                sprint.duration = newDuration
-                values!["sprint"] = sprint.dictionary
-                
-            }else{
-                response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            guard let oldSprint = databaseManager.executeFetchRequest(Sprint.self, predicate :["identifier": Int(identifier)!]).first else{
+                response.requestCompletedCallback()
+                return
             }
             
+            oldSprint.title = newTitle
+            oldSprint.body = newBody
+            oldSprint.duration = newDuration
+            oldSprint.userStoryIDs = newUserStoryIDs
+            
+            databaseManager.updateObject(oldSprint, updateValues: oldSprint.dictionary)
+            response.redirectTo(oldSprint)
+        }else{
+            response.requestCompletedCallback()
         }
-        response.requestCompletedCallback()
     }
 
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType {
