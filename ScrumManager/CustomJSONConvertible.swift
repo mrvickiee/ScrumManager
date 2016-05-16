@@ -37,7 +37,12 @@ extension UserRole: CustomJSONConvertible {
 }
 
 
-
+extension RawRepresentable where RawValue == Int {
+    
+    var jsonValue: JSONConvertible {
+        return self.rawValue
+    }
+}
 
 class Vehicle {
     var numberOfWheels: Int = 4

@@ -1,94 +1,115 @@
 {{% handler:TTHandler}}{{!
 
-	This is the mustache template file for the tap tracker example.
-	
+This is the mustache template file for the tap tracker example.
+
 }}
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/stylesheets/foundation.css">
-<link rel="stylesheet" href="/stylesheets/main.css">
-<script src="http://code.jquery.com/jquery.min.js"></script>
-<script src="/stylesheets/foundation.min.js"></script>
-<script src="/stylesheets/foundation-datepicker.js"></script>
-<script src="/stylesheets/Chart.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/foundation.css">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="/stylesheets/foundation.min.js"></script>
+    <script src="/stylesheets/foundation-datepicker.js"></script>
+    <script src="/stylesheets/Chart.min.js"></script>
 
 
-<title>Scrum Manager</title>
+
+    <title>Scrum Manager</title>
 </head>
 <body>
 
-    <div class="top-bar" style="top-margin:0px;">
-        <div class="top-bar-left">
-            <ul class="menu">
-            <li class="menu-text">Scrum Manager</li>
-            {{#user}}
-<li><a href="{{newURL}}">New</a></li>
-            {{/user}}
-            </ul>
-        </div>
+    <div class="row">
+        <div class="large-2 columns">
+            <nav>
+                <ul class="menu vertical">
+                    <li class=>
+                        <a href="/dashboard"> Dashboard </a>
+                    </li>
+                    <li>
+                        <a href="/userstories">User Stories</a>
+                    </li>
+                    <li>
+                        <a href="/projects">Projects</a>
+                    </li>
+                    <li>
+                        <a href="/sprints">Sprints</a>
+                    </li>
+                    <li>
+                        <a href="/users/0">User Profile</a>
+                    </li>
+                </ul>
+            </nav>
 
-        {{#user}}
-        <div class="top-bar-right">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <li>
-                    <a>{{name}}</a>
+
+
+
+
+
+        </div>
+        <div class="large-10 columns">
+
+            <div class="top-bar" style="top-margin:0px;">
+                <div class="top-bar-left">
                     <ul class="menu">
-                        <li><a href="/users/0/edit">Edit Profile</a></li>
-                        <li><a href="/logout">Log out</a></li>
+                        <li class="menu-text">Scrum Manager</li>
+                        {{#user}}
+                        <li><a href="{{newURL}}">New</a></li>
+                        {{/user}}
                     </ul>
-                </li>
-            </ul>
+                </div>
+
+                {{#user}}
+                <div class="top-bar-right">
+                    <ul class="dropdown menu" data-dropdown-menu>
+                        <li>
+                            <a>{{name}}</a>
+                            <ul class="menu">
+                                <li><a href="/users/0/edit">Edit Profile</a></li>
+                                <li><a href="/logout">Log out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                {{/user}}
+            </div>
+            <div class="large-12 columns">
+
+            {{#error}}
+            <div class="callout alert">
+                <h5>{{title}}</h5>
+                <p>It has an easy to override visual style, and is appropriately subdued.</p>
+                <a href="#">It's dangerous to go alone, take this.</a>
+            </div>
+            {{/error}}
+
+            {{{content}}}
         </div>
-        {{/user}}
-    </div>
 
-{{#error}}
-<div class="callout alert">
-<h5>{{title}}</h5>
-<p>It has an easy to override visual style, and is appropriately subdued.</p>
-<a href="#">It's dangerous to go alone, take this.</a>
-</div>
-{{/error}}
 
-<ul id="sideNav" class="vertical accordion-menu menu" data-accordion-menu>
-<li class="singleItem">
-<a href="/dashboard"> Dashboard </a>
-</li>
-<li class="singleItem">
-<a href="/userstories">User Stories</a>
-</li>
-<li class="singleItem">
-<a href="/projects">Projects</a>
-</li>
-<li class="singleItem">
-<a href="/sprints">Sprints</a>
-</li>
-<li class="singleItem">
-<a href="/users/0">User Profile</a>
-</li>
-</ul>
 
-{{{content}}}
+        </div>
+        
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.js"></script>
+        <script src="/stylesheets/foundation.min.js"></script>
+        <script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.min.js">
+        </script>
+        <script src="/stylesheets/what-input.js"></script>
+        <script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
 
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.js"></script>
-<script src="/stylesheets/foundation.min.js"></script>
-<script src=" https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.min.js">
-</script>
-<script src="/stylesheets/what-input.js"></script>
-<script src="http://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
-
-<script>
-$("document").ready(function(){
-$(document).foundation();
+        <script>
+        $("document").ready(function(){
+            $(document).foundation();
 //User Management: Edit Profile
 $("#image").change(function() {
-document.getElementById('profileImage').innerHTML =  document.getElementById("image").files[0].name;
+    document.getElementById('profileImage').innerHTML =  document.getElementById("image").files[0].name;
 });
 
 $("#endDate").datepicker();
@@ -97,11 +118,11 @@ $("#endDate").datepicker();
 
 });
 
-</script>
+        </script>
 
 
-</body>
-</html>
+    </body>
+    </html>
 
 
 

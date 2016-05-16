@@ -17,7 +17,7 @@ import PerfectLib
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , body = request.param("body"), duration = request.param("duration"), userStoryIDs = request.params("userStories"){
+        if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
             print("new is called")
             let sprint = Sprint(body: body, title: title, duration: duration)
             print("\(sprint)")
@@ -177,7 +177,7 @@ import PerfectLib
     
     func update(identifier: String,request: WebRequest, response: WebResponse) {
         
-        if let newTitle = request.param("title"), newBody = request.param("body"), newDuration = request.param("duration"), newUserStoryIDs = request.params("userStories") {
+        if let newTitle = request.param("title"), newBody = request.param("body"), rawDuration = request.param("duration"), duration = Double(rawDuration), newUserStoryIDs = request.params("userStories") {
             
             let databaseManager = try! DatabaseManager()
             
@@ -188,7 +188,7 @@ import PerfectLib
             
             oldSprint.title = newTitle
             oldSprint.body = newBody
-            oldSprint.duration = newDuration
+            oldSprint.duration = duration
             oldSprint.userStoryIDs = newUserStoryIDs
             
             databaseManager.updateObject(oldSprint, updateValues: oldSprint.dictionary)

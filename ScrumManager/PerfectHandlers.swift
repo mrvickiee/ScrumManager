@@ -16,11 +16,6 @@ let AUTH_REALM = "ScrumManager"
 
 public func PerfectServerModuleInit() {
     
-    // Register our handler class with the PageHandlerRegistry.
-    // The name "TTHandler", which we supply here, is used within a mustache template to associate the template with the handler.
-    
-    
-    
     // Do routing
     Routing.Handler.registerGlobally()
     
@@ -33,7 +28,7 @@ public func PerfectServerModuleInit() {
     
    // Routing.addRoutesForRESTController(SprintController())
     
-    Routing.Routes["GET", "/"] = { _ in return ProductBacklogController() }
+    Routing.Routes["GET", "/"] = { _ in return DashboardController() }
    
     // Add access to stylesheets
     Routing.Routes["GET", "/stylesheets/*"] = {_  in StaticFileHandler() }

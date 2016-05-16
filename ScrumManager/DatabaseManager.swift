@@ -123,7 +123,7 @@ class DatabaseManager {
         }
         
         let query: [String: JSONValue] = ["_id": ["$in": objectIdentifiers] as [String: Any]]
-        let jsonEncode = try! JSONEncoder().encode(query)
+        let jsonEncode = try! JSON().encode(query)
         
         let cursor = database.getCollection(collection).find(try! BSON(json: jsonEncode))
         defer {

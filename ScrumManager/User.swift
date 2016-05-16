@@ -86,23 +86,11 @@ final class User: Object {
         // Need further display to modify it
         let roleTypeRaw = dictionary["role"] as! Int
     
-        
-        let json = JSON()
-        var expertises = [String]()
-        // FIXME: String array stuff with JSONArray
-        if let expertisesTemp = dictionary["expertises"] as? JSONArrayType {
-            do{
-                var results = try json.encode(expertisesTemp)
-                // Replace the regex of '[ OR ] OR "' that get from database
-                results = results.stringByReplacingOccurrencesOfString("[", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                results = results.stringByReplacingOccurrencesOfString("]", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                results = results.stringByReplacingOccurrencesOfString("\"", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                results = results.stringByReplacingOccurrencesOfString(",", withString: ", ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                expertises = results.componentsSeparatedByString(",")
-            }catch{}
-        }
+        let expertises = (dictionary["expertises"] as? JSONArrayType)?.stringArray ?? []
         
         let project = dictionary["currentProject"] as? String ?? ""
+        
+        let taskIDsArray = (dictionary["assignedTaskIDs"]  as! JSONArrayType).stringArray ?? []
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
@@ -113,6 +101,8 @@ final class User: Object {
         self.expertises = expertises
         
         self.username = username
+        
+        self.assignedTaskIDs = taskIDsArray
         
         if project != "" {
             self.project = project
@@ -194,6 +184,10 @@ extension User {
     
     func addTask(task: Task) {
         assignedTaskIDs.append(task._objectID!)
+    }
+    
+    func removeTask(task: Task) {
+        assignedTaskIDs.removeObject(task._objectID!)
     }
 }
 

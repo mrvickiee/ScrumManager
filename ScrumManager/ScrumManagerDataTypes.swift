@@ -8,12 +8,12 @@
 
 import Foundation
 
-enum BacklogType: Int {
+enum BacklogType: Int, CustomJSONConvertible {
     case ProductBacklog
     case ReleaseBacklog
 }
 
-enum UserStoryPriority: Int, CustomStringConvertible {
+enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
     case Low
     case Medium
     case Critical
@@ -29,7 +29,7 @@ enum UserStoryPriority: Int, CustomStringConvertible {
     }
 }
 
-enum TaskStatus: Int {
+enum TaskStatus: Int, CustomJSONConvertible {
     case Unassigned
     case Todo
     case InProgress

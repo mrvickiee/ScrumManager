@@ -3,29 +3,13 @@
 This is the mustache template file for the tap tracker example.
 
 }}
-
-<div class="callout large primary">
-<div class="row column text-center">
-<h1>Edit User Story</h1>
-</div>
-</div>
-
-{{#userStory}}
-
-<form action="{{url}}" method="post">
-
-<div class="row">
-<div class="large-12 columns">
-<label>Title
-<input type="text" name="title" value="{{title}}" />
-</label>
-</div>
-</div>
+{{#task}}
+<form action="{{urlPath}}" method="post">
 
 <div class="row">
 <div class="large-12 columns">
 <label>Body
-<input type="text" name="body"  value="{{story}}" />
+<input type="text" name="body" value="{{body}}" />
 
 </label>
 <input type="submit" value="Submit">
@@ -33,7 +17,7 @@ This is the mustache template file for the tap tracker example.
 </div>
 </div>
 </form>
-{{/userStory}}
+{{/task}}
 
 
 

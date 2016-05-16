@@ -21,11 +21,11 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var body: String
     
-    var duration: String
+    var duration: NSTimeInterval
     
     var identifier: Int = 0
     
-    init(body: String, title: String, duration: String) {
+    init(body: String, title: String, duration: Double) {
         self.title = title
         self.body = body
         self.duration = duration
@@ -39,7 +39,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let body = dictionary["body"] as! String
         
-        let duration = dictionary["duration"] as! String
+        let duration = Double(dictionary["duration"] as! Int)
         
         let identifier = dictionary["identifier"] as! Int
         

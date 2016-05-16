@@ -234,6 +234,7 @@ public class JSON {
             return try  encodeArrayDict(a)
         case let a as Array<String>:
             return try encodeStringArray(a)
+       
         case let a as Array<Any>:
             if let jsonConvertibleArray = convertArray(a) {
                 return try encodeConvertibleArray(jsonConvertibleArray)

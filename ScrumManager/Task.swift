@@ -59,21 +59,16 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         self.status = TaskStatus(rawValue: rawStatus)!
         
+        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
+
+        self._objectID = id
+        
         // Load Comments 
         self.comments = loadCommentsFromDictionary(dictionary)
 
     }
   
-    var keyValues: [String : Any] {
-        return ["body": body,
-                "comments": comments.map({ (comment) -> [String:Any] in
-                    return comment.dictionary
-                }),
-                "identifier": 0,
-                "status": status.rawValue,
-                "userID": userID
-        ]
-    }
+   
 }
 
 extension Task {
@@ -82,7 +77,7 @@ extension Task {
     
     static var ignoredProperties: [String] {
         
-        return ["user", "userID"]
+        return ["user",  "comments"]
         
     }
     
@@ -95,7 +90,7 @@ extension Task {
         }
         
         set {
-            userID = user?._objectID
+            userID = newValue?._objectID
             status = .InProgress
         }
     }
@@ -103,6 +98,10 @@ extension Task {
     
     
     func assignUser(newUser: User) {
+        if isAssigned(newUser) {
+            return
+        }
+        
         user = newUser
         
         // Update task
@@ -112,7 +111,32 @@ extension Task {
         // Update User
         newUser.addTask(self)
         db.updateObject(newUser)
+    }
+    
+    func unassignUser(newUser: User) {
+        if !isAssigned(newUser) {
+            return
+        }
         
+        user = nil
+        // Update task
+        let db = try! DatabaseManager()
+        db.updateObject(self)
+        
+        // Update User
+        newUser.removeTask(self)
+        db.updateObject(newUser)
+        
+    }
+    
+    
+    func isAssigned(newUser: User) -> Bool {
+        if let userID = userID where newUser._objectID == userID {
+            return true
+        } else {
+            return false
+        }
+      
     }
 }
 

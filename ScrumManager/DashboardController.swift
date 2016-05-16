@@ -27,11 +27,15 @@ class DashboardController: AuthController {
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         
-        let userTasks = try! DatabaseManager().executeFetchRequest(Task).map({ (task) -> [String: Any] in
+        guard let user = currentUser(request, response: response) else {
+            return [:]
+        }
+        
+        let userTasks = try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
             return task.dictionary
         })
-        
-        return ["tasks": userTasks]
+        let dictionary = ["tasks": userTasks] as [String: Any]
+        return dictionary
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{

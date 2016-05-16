@@ -16,6 +16,8 @@ class TaskController: AuthController {
         var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
         modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
+        modelActions["assign"] = {(request, resp,identifier) in self.assignUser(request, response: resp, identifier: identifier)}
+        
         return modelActions
     }
     
@@ -47,14 +49,20 @@ class TaskController: AuthController {
         
         // Query User Story
         let id = Int(identifier)!
-        let tempUserStory: Task? =  getTaskWithIdentifier(id)
         
-        guard let task = tempUserStory else {
+        guard let task = getTaskWithIdentifier(id), user = currentUser(request, response: response) else {
             return MustacheEvaluationContext.MapType()
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
         values["task"] = task.dictionary
+        
+        if task.isAssigned(user) {
+            values["assignAction"] = "Unassign from task"
+        } else {
+            values["assignAction"] = "Accept task"
+        }
+        
         
         return values
         
@@ -62,25 +70,23 @@ class TaskController: AuthController {
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
         
-        /*
-         // Handle new post request
-         if let title = request.param("title"), body = request.param("body"), existingArticle = getArticleWithIdentifier(identifier), currentAuthor = currentUser(request, response: response) where currentAuthor.email == existingArticle.author.email {
-         
-         // Update post properties
-         existingArticle.title = title
-         existingArticle.body = body
-         
-         // Save Article
-         do {
-         try! DatabaseManager().database.getCollection(UserStory).save(try existingArticle.document())
-         response.redirectTo("/\(modelName)s/\(identifier)")
-         } catch {
-         print(error)
-         }
-         }
-         */
-        let userStory = UserStory(title: "test", story: "")
-        response.redirectTo("\(userStory.pathURL)")
+        guard let id = Int(identifier), task = getTaskWithIdentifier(id), body = request.param("body") else {
+            response.requestCompletedCallback()
+            return
+        }
+        
+        task.body = body
+        
+        do {
+            let db = try DatabaseManager()
+            db.updateObject(task)
+            response.redirectTo(task)
+
+        } catch {
+            print(error)
+            
+        }
+       
         response.requestCompletedCallback()
     }
     
@@ -95,6 +101,22 @@ class TaskController: AuthController {
         let values = ["task": task.dictionary] as  MustacheEvaluationContext.MapType
         return values
         
+    }
+    
+    func assignUser(request: WebRequest, response: WebResponse,identifier: String) {
+        
+        guard let task = getTaskWithIdentifier(Int(identifier)!), user = currentUser(request, response: response) else {
+            return response.redirectTo("/")
+        }
+        
+        if task.isAssigned(user) {
+            task.unassignUser(user)
+        } else {
+            task.assignUser(user)
+        }
+        
+        response.redirectTo(task)
+        response.requestCompletedCallback()
     }
     
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
