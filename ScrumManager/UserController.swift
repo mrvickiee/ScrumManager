@@ -15,6 +15,7 @@ class UserController: AuthController {
     
     let modelPluralName: String = "users"
     
+    
     var anonymousUserCanView: Bool {
         return (try! DatabaseManager().countForFetchRequest(User.self)) == 0
     }

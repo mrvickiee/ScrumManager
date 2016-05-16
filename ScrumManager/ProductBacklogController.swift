@@ -15,6 +15,8 @@ class ProductBacklogController: AuthController {
     
     let modelPluralName: String = "userstories"
     
+    let pageTitle: String = "Product Backlog"
+    
     //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
     
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
@@ -166,11 +168,14 @@ class ProductBacklogController: AuthController {
     }
     
     func delete(identifier: String, request: WebRequest, response: WebResponse) {
-        let databseManager = try! DatabaseManager()
-        if let userStory = databseManager.getObject(UserStory.self, primaryKeyValue: Int(identifier)!) {
-            try! databseManager.deleteObject(userStory)
-            
+        
+        let id = Int(identifier)!
+        let db = try! DatabaseManager()
+        if let userStory: UserStory = getUserStoryWithIdentifier(id) {
+            try! db.deleteObject(userStory)
         }
+        
+        response.redirectTo("/userstories")
         response.requestCompletedCallback()
     }
     

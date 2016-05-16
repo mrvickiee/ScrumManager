@@ -12,6 +12,8 @@ class TaskController: AuthController {
     
     let modelName = "task"
     
+    let pageTitle: String = "Tasks"
+    
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
         var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
         modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}

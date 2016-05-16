@@ -51,7 +51,10 @@ final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible
     var dictionary: [String : Any] {
         var dict = ["comment": comment, "userID": userID] as [String: Any]
         if let user = user {
-            dict["user"] = user.dictionary
+            var userDict = user.dictionary
+            userDict["initials"] = user.initials
+            
+            dict["user"] = userDict
         }
         
         return dict

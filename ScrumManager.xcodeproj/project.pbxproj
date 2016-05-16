@@ -21,6 +21,8 @@
 		A35D487E1CDC32D6004CDC0C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35D487D1CDC32D6004CDC0C /* JSON.swift */; };
 		A35D48801CDC33C7004CDC0C /* CustomJSONConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35D487F1CDC33C7004CDC0C /* CustomJSONConvertible.swift */; };
 		A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DE31CE5988600DDFC85 /* Burndown.swift */; };
+		A36F4DE61CE9997900DDFC85 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
+		A36F4DE71CE9999D00DDFC85 /* fonts in CopyFiles */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
 		A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AF4991CE18A47004B0779 /* DashboardController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
 		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
@@ -65,6 +67,7 @@
 			dstPath = webroot;
 			dstSubfolderSpec = 16;
 			files = (
+				A36F4DE71CE9999D00DDFC85 /* fonts in CopyFiles */,
 				A319953E1CC095E800ED8F9F /* stylesheets in CopyFiles */,
 				A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */,
 			);
@@ -87,6 +90,7 @@
 		A35D487D1CDC32D6004CDC0C /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		A35D487F1CDC33C7004CDC0C /* CustomJSONConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomJSONConvertible.swift; sourceTree = "<group>"; };
 		A36F4DE31CE5988600DDFC85 /* Burndown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Burndown.swift; sourceTree = "<group>"; };
+		A36F4DE51CE9997900DDFC85 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		A37AF4991CE18A47004B0779 /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
 		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 				A3FB67E11CC06D8A00CB3A7A /* DatabaseManager.swift */,
 				A3EF9E521C98FB0400C3B053 /* ScrumManager.h */,
 				A3EF9E541C98FB0400C3B053 /* Info.plist */,
+				A36F4DE51CE9997900DDFC85 /* fonts */,
 				096DE9AD1CDA57C6006F328D /* resources */,
 				A319953C1CC0959A00ED8F9F /* stylesheets */,
 				A3FB67EE1CC08D4D00CB3A7A /* templates */,
@@ -334,6 +339,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A36F4DE61CE9997900DDFC85 /* fonts in Resources */,
 				096DE9AE1CDA57C6006F328D /* resources in Resources */,
 				A319953D1CC0959A00ED8F9F /* stylesheets in Resources */,
 			);

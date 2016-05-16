@@ -189,6 +189,20 @@ extension User {
     func removeTask(task: Task) {
         assignedTaskIDs.removeObject(task._objectID!)
     }
+    
+    var initials: String {
+        // Split name into first and last
+        let names = name.componentsSeparatedByString(" ")
+        var initialsRaw = ""
+        for name in names {
+            initialsRaw += name[0]
+        }
+        
+        return initialsRaw
+    }
+    
+    
+    
 }
 
 extension User: Routable {
@@ -196,5 +210,8 @@ extension User: Routable {
     var pathURL: String { return "/users/\(username)" }
     
     var editURL: String { return "/users/\(username)/edit" }
+    
+    var destoryURL: String { return "/users/\(username)/destroy" }
+
 }
 

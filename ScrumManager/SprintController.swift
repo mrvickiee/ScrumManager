@@ -11,7 +11,10 @@ import PerfectLib
  class SprintController: AuthController  {
  
     let modelName : String  = "sprint"
+    
     let modelPluralName : String  = "sprints"
+    
+    let pageTitle: String = "Sprints"
     
     
     

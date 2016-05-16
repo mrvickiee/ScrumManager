@@ -20,12 +20,18 @@ protocol AuthController: RESTController, RoutableController {
     
     var anonymousUserCanView: Bool { get }
     
+    var pageTitle: String { get }
+    
 }
 
 extension AuthController {
     
     var anonymousUserCanView: Bool {
         return false
+    }
+    
+    var pageTitle: String {
+        return "Scrum Manager"
     }
     
     func currentUser(request: WebRequest, response: WebResponse) -> User? {
@@ -75,6 +81,8 @@ extension AuthController {
         
         // Add logged in user information to provided values for templates
         var values: MustacheEvaluationContext.MapType = ["user":["name": user.name] as [String: Any]]
+        values["pageTitle"] = pageTitle
+        
         values.update(routeDictionary)
         
         if let identifier = request.urlVariables["id"] {
@@ -108,6 +116,9 @@ extension AuthController {
                         if let actionHandler = actions()[action] {
                             actionHandler(request, response, identifier)
                             
+                        } else if action == "destroy" {
+                            
+                            delete(identifier, request: request, response: response)
                         } else {
                             // Call Show
                             let templateURL = request.documentRoot + "/templates/\(modelPluralName)/edit.mustache"
@@ -132,6 +143,11 @@ extension AuthController {
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
                         values["url"] = "/\(modelPluralName)/\(identifier)"
+                        let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
+                        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+
+                        values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
+                        
 
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                     }
@@ -162,6 +178,7 @@ extension AuthController {
                 print("getting user information")
                 print("DICT: \(getUserInformation(request, response: response))")
                 values.update(getUserInformation(request, response: response))
+                values["actions"] = [Action(url: newURL, icon: "icon-plus", name: "").dictionary]
                 // Add routing
                
                 response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))

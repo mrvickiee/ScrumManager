@@ -15,9 +15,13 @@ This is the mustache template file for the tap tracker example.
 <h3>Comments</h3>
 {{#comments}}
 {{#user}}
+<div class="profile-pic-med avatar">{{initials}}</div>
+<div class="message">
 <p><strong>{{name}}</strong></p>
 {{/user}}
+
 <p>{{comment}}</p>
+</div>
 {{/comments}}
 
 <form action="{{url}}/comments" method="post">

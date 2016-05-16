@@ -32,7 +32,9 @@ public func PerfectServerModuleInit() {
    
     // Add access to stylesheets
     Routing.Routes["GET", "/stylesheets/*"] = {_  in StaticFileHandler() }
-    
+    Routing.Routes["GET", "/fonts/*"] = {_  in StaticFileHandler() }
+    Routing.Routes["GET", "/stylesheets/*/*"] = {_  in StaticFileHandler() }
+
     Routing.Routes["/login"] = { _ in LoginHandler() }
     Routing.Routes["/logout"] = { _ in LogoutHandler() }
     

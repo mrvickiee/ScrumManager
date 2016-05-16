@@ -10,6 +10,7 @@
 protocol Routable {
     var pathURL: String { get }
     var editURL: String { get }
+//var destoryURL: String { get }
     func urlsAsDictionary() -> [String: String]
 }
 
@@ -17,6 +18,21 @@ protocol RoutableController {
     var newURL: String { get }
     var createURL: String { get }
 }
+
+struct Action: CustomDictionaryConvertible {
+    
+    let url: String
+    
+    let icon: String
+    
+    let name : String
+    
+    var dictionary: [String: Any] {
+        return ["url": url, "icon": icon, "name": name]
+    }
+
+}
+
 
 
 extension RoutableController where Self: RESTController {
@@ -32,11 +48,11 @@ extension RoutableController where Self: RESTController {
     var routeDictionary: [String: Any] {
         return [
             "newURL": newURL,
-            "createURL": createURL
+            "createURL": createURL,
+
         ]
-        
     }
-    
+        
 }
 
 extension Routable {
@@ -44,7 +60,8 @@ extension Routable {
     {
         return [
             "pathURL": pathURL,
-            "editURL": editURL
+            "editURL": editURL,
+         //   "destoryURL": destoryURL
         ]
     }
     

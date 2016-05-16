@@ -146,6 +146,8 @@ extension Task: Routable {
     
     var editURL: String { return "/tasks/\(identifier)/edit" }
     
+    var destoryURL: String { return "/tasks/\(identifier)/destory" }
+
 }
 
 

@@ -14,6 +14,45 @@
 
 }
 
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    line-height:100px;
+    background-image: url('');
+    background-size: cover;
+    text-align:center;
+    background-color: #C0C0C0;
+    display: block;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    font-size:50px;
+    color:#fff;
+}
+
+.profile-pic-med {
+    width: 48px;
+    height: 48px;
+    line-height:48px;
+    background-image: url('');
+    background-size: cover;
+    text-align:center;
+    background-color: #C0C0C0;
+    display: block;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    font-size:24px;
+    color:#fff;
+}
+
+.avatar {
+ float: left;
+}
+.message {
+        display: inline;
+}
+
 .author {
     border: 1px solid #cacaca;
     border-radius: 3px;

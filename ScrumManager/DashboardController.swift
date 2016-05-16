@@ -13,6 +13,8 @@ class DashboardController: AuthController {
     
     var modelPluralName: String = "dashboard"
     
+    let pageTitle: String = "Dashboard"
+    
     func generateBurnDownChart() {
         
         
