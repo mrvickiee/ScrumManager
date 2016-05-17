@@ -23,7 +23,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var body: String
     
-    var reviewReport: [String:Any] = []
+    var reviewReport: SprintReviewReport?
     
     var duration: NSTimeInterval
     
@@ -60,8 +60,12 @@ final class Sprint: Object, DBManagedObject, Commentable {
         print("\(userStoryIDs)")
         
         
-        let tasks = dictionary["tasks"] as? [Task]
-        self.tasks = tasks
+        let reviewReport = dictionary["reviewReport"] as? SprintReviewReport
+        self.reviewReport = reviewReport
+        
+        if let tasks = dictionary["tasks"] as? [Task] {
+            self.tasks = tasks
+        }
         
         
     }

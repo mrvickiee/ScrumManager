@@ -10,63 +10,50 @@ import Foundation
 import MongoDB
 import PerfectLib
 
-final class SprintReviewReport: Object, DBManagedObject, Commentable {
+final class SprintReviewReport: Object, DBManagedObject{
     
-    var userStoriesCompleted: [String] = []
+    static var collectionName = "reviewReport"
     
-    var tasks
+    var userStoriesCompleted: [[String:Any]] = []
+    
+    var tasks: [[String: Any]] = []
     
     var createdAt: NSDate?
     
     var comments: [Comment] = []
     
-    var sprintId: Int = 0
-    
-    
-    init(userStoriesCompleted:[String], comments: [Comment]) {
-        self.userStoriesCompleted = userStoriesCompleted
-        self.comments = comments
-    }
-    
-    init(sprintId: Int) {
-        self.createdAt = NSDate()
-        self.sprintId = sprintId
-    }
     
     convenience init(dictionary: [String : Any]) {
-        var comments: [Comment] = []
-        var userStoriesCompleted: [UserStory] = []
+        
+        
+        self.init()
+        
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
             
-            comments = commentsArray.map({ (commentDictionary) -> Comment in
+            self.comments = commentsArray.map({ (commentDictionary) -> Comment in
                 let comment = commentDictionary as! JSONDictionaryType
                 return Comment(dictionary: comment.dictionary)
             })
         }
         
         // Load User Stories Completed
-        if let userStoriesCompletedArray = (dictionary["userStoriesCompleted"] as? JSONArrayType)?.array {
+        if let userStoryIdentifier = dictionary["userStoriesCompleted"] as? [String] {
+            for eachID in userStoryIdentifier{
+                self.userStoriesCompleted.append(["userstory":eachID])
+            }
             
-            userStoriesCompleted = userStoriesCompletedArray.map({ (userStoryCompletedDictionary) -> UserStory in
-                let userStory = userStoryCompletedDictionary as! JSONDictionaryType
-                return UserStory(dictionary: userStory.dictionary)
-            })
         }
         
-        
-        self.init(userStoriesCompleted:userStoriesCompleted, comments: comments)
+        // Load Task
+        if let tasksList = dictionary["tasks"] as? [[String:Any]]{
+            self.tasks = tasksList
+            
+        }
         
         let date = dictionary["createdAt"] as! NSDate
         
-        let sprintId = dictionary["sprintId"] as! Int
-        
-        self.createdAt = NSDate
-        
-        self.sprintId = sprintId
-        
-        
-        
+        self.createdAt = date
     }
     
     convenience init(bson: BSON) {
@@ -78,17 +65,14 @@ final class SprintReviewReport: Object, DBManagedObject, Commentable {
         self.init(dictionary: dictionary)
         
         
-        /*
-         // Load Tasks
-         if let taskArray = (dictionary["tasks"] as? JSONArrayType)?.array {
-         
-         tasks = taskArray.map({ (taskDictionary) -> Task in
-         let taskDict = taskDictionary as! JSONDictionaryType
-         return Task(dictionary: taskDict.dictionary)
-         })
-         }
-         */
-        
     }
+    
+    
+}
+
+extension SprintReviewReport : Routable {
+    
+    var pathURL : String { return "/report" }
+    var editURL : String { return "/" }
     
 }
