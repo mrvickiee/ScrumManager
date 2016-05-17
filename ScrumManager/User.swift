@@ -16,14 +16,6 @@ enum CreateUserError: ErrorType {
     case DatabaseError
 }
 
-enum UserRole: Int {
-    case TeamMember     //0
-    case ScrumMaster    //1
-    case ProductOwner   //2
-    case Admin          //3
-    
-  
-}
 
 final class User: Object {
     

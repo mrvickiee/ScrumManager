@@ -24,7 +24,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var priority: UserStoryPriority?
     
-    var estimatedDuration: Int?
+    var estimatedDuration: Double?
     
     init(title: String, story: String) {
         self.title = title
@@ -41,7 +41,9 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let identifier = dictionary["identifier"] as! Int
         
-        let timeEstimate = dictionary["estimatedDuration"] as? Int
+        let timeEstimate = dictionary["estimatedDuration"] as? Int ?? 0
+        
+        let backlogRaw = dictionary["backlog"] as? Int ?? 0
         
         self.init(title: title, story: story)
         
@@ -49,7 +51,9 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         self.identifier = identifier
         
-        self.estimatedDuration = timeEstimate
+        self.estimatedDuration = Double(timeEstimate)
+        
+        self.backlog = BacklogType(rawValue: backlogRaw)!
         
         if let priority = dictionary["priority"] as? Int {
             self.priority = UserStoryPriority(rawValue: priority)!

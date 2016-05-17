@@ -160,6 +160,24 @@ extension Project {
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
     
+    var releaseBacklog: [UserStory] {
+        return try! DatabaseManager().executeFetchRequest(UserStory.self, predicate: ["backlog": BacklogType.ReleaseBacklog])
+    }
+    
+    var projectDuration: NSTimeInterval {
+        let backlog = releaseBacklog
+        var duration: NSTimeInterval = 0
+        for userStory in backlog {
+            duration += userStory.estimatedDuration ?? 0
+        }
+        
+        return duration
+    }
+    
+    var expectedCompletitionDate: NSDate {
+        return NSDate().dateByAddingTimeInterval(projectDuration)
+    }
+    
     func addUserStory(userStory: UserStory) {
         if let objectID = userStory._objectID {
             userStoryIDs.append(objectID)

@@ -24,6 +24,8 @@
 		A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DE31CE5988600DDFC85 /* Burndown.swift */; };
 		A36F4DE61CE9997900DDFC85 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
 		A36F4DE71CE9999D00DDFC85 /* fonts in CopyFiles */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
+		A36F4DE91CEA7AEC00DDFC85 /* Estimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */; };
+		A36F4DEB1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */; };
 		A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AF4991CE18A47004B0779 /* DashboardController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
 		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
@@ -93,6 +95,8 @@
 		A35D487F1CDC33C7004CDC0C /* CustomJSONConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomJSONConvertible.swift; sourceTree = "<group>"; };
 		A36F4DE31CE5988600DDFC85 /* Burndown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Burndown.swift; sourceTree = "<group>"; };
 		A36F4DE51CE9997900DDFC85 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Estimate.swift; sourceTree = "<group>"; };
+		A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleaseBacklogController.swift; sourceTree = "<group>"; };
 		A37AF4991CE18A47004B0779 /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
 		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
@@ -246,6 +250,8 @@
 				5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */,
 				A32486711CD9620200EA06E9 /* TaskController.swift */,
 				A32486731CD97E6000EA06E9 /* ModelController.swift */,
+				A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */,
+				A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3FB67ED1CC081D700CB3A7A /* UserStory.swift in Sources */,
+				A36F4DE91CEA7AEC00DDFC85 /* Estimate.swift in Sources */,
 				A35D487E1CDC32D6004CDC0C /* JSON.swift in Sources */,
 				A3FB67DC1CC06D5E00CB3A7A /* MongoExtensions.swift in Sources */,
 				393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */,
@@ -379,6 +386,7 @@
 				09F6A6EF1CEA13E0009BCFFE /* SprintReviewReport.swift in Sources */,
 				A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */,
 				6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */,
+				A36F4DEB1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift in Sources */,
 				A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */,
 				A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */,
 				A32486701CD9544600EA06E9 /* Commentable.swift in Sources */,

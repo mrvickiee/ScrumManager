@@ -217,17 +217,21 @@ class UserController: AuthController {
             }
             
             response.redirectTo("/users")
-            
-            response.requestCompletedCallback()
         }
-        response.requestCompletedCallback()
         
+        
+        response.requestCompletedCallback()
     }
     
     // When create page is load
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
-        return MustacheEvaluationContext.MapType()
+        var values: [String: Any] = [:]
+        values["userRoles"] = UserRole.allUserRoles.map({ (userRole) -> [String: Any] in
+            return userRole.userDictionary
+        })
+        
+        return values
     }
     
     

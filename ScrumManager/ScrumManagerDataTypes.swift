@@ -37,3 +37,31 @@ enum TaskStatus: Int, CustomJSONConvertible {
     case Completed
 }
 
+
+enum UserRole: Int, CustomStringConvertible {
+    
+    case TeamMember     //0
+    case ScrumMaster    //1
+    case ProductOwner   //2
+    case Admin          //3
+    
+    static let allUserRoles: [UserRole] = [.TeamMember, .ScrumMaster, .ProductOwner, .Admin]
+    
+    var description: String {
+        switch self {
+        case .TeamMember:
+            return "Team Member"
+        case .ScrumMaster:
+            return "Scrum Master"
+        case .ProductOwner:
+            return "Product Owner"
+        case .Admin:
+            return "System Admin"
+        }
+    }
+    
+    var userDictionary: [String : Any] {
+        return ["name": description, "value": rawValue]
+    }
+}
+

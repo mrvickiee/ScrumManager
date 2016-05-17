@@ -10,7 +10,7 @@ import Foundation
 
 struct Burndown {
     
-    let secondsInDay: NSTimeInterval = 60 * 60 * 25
+    let secondsInDay: NSTimeInterval = 60 * 60 * 24
     
     var rate: Float
     
