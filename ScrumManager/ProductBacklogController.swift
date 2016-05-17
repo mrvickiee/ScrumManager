@@ -153,7 +153,7 @@ class ProductBacklogController: AuthController {
                 
                 newUserStory.identifier = userStoryCount
                 try databaseManager.insertObject(newUserStory)
-                response.redirectTo("/")
+                response.redirectTo("/userstories")
             } catch {
                 
             }

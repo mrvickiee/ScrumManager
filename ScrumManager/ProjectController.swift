@@ -9,6 +9,9 @@
 import PerfectLib
 
 class ProjectController: AuthController {
+    
+    let pageTitle: String = "Projects"
+    
     var modelName: String = "project"
     
     var modelPluralName: String = "projects"

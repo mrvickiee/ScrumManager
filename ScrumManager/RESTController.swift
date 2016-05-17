@@ -52,6 +52,11 @@ extension RESTController {
         return [:]
     }
     
+    func new(request: WebRequest, response: WebResponse) {
+        response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+        response.requestCompletedCallback()
+    }
+    
     func parseMustacheFromURL(url: String, withValues values: [String: Any]) -> String {
         
         if let template = MustacheTemplate.FromURL(url) {
@@ -176,7 +181,7 @@ extension RESTController {
         return MustacheEvaluationContext.MapType()
     }
     
-    func edit(identifier: Int, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
+    func edit(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
         response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
         return MustacheEvaluationContext.MapType()
     }
@@ -188,7 +193,7 @@ extension RESTController {
         
     }
     
-    func delete(identifier: Int,request: WebRequest, response: WebResponse) {
+    func delete(identifier: String,request: WebRequest, response: WebResponse) {
         
         response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
         response.requestCompletedCallback()
@@ -206,7 +211,5 @@ extension RESTController {
         return MustacheEvaluationContext.MapType()
     
     }
-    
-    
 }
 

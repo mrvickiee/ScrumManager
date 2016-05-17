@@ -39,7 +39,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let body = dictionary["body"] as! String
         
-        let duration = Double(dictionary["duration"] as! Int)
+        let duration = Double(dictionary["duration"] as? Int ?? 0)
         
         let identifier = dictionary["identifier"] as! Int
         
@@ -93,6 +93,7 @@ extension Sprint {
     }
     
     var keyValues:[String: Any] {
+        
         return [
             "title": title,
             "body": body,
@@ -100,7 +101,8 @@ extension Sprint {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "identifier": identifier
+            "identifier": identifier,
+            "duration": duration
         ]
         
     }
@@ -110,6 +112,13 @@ extension Sprint {
         dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
             return userStory.dictionary
         })
+        
+        let tasks = try! DatabaseManager().executeFetchRequest(Task.self)
+        
+        dict["tasks"] = tasks.map({ (task) -> [String: Any] in
+            return task.dictionary
+        })
+        
         return dict
     }
     

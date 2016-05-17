@@ -16,7 +16,7 @@ This is the mustache template file for the tap tracker example.
 <form>
 <!-- Name -->
 <div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Name</div>
+<div class ="small-3 large-2 columns" data-equalizer-watch>Name</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
 <input type="text" name="name"/>
 </div>
@@ -24,7 +24,7 @@ This is the mustache template file for the tap tracker example.
 <br>
 <!-- Email -->
 <div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Email</div>
+<div class ="small-3 large-2 columns" data-equalizer-watch>Email</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
 <input type="text" name="email" />
 </div>
@@ -32,27 +32,27 @@ This is the mustache template file for the tap tracker example.
 <br>
 <!-- Role -->
 <div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Roles</div>
+<div class ="small-3 large-2 columns" data-equalizer-watch>Roles</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch id="rolesField">
 <select name="role">
-<option value=0>Team Member</option>
-<option value=1>Scrum Master</option>
-<option value=2>Product Owner</option>
-<option value=3>System Admin</option>
+{{#userRoles}}
+<option value={{value}}>{{name}}</option>
+{{/userRoles}}
+
 </select>
 </div>
 </div>
 <br>
 <!-- Passowrd -->
 <div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Password</div>
+<div class ="small-3 large-2 columns" data-equalizer-watch>Password</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
 <input type="password" name="password" />
 </div>
 </div>
 <br>
 <div class = "row" data-equalizer>
-<div class ="small-3 large-2 columns profile-info-key" data-equalizer-watch>Confirm Password</div>
+<div class ="small-3 large-2 columns" data-equalizer-watch>Confirm Password</div>
 <div class ="small-9 large-10 columns" data-equalizer-watch>
 <input type="password" name="password2" />
 </div>
