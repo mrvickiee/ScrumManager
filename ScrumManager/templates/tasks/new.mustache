@@ -10,10 +10,30 @@ This is the mustache template file for the tap tracker example.
 
 <div class="row">
 <div class="large-12 columns">
-<label>Body
-<input type="text" name="body" />
 
+<label>Title
+<input type="text" name="taskTitle" />
 </label>
+
+<label>Description
+<textarea name="taskDescription"></textarea>
+</label>
+
+<label>Estimate in hour
+<input type="number" name="taskEstimate" />
+</label>
+
+<label>Task Priority
+<select name="taskPriority">
+<option value="0">Low</option>
+<option value="1">Medium</option>
+<option value="2">High</option>
+<option value="3">Critical</option>
+<option value="4">Block</option>
+</select>
+</label>
+
+
 <input type="submit" value="Submit">
 
 </div>

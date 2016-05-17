@@ -16,6 +16,7 @@ enum BacklogType: Int, CustomJSONConvertible {
 enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
     case Low
     case Medium
+    case High
     case Critical
     case Block
     
@@ -23,6 +24,7 @@ enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
         switch(self) {
         case .Low: return "Low"
         case .Medium: return "Medium"
+        case .High: return "High"
         case .Critical: return "Critical"
         case .Block: return "Block"
         }
