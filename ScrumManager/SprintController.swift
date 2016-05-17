@@ -17,7 +17,6 @@ import PerfectLib
     let pageTitle: String = "Sprints"
     
     
-    
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
         if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
