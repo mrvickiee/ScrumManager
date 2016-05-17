@@ -12,15 +12,25 @@ import PerfectLib
 
 final class Task: Object, DBManagedObject, DictionarySerializable, CustomDictionaryConvertible, Commentable {
     
-    var body: String
+    var title: String
+    
+    var description: String
     
     var comments: [Comment] = []
     
+    var estimates: Double = 0          //in hours
+    
+    var priority: UserStoryPriority
+    
     var status: TaskStatus = .Unassigned
+    
+    var workDone : Int = 0          // in hours
     
     var identifier: Int = 0
     
     var userID: String? // User who is assigned to task
+        
+    var UserStoryID: String? // belong to which UserStoryID
 
    // lazy var user: User? = try! DatabaseManager().getObjectWithID(User.self, objectID: self.userID ?? "")
     
@@ -35,21 +45,29 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     init?(identifier: String) {
         
-        body = ""
+        title = ""
+        description = ""
+        priority = .High
+        
         super.init()
         
         return nil
     }
     
-    init(body: String) {
-        self.body = body
+    init(title: String, description: String, rawPriority: Int ) {
+        self.title = title
+        self.description = description
+        self.priority = UserStoryPriority(rawValue: rawPriority)!
     }
     
     convenience init(dictionary: [String: Any]) {
         
-        let taskBody = dictionary["body"] as! String
+        let taskBody = dictionary["title"] as! String
+        let taskDesc = dictionary["description"] as! String
+        let rawPriority = dictionary["priority"] as! Int
+    
         
-        self.init(body: taskBody)
+        self.init(title: taskBody, description: taskDesc, rawPriority: rawPriority )
         
         self.userID = dictionary["userID"] as? String
         
@@ -60,7 +78,11 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         self.status = TaskStatus(rawValue: rawStatus)!
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
-
+        
+        self.workDone = (dictionary["workDone"] as? Int)!
+        
+        self.estimates = (dictionary["estimates"] as? Double)!
+        
         self._objectID = id
         
         // Load Comments 
