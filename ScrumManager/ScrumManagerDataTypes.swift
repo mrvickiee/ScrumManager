@@ -34,5 +34,6 @@ enum TaskStatus: Int, CustomJSONConvertible {
     case Todo
     case InProgress
     case Testing
+    case Completed
 }
 

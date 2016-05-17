@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		096DE9AE1CDA57C6006F328D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = 096DE9AD1CDA57C6006F328D /* resources */; };
+		09F6A6EF1CEA13E0009BCFFE /* SprintReviewReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F6A6EE1CEA13E0009BCFFE /* SprintReviewReport.swift */; };
 		393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393BCF971CD8D95A005C94CF /* ProjectController.swift */; };
 		5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */; };
 		6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01A80A1CC1DCD00022CCDA /* Routable.swift */; };
@@ -77,6 +78,7 @@
 
 /* Begin PBXFileReference section */
 		096DE9AD1CDA57C6006F328D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+		09F6A6EE1CEA13E0009BCFFE /* SprintReviewReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintReviewReport.swift; sourceTree = "<group>"; };
 		393BCF971CD8D95A005C94CF /* ProjectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectController.swift; sourceTree = "<group>"; };
 		5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintController.swift; sourceTree = "<group>"; };
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				A324866D1CD94AC800EA06E9 /* Task.swift */,
 				A34D08471CE548C400C83136 /* ScrumManagerDataTypes.swift */,
 				A36F4DE31CE5988600DDFC85 /* Burndown.swift */,
+				09F6A6EE1CEA13E0009BCFFE /* SprintReviewReport.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
 				A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */,
 				A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */,
+				09F6A6EF1CEA13E0009BCFFE /* SprintReviewReport.swift in Sources */,
 				A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */,
 				6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */,
 				A3EF9E741C9A530D00C3B053 /* Project.swift in Sources */,
