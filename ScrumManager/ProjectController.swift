@@ -95,7 +95,7 @@ class ProjectController: AuthController {
             }
             
             //convert string to nsDate
-            var dateFormatter = NSDateFormatter()
+            let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd-yyyy"
             
             let projectCount = database.countForFetchRequest(Project)

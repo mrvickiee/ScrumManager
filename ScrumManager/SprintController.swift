@@ -34,7 +34,6 @@ import PerfectLib
                 
                 let sprintIndex = databaseManager.countForFetchRequest(Sprint)
 
-                
                 sprint.identifier = sprintIndex
                 sprint.userStoryIDs = userStoryIDs
             do{

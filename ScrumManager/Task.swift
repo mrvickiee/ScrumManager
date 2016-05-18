@@ -24,7 +24,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var status: TaskStatus = .Unassigned
     
-    var workDone : Int = 0          // in hours
+    var workDone : Double = 0          // in hours
     
     var identifier: Int = 0
     
@@ -79,7 +79,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.workDone = (dictionary["workDone"] as? Int)!
+        self.workDone = (dictionary["workDone"] as? Double)!
         
         self.estimates = (dictionary["estimates"] as? Double)!
         

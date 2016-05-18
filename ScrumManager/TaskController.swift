@@ -72,12 +72,18 @@ class TaskController: AuthController {
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
         
-        guard let id = Int(identifier), task = getTaskWithIdentifier(id), title = request.param("body") else {
+        guard let id = Int(identifier), task = getTaskWithIdentifier(id), title = request.param("body"), desc = request.param("desc"),estimate = request.param("estimates"), priority = request.param("taskPriority"), workDone = request.param("workDone") else {
             response.requestCompletedCallback()
             return
         }
         
         task.title = title
+        task.description = desc
+        task.estimates = Double(estimate)!
+        task.priority = UserStoryPriority(rawValue: Int(priority)!)!
+        task.workDone = Double(workDone)!
+        
+        
         
         do {
             let db = try DatabaseManager()
@@ -100,7 +106,16 @@ class TaskController: AuthController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values = ["task": task.dictionary] as  MustacheEvaluationContext.MapType
+        let taskDic = task.dictionary
+        
+      //  taskDic["priorityStr"] = UserStoryPriority(rawValue: task.priority)
+        
+        let values = ["task": taskDic] as  MustacheEvaluationContext.MapType
+       
+        
+        
+        
+        
         return values
         
     }
