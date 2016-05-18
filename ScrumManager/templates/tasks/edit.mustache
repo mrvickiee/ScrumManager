@@ -8,10 +8,37 @@ This is the mustache template file for the tap tracker example.
 
 <div class="row">
 <div class="large-12 columns">
-<label>Body
-<input type="text" name="body" value="{{body}}" />
 
+<label>Title
+<input type="text" name="title" value="{{title}}" />
 </label>
+
+<label>Description
+<input type="text" name="desc" value="{{description}}" />
+</label>
+
+<label>Estimate in hour
+<input type="text" name="estimates" value="{{estimates}}" />
+</label>
+
+<label>Priority:{{priority}}
+<select name="taskPriority">
+<option value="0">Low</option>
+<option value="1">Medium</option>
+<option value="2">High</option>
+<option value="3">Critical</option>
+<option value="4">Block</option>
+</select>
+</label>
+
+<label>Assignee:
+<input type="text" name="assignee" value="" />
+</label>
+
+<label>Work Done
+<input type="number" name="workDone" value="{{workDone}}" />
+</label>
+
 <input type="submit" value="Submit">
 
 </div>

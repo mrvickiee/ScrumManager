@@ -19,9 +19,9 @@ class ProductBacklogController: AuthController {
     
     //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
     
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
-        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
-        modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+    func actions() -> [String: ControllerAction] {
+        var modelActions:[String: ControllerAction] = [:]
+        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -85,7 +85,7 @@ class ProductBacklogController: AuthController {
             
             // Save Article
             do {
-                try! DatabaseManager().updateObject(userStory, updateValues: userStory.dictionary)
+                try DatabaseManager().updateObject(userStory, updateValues: userStory.dictionary)
                 response.redirectTo("/\(modelName)s/\(identifier)")
                 response.redirectTo(userStory)
             } catch {
@@ -135,10 +135,10 @@ class ProductBacklogController: AuthController {
     func new(request: WebRequest, response: WebResponse) {
         
         // Handle new post request
-        if let title = request.param("title"), body = request.param("body") {
+        if let title = request.param("title"), body = request.param("story"), priority = request.param("storyPriority") {
             
             // Valid Article
-            let newUserStory = UserStory(title: title, story: body)
+            let newUserStory = UserStory(title: title, story: body, priority: Int(priority)!)
             
             // Save Article
             do {

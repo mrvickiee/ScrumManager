@@ -13,15 +13,26 @@ This is the mustache template file for the tap tracker example.
 <label>Title
 <input type="text" name="title" />
 </label>
+
+<label>Story
+<textarea type="text" name="story" ></textarea>
+</label>
+
+<label>Priority
+<select name="storyPriority">
+<option value="0">Low</option>
+<option value="1">Medium</option>
+<option value="2">High</option>
+<option value="3">Critical</option>
+<option value="4">Block</option>
+</select>
+</label>
+
 </div>
 </div>
 
 <div class="row">
 <div class="large-12 columns">
-<label>Body
-<input type="text" name="body" />
-
-</label>
 <input type="submit" value="Submit">
 
 </div>

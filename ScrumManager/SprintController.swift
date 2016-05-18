@@ -33,7 +33,6 @@ import PerfectLib
                 
                 let sprintIndex = databaseManager.countForFetchRequest(Sprint)
 
-                
                 sprint.identifier = sprintIndex
                 sprint.userStoryIDs = userStoryIDs
             do{
@@ -204,12 +203,11 @@ import PerfectLib
         return [:]
     }
     
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
+    func actions() -> [String: ControllerAction] {
         
-        var modelActions:[String: (WebRequest, WebResponse, String)->()] = [:]
+        var modelActions:[String: ControllerAction] = [:]
     
-        modelActions["comments"] = {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
-        
+        modelActions["comments"] = ControllerAction() {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
         
         return modelActions
     }

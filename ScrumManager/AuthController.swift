@@ -80,7 +80,7 @@ extension AuthController {
         }
         
         // Add logged in user information to provided values for templates
-        var values: MustacheEvaluationContext.MapType = ["user":["name": user.name] as [String: Any]]
+        var values: MustacheEvaluationContext.MapType = ["user": user.viewDictionary]
         values["pageTitle"] = pageTitle
         
         values.update(routeDictionary)
@@ -113,8 +113,16 @@ extension AuthController {
                     if let action = request.urlVariables["action"]{
                         print("Found action \(action)")
                         
-                        if let actionHandler = actions()[action] {
-                            actionHandler(request, response, identifier)
+                        if let controllerAction = actions()[action] {
+                            if let url =  controllerAction.templateURL, mustacheDataSource = controllerAction.mustacheDataSource {
+                                
+                                let templateURL = request.documentRoot + url
+                                values.update(mustacheDataSource(request, response, identifier))
+                                response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
+                                
+                            } else {
+                                controllerAction.action?(request, response, identifier)
+                            }
                             
                         } else if action == "destroy" {
                             
@@ -175,9 +183,7 @@ extension AuthController {
                 
                // var values = try! list(request, response: response)
                 values.update(try! list(request, response: response))
-                print("getting user information")
-                print("DICT: \(getUserInformation(request, response: response))")
-                values.update(getUserInformation(request, response: response))
+              
                 values["actions"] = [Action(url: newURL, icon: "icon-plus", name: "").dictionary]
                 // Add routing
                

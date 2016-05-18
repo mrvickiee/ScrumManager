@@ -32,7 +32,7 @@ protocol RESTController: RequestHandler {
     
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType
     
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()]
+    func actions() -> [String: ControllerAction]
     
 }
 
@@ -48,7 +48,7 @@ extension RESTController {
         return [:]
     }
     
-    func actions() -> [String: (WebRequest,WebResponse,String) -> ()] {
+    func actions() -> [String: ControllerAction] {
         return [:]
     }
     

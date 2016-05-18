@@ -14,7 +14,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var title: String
     
-    var story: String
+    var story: String       //description
     
     var identifier: Int = 0
     
@@ -24,11 +24,15 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var priority: UserStoryPriority?
     
-    var estimatedDuration: Double?
+    var estimatedDuration: Double?      //story points
     
-    init(title: String, story: String) {
+    //require ranking index
+    //status
+    
+    init(title: String, story: String, priority: Int) {
         self.title = title
         self.story = story
+        self.priority = UserStoryPriority(rawValue: priority)
     }
     
     convenience init(dictionary: [String : Any]) {
@@ -45,7 +49,9 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let backlogRaw = dictionary["backlog"] as? Int ?? 0
         
-        self.init(title: title, story: story)
+        let priority = dictionary["priority"] as? Int
+        
+        self.init(title: title, story: story, priority: priority!)
         
         self._objectID = id
         
@@ -55,9 +61,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         self.backlog = BacklogType(rawValue: backlogRaw)!
         
-        if let priority = dictionary["priority"] as? Int {
-            self.priority = UserStoryPriority(rawValue: priority)!
-        }
+       
         
         // Load Comments
         
