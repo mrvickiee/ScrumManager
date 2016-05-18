@@ -38,7 +38,6 @@ extension UserRole: CustomJSONConvertible {
 
 
 extension RawRepresentable where RawValue == Int {
-    
     var jsonValue: JSONConvertible {
         return self.rawValue
     }
