@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		096DE9AE1CDA57C6006F328D /* resources in Resources */ = {isa = PBXBuildFile; fileRef = 096DE9AD1CDA57C6006F328D /* resources */; };
+		09D331781CEB0C0800B9233A /* SprintReviewReportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D331771CEB0C0800B9233A /* SprintReviewReportController.swift */; };
+		09D3317A1CEB0C5100B9233A /* SprintReviewReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D331791CEB0C5100B9233A /* SprintReviewReport.swift */; };
 		393BCF981CD8D95A005C94CF /* ProjectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393BCF971CD8D95A005C94CF /* ProjectController.swift */; };
 		5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */; };
 		6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01A80A1CC1DCD00022CCDA /* Routable.swift */; };
@@ -79,6 +81,8 @@
 
 /* Begin PBXFileReference section */
 		096DE9AD1CDA57C6006F328D /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+		09D331771CEB0C0800B9233A /* SprintReviewReportController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintReviewReportController.swift; sourceTree = "<group>"; };
+		09D331791CEB0C5100B9233A /* SprintReviewReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintReviewReport.swift; sourceTree = "<group>"; };
 		393BCF971CD8D95A005C94CF /* ProjectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectController.swift; sourceTree = "<group>"; };
 		5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SprintController.swift; sourceTree = "<group>"; };
 		6F01A80A1CC1DCD00022CCDA /* Routable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routable.swift; sourceTree = "<group>"; };
@@ -169,6 +173,7 @@
 				A324866D1CD94AC800EA06E9 /* Task.swift */,
 				A34D08471CE548C400C83136 /* ScrumManagerDataTypes.swift */,
 				A36F4DE31CE5988600DDFC85 /* Burndown.swift */,
+				09D331791CEB0C5100B9233A /* SprintReviewReport.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -249,6 +254,7 @@
 				A32486731CD97E6000EA06E9 /* ModelController.swift */,
 				A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */,
 				A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */,
+				09D331771CEB0C0800B9233A /* SprintReviewReportController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -376,6 +382,7 @@
 				A3FB67E61CC06EA300CB3A7A /* RESTController.swift in Sources */,
 				A35D48801CDC33C7004CDC0C /* CustomJSONConvertible.swift in Sources */,
 				A32486721CD9620200EA06E9 /* TaskController.swift in Sources */,
+				09D3317A1CEB0C5100B9233A /* SprintReviewReport.swift in Sources */,
 				A3FB67EB1CC07E3300CB3A7A /* AuthController.swift in Sources */,
 				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
 				A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */,
@@ -390,6 +397,7 @@
 				A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */,
 				A3FB67DD1CC06D5E00CB3A7A /* PerfectExtensions.swift in Sources */,
 				A3FB67D51CBF2DA900CB3A7A /* User.swift in Sources */,
+				09D331781CEB0C0800B9233A /* SprintReviewReportController.swift in Sources */,
 				5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */,
 				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
