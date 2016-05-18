@@ -7,41 +7,47 @@ This is the mustache template file for the tap tracker example.
 <div class="row medium-8 large-7 columns">
 
 {{#sprint}}
-    <article class="blog-post">
+<div class="row">
+<div class="large-6 columns">
+        <h3> Detail </h3>
+<dl>
+<dt>Description</dt>
+<dl>{{body}}</dl>
+<dt>Date created</dt>
+<dl>{{endDate}}</dl>
+<dt>Expected duration</dt>
+<dl></dl>
+<dt>Expected completion date</dt>
+<dl></dl>
+</dl>
 
-        <a href="#"><h3>{{title}}</h3></a>
-        <p>{{body}}</p>
 
-    <h3>User Stories</h3>
-    {{#userStories}}
+</div>
 
-        {{#user}}
-            <p><strong>{{name}}</strong></p>
-        {{/user}}
+<div class="large-6 columns">
 
-        <p>{{userStory}}</p>
 
-        <h3>Comments</h3>
+</div>
+
+</div>
+        <h6>Comments</h6>
             {{#comments}}
                 {{#user}}
                 <p><strong>{{name}}</strong></p>
                 {{/user}}
                     <p>{{comment}}</p>
             {{/comments}}
-    {{/userStories}}
 
 <form action="{{url}}/comments" method="post">
 
-    <div class="row">
+<div class="row">
         <div class="large-12 columns">
             <label>Comment
             <input type="text" name="comment"/>
             </label>
         </div>
     </div>
-    <input type="submit" value="Post">"
-
-    </article>
+    <input type="submit" value="Post">
 {{/sprint}}
 
 </div>

@@ -4,15 +4,32 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<div class="row medium-8 large-7 columns">
+<div class="row large-12 columns">
 
 {{#userStory}}
 <article class="blog-post">
 
-<a href="#"><h3>{{title}}</h3></a>
-<p>{{story}}</p>
 
-<h3>Comments</h3>
+<h3>{{title}}</h3>
+
+<h4>Description</h4>
+<h5 class="subheader">{{story}}</h5>
+
+<h4>Priority</h4>
+<h5 class="subheader">{{priority}}</h5>
+
+
+<h4>Status</h4>
+<h5 class="subheader">{{}}</h5>
+
+
+<h4>Estimates In Story Point</h4>
+<h5 class="subheader">{{estimatedDuration}}</h5>
+
+</div>
+
+<h4>Comments</h4>
+<div class="row large-12 columns" style="height:500px;overflow-y:scroll;">
 {{#comments}}
 {{#user}}
 <div class="profile-pic-med avatar">{{initials}}</div>
@@ -22,10 +39,10 @@ This is the mustache template file for the tap tracker example.
 
 <p>{{comment}}</p>
 </div>
+
 {{/comments}}
 
 <form action="{{url}}/comments" method="post">
-
 <div class="row">
 <div class="large-12 columns">
 <label>Comment
@@ -34,13 +51,11 @@ This is the mustache template file for the tap tracker example.
 </div>
 </div>
 <input type="submit" value="Post">
-
 </form>
+</div>
 
 </article>
 {{/userStory}}
-
-</div>
 
 
 

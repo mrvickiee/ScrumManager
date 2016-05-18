@@ -49,9 +49,9 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
     //    let backlogRaw = dictionary["backlog"] as? Int ?? 0
         
-        let priority = dictionary["priority"] as? Int
+        let rawPriority = dictionary["priority"] as? Int
         
-        self.init(title: title, story: story, priority: priority!)
+        self.init(title: title, story: story, priority: rawPriority!)
         
         self._objectID = id
         
@@ -106,7 +106,7 @@ extension UserStory {
         return [
             "title": title,
             "story": story,
-            "priority" : priority.rawValue,
+            "priority" : priority,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -121,7 +121,7 @@ extension UserStory {
         return [
             "title": title,
             "story": story,
-            "priority" : priority.rawValue,
+            "priority" : priority,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
