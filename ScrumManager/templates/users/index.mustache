@@ -5,15 +5,15 @@
 }}
 
 <!-- Content of side menu -->
-<div class="large-10 columns">
+<div class="large-12 columns">
 {{#userList}}
 <div class="row collapse user-list-column" data-equalizer>
 <div class="small-2 large-2 columns text-center user-list-delete-button"">
 <a method="post" href="/users/{{username}}/edit" style="display:{{visibility}}">
-<input type="image" src="/resources/edit.svg" width="20" height="20" alt="Update">
+Edit
 </a>
 <a method="post" href="/users/{{username}}/delete" style="display:{{visibility}}">
-<input type="image" src="/resources/delete.jpg" width="20" height="20" alt="Delete">
+<i class="icon-trash"></i>
 </a>
 <img src={{profilePictureURL}} class="show-profile-image">
 </div>
