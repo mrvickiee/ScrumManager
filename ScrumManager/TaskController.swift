@@ -72,12 +72,18 @@ class TaskController: AuthController {
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
         
-        guard let id = Int(identifier), task = getTaskWithIdentifier(id), body = request.param("body") else {
+        guard let id = Int(identifier), task = getTaskWithIdentifier(id), title = request.param("body"), desc = request.param("desc"),estimate = request.param("estimates"), priority = request.param("taskPriority"), workDone = request.param("workDone") else {
             response.requestCompletedCallback()
             return
         }
         
-        task.body = body
+        task.title = title
+        task.description = desc
+        task.estimates = Double(estimate)!
+        task.priority = UserStoryPriority(rawValue: Int(priority)!)!
+        task.workDone = Double(workDone)!
+        
+        
         
         do {
             let db = try DatabaseManager()
@@ -100,7 +106,16 @@ class TaskController: AuthController {
             return MustacheEvaluationContext.MapType()
         }
         
-        let values = ["task": task.dictionary] as  MustacheEvaluationContext.MapType
+        let taskDic = task.dictionary
+        
+      //  taskDic["priorityStr"] = UserStoryPriority(rawValue: task.priority)
+        
+        let values = ["task": taskDic] as  MustacheEvaluationContext.MapType
+       
+        
+        
+        
+        
         return values
         
     }
@@ -146,10 +161,12 @@ class TaskController: AuthController {
     func new(request: WebRequest, response: WebResponse) {
         
         // Handle new post request
-        if let body = request.param("body") {
+        if let title = request.param("taskTitle"), desc = request.param("taskDescription"), estimate = request.param("taskEstimate"), priority = request.param("taskPriority"){
             
             // Valid Article
-            let newTask = Task(body: body)
+            let newTask = Task(title: title,description: desc, rawPriority: Int(priority)!)
+            
+            newTask.estimates = Double(estimate)!
             
             // Save Article
             do {
@@ -164,7 +181,7 @@ class TaskController: AuthController {
                 
                 newTask.identifier = taskCount
                 try databaseManager.insertObject(newTask)
-                response.redirectTo("/tasks")
+               // response.redirectTo("/tasks")
             } catch {
                 
             }

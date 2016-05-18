@@ -29,7 +29,7 @@ class UserController: AuthController {
         if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
             visibility = "run-in"
         }
-        // FIXME: Identifier in Show for every users
+
         for user in tempUserList{
             userList.append(user.dictionary)
         }

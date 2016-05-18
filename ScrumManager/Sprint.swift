@@ -17,9 +17,13 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var userStoryIDs: [String] = []
     
+    var tasks : [Task] = []
+    
     var title: String
     
     var body: String
+    
+    var reviewReport: SprintReviewReport?
     
     var duration: NSTimeInterval
     
@@ -43,7 +47,6 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let identifier = dictionary["identifier"] as! Int
         
-        
         self.init(body: body, title: title, duration: duration)
         self._objectID = id
         self.identifier = identifier
@@ -55,8 +58,14 @@ final class Sprint: Object, DBManagedObject, Commentable {
  
         }
         print("\(userStoryIDs)")
-
         
+        
+        let reviewReport = dictionary["reviewReport"] as? SprintReviewReport
+        self.reviewReport = reviewReport
+        
+        if let tasks = dictionary["tasks"] as? [Task] {
+            self.tasks = tasks
+        }
         
         
     }
@@ -129,6 +138,9 @@ extension Sprint : Routable {
     static var collectionName: String = "sprint"
     
     var pathURL : String { return "/sprints/\(identifier)" }
+    
+    var reportURL : String { return "/sprints/\(identifier)/report" }
+    
     var editURL : String { return "/sprints/\(identifier)/edit" }
 
     
