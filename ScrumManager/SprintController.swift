@@ -22,6 +22,8 @@ import PerfectLib
     func new(request: WebRequest, response: WebResponse) {
         if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
             print("new is called")
+            
+            
             let sprint = Sprint(body: body, title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
@@ -75,8 +77,6 @@ import PerfectLib
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
-        
-        
         let id=Int(identifier)!
         let tempSprint:Sprint? = getSprintWithID(id)
         
@@ -84,8 +84,19 @@ import PerfectLib
             return MustacheEvaluationContext.MapType()
         }
         
+        
+        
+        
+        
+        
+        
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
+        
+        let chosenUserStory = sprint.dictionary["userStories"]
+        
+        
+        
         
         //response.requestCompletedCallback()
         return values
@@ -123,6 +134,7 @@ import PerfectLib
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
         
         print("New Comment")
+        
         guard var sprint = getSprintWithID(Int(identifier)!) else {
             return response.redirectTo("/")
         }
