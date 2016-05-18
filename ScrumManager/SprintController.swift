@@ -16,6 +16,7 @@ import PerfectLib
     
     let pageTitle: String = "Sprints"
     
+    var projectID : String?
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
@@ -24,10 +25,11 @@ import PerfectLib
             let sprint = Sprint(body: body, title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
+
+            let databaseManager = try! DatabaseManager()
             
             
-            
-                let databaseManager = try! DatabaseManager()
+            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID!)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -37,9 +39,10 @@ import PerfectLib
                 sprint.userStoryIDs = userStoryIDs
             do{
                 try databaseManager.insertObject(sprint)
+                tmpProject?.addSprint(sprint)
                 
                 print("inserted \(sprint)")
-                response.redirectTo(modelPluralName)
+                response.redirectTo("sprint/\(sprint.identifier)")
                 
             }catch{
                 print("failed to create sprint")
@@ -51,7 +54,7 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
-        
+        projectID = request.param("projectID")
         let db = try! DatabaseManager()
         let userStories = db.executeFetchRequest(UserStory)
         var counter = 0
@@ -71,6 +74,8 @@ import PerfectLib
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
+        
+        
         
         let id=Int(identifier)!
         let tempSprint:Sprint? = getSprintWithID(id)

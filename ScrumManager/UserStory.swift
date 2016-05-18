@@ -22,7 +22,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var backlog: BacklogType = .ProductBacklog
     
-    var priority: UserStoryPriority?
+    var priority: UserStoryPriority
     
     var estimatedDuration: Double?      //story points
     
@@ -32,7 +32,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     init(title: String, story: String, priority: Int) {
         self.title = title
         self.story = story
-        self.priority = UserStoryPriority(rawValue: priority)
+        self.priority = UserStoryPriority(rawValue: priority)!
     }
     
     convenience init(dictionary: [String : Any]) {
@@ -47,7 +47,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let timeEstimate = dictionary["estimatedDuration"] as? Int ?? 0
         
-        let backlogRaw = dictionary["backlog"] as? Int ?? 0
+    //    let backlogRaw = dictionary["backlog"] as? Int ?? 0
         
         let priority = dictionary["priority"] as? Int
         
@@ -59,7 +59,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         self.estimatedDuration = Double(timeEstimate)
         
-        self.backlog = BacklogType(rawValue: backlogRaw)!
+     //   self.backlog = BacklogType(rawValue: backlogRaw)!
         
        
         
@@ -89,6 +89,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         story = ""
         title = ""
+        priority = .High
         super.init()
 
         return nil
@@ -105,6 +106,7 @@ extension UserStory {
         return [
             "title": title,
             "story": story,
+            "priority" : priority.rawValue,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -119,6 +121,7 @@ extension UserStory {
         return [
             "title": title,
             "story": story,
+            "priority" : priority.rawValue,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),

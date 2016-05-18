@@ -193,6 +193,7 @@ class UserController: AuthController {
             password = request.param("password"),
             password2 = request.param("password2"),
             role = request.param("role")
+            
         {
             // Valid Article
             guard password == password2 else {

@@ -29,7 +29,6 @@
 		A36F4DEB1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */; };
 		A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AF4991CE18A47004B0779 /* DashboardController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
-		A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D9511CC72FBC008BDA1D /* TestHandler.swift */; };
 		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
 		A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F71CC099E30042FC02 /* LoginHandler.swift */; };
 		A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F91CC09A660042FC02 /* UserController.swift */; };
@@ -101,7 +100,6 @@
 		A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleaseBacklogController.swift; sourceTree = "<group>"; };
 		A37AF4991CE18A47004B0779 /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
-		A386D9511CC72FBC008BDA1D /* TestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHandler.swift; sourceTree = "<group>"; };
 		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScrumManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -248,7 +246,6 @@
 				393BCF971CD8D95A005C94CF /* ProjectController.swift */,
 				A37AF4991CE18A47004B0779 /* DashboardController.swift */,
 				A3EE54F91CC09A660042FC02 /* UserController.swift */,
-				A386D9511CC72FBC008BDA1D /* TestHandler.swift */,
 				5D3CA4CC1CD8CA0D0031CE0D /* SprintController.swift */,
 				A32486711CD9620200EA06E9 /* TaskController.swift */,
 				A32486731CD97E6000EA06E9 /* ModelController.swift */,
@@ -401,7 +398,6 @@
 				5D3CA4CD1CD8CA0D0031CE0D /* SprintController.swift in Sources */,
 				A3FB67D71CC06D2400CB3A7A /* Comment.swift in Sources */,
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
-				A386D9521CC72FBC008BDA1D /* TestHandler.swift in Sources */,
 				A32486741CD97E6000EA06E9 /* ModelController.swift in Sources */,
 				A324866E1CD94AC800EA06E9 /* Task.swift in Sources */,
 				A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */,
