@@ -25,7 +25,6 @@ class SprintReviewReportController: AuthController {
         modelActions["delete"] = {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
         
         return modelActions
-        return modelActions
     }
     
     
@@ -53,7 +52,7 @@ class SprintReviewReportController: AuthController {
             
             // Load Tasks
             for task in sprint.tasks{
-                reviewReport.tasks.append(["task": task.body, "status": task.status])
+                reviewReport.tasks.append(["task": task.description, "status": task.status])
             }
             
             db.updateObject(sprint.self, updateValues: reviewReport.dictionary)
