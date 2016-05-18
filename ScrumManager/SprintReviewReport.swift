@@ -28,14 +28,14 @@ final class SprintReviewReport: Object, DBManagedObject{
         
         self.init()
         
-        // Load Comments
-        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
-            
-            self.comments = commentsArray.map({ (commentDictionary) -> Comment in
-                let comment = commentDictionary as! JSONDictionaryType
-                return Comment(dictionary: comment.dictionary)
-            })
-        }
+//        // Load Comments
+//        if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
+//            
+//            self.comments = commentsArray.map({ (commentDictionary) -> Comment in
+//                let comment = commentDictionary as! JSONDictionaryType
+//                return Comment(dictionary: comment.dictionary)
+//            })
+//        }
         
         // Load User Stories Completed
         if let userStoryIdentifier = dictionary["userStoriesCompleted"] as? [String] {
@@ -51,9 +51,11 @@ final class SprintReviewReport: Object, DBManagedObject{
             
         }
         
-        let date = dictionary["createdAt"] as! NSDate
-        
-        self.createdAt = date
+        let date = dictionary["createdAt"] as! String
+        let dateFormater = NSDateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+
+        self.createdAt = dateFormater.dateFromString(date)
     }
     
     convenience init(bson: BSON) {
@@ -71,6 +73,17 @@ final class SprintReviewReport: Object, DBManagedObject{
 }
 
 extension SprintReviewReport : Routable {
+    
+    var dictionary: [String: Any] {
+        return [
+            "userStoriesCompleted": userStoriesCompleted,
+            "tasks": tasks,
+//            "createdAt": createdAt,
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+        ]
+    }
     
     var pathURL : String { return "/report" }
     var editURL : String { return "/" }

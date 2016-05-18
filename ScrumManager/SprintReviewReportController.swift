@@ -35,11 +35,13 @@ class SprintReviewReportController: AuthController {
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         // Query Sprint
         let id = Int(identifier)!
+
         let db = try! DatabaseManager()
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return [:]
         }
-        
+        print(sprint.body)
+        print(sprint.reviewReport)
         guard sprint.reviewReport?.dictionary.count > 0 else{
             let reviewReport = SprintReviewReport()
             reviewReport.createdAt = NSDate()

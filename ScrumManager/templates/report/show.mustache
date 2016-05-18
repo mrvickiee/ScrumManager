@@ -1,0 +1,73 @@
+{{% handler:TTHandler}}{{!
+
+This is the mustache template file for the tap tracker example.
+
+}}
+
+
+<div class="callout large primary">
+    <div class="row column text-center">
+        <h1>Sprint Review Report</h1>
+    </div>
+</div>
+{{#reviewReport}}
+<div class="row medium-8 large-7 columns">
+<div class="small-9 medium-9 large-9 columns"><strong>User Stories Completed</strong></div>
+</div>
+{{#userStoriesCompleted}}
+<div class="row medium-8 large-7 columns">
+    <div class="small-3 medium-3 large-3 columns">{{userstory}}</div>
+</div>
+{{/userStoriesCompleted}}
+
+
+<div class="row medium-8 large-7 columns">
+    <div class="small-9 medium-9 large-9 columns"><strong>Task(s)</strong></div>
+    <div class="small-3 medium-3 large-3 columns"><strong>Status</strong></div>
+</div>
+{{#tasks}}
+<div class="row medium-8 large-7 columns">
+    <div class="small-9 medium-9 large-9 columns">{{task}}</div>
+    <div class="small-3 medium-3 large-3 columns">{{status }}</div>
+</div>
+
+{{/tasks}}
+
+<h3>Comments</h3>
+{{#commentList}}
+{{#comment}}
+{{#user}}
+<div class="row">
+    <div class="large-2">
+            </div>
+    <div class="large-10">
+        <div class="profile-pic-med avatar">{{initials}}</div>
+        <div class="message">
+            <p><strong>{{name}}</strong></p>
+            <p>{{comment}}</p>
+<a method="post" href="/report/{{comment}}/edit" style="display:{{visibility}}">
+                <input type="image" src="/resources/edit.svg" width="20" height="20" alt="Update">
+            </a>
+<a method="post" href="/report/{{identifier}}/{{comment}}/delete" style="display:{{visibility}}">
+                <input type="image" src="/resources/delete.jpg" width="20" height="20" alt="Delete">
+            </a>
+        </div>
+    </div>
+</div>
+
+{{/user}}
+{{/comment}}
+{{/commentList}}
+
+<form action="{{url}}/comments" method="post">
+	<div class="row">
+		<div class="large-11 columns">
+			<label>Comment<br><strong>{{user}}</strong>
+				<input type="text" name="comment" />
+			</label>
+		</div>
+	</div>
+	<input type="submit" value="Post">
+</form>
+
+{{/reviewReport}}
