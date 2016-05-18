@@ -53,9 +53,15 @@ This is the mustache template file for the tap tracker example.
                     <li>
                         <a href="/sprints">Sprints</a>
                     </li>
+
+{{#user}}
+                    {{#isAdmin}}
                     <li>
-                        <a href="/users/0">User Profile</a>
+                        <a href="/users">Users</a>
                     </li>
+
+                    {{/isAdmin}}
+{{/user}}
                 </ul>
             </nav>
 
@@ -83,7 +89,7 @@ This is the mustache template file for the tap tracker example.
 <div class="top-bar-right">
 <ul class="dropdown menu" data-dropdown-menu>
 <li>
-<a>{{name}}</a>
+<a href="{{pathURL}}">{{name}}</a>
 <ul class="menu">
 <li><a href="/users/0/edit">Edit Profile</a></li>
 <li><a href="/logout">Log out</a></li>

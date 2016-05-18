@@ -20,14 +20,7 @@ class UserController: AuthController {
         return (try! DatabaseManager().countForFetchRequest(User.self)) == 0
     }
     
-    func actions() -> [String : (WebRequest, WebResponse, String) -> ()] {
-        var modelActions:[String: (WebRequest, WebResponse, String)->()]=[:]
-        
-        modelActions["update"] = {(request, resp,identifier) in self.update(identifier, request: request, response: resp)}
-        modelActions["delete"] = {(request, resp,identifier) in self.delete(identifier, request: request, response: resp)}
-        return modelActions
-    }
-    
+   
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         let tempUserList = getUserList()
         var userList = [[String:Any]]()

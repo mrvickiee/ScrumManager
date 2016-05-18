@@ -193,7 +193,25 @@ extension User {
         return initialsRaw
     }
     
+    var viewDictionary: [String: Any] {
+        var userDictionary = ["name": name, "pathURL": pathURL] as [String : Any]
+        switch(role) {
+        case .TeamMember:
+            userDictionary["isTeamMember"] = "YES"
+        case .ScrumMaster:
+            userDictionary["isScrumMaster"] = "YES"
+        case .Admin:
+            userDictionary["isAdmin"] = "YES"
+        case .ProductOwner:
+            userDictionary["isProductOwner"] = "YES"
+        }
+        
+         return userDictionary
+    }
     
+    var isAdmin: Bool {
+        return role == .Admin
+    }
     
 }
 

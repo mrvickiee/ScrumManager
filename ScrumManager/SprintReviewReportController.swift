@@ -13,7 +13,7 @@ class SprintReviewReportController: AuthController {
     
     let modelName = "report"
     
-    let modelPluralName: String = "report"
+    let modelPluralName: String = "reports"
     
     
     func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
@@ -25,7 +25,6 @@ class SprintReviewReportController: AuthController {
         modelActions["delete"] = {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
         
         return modelActions
-        return modelActions
     }
     
     
@@ -36,12 +35,13 @@ class SprintReviewReportController: AuthController {
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         // Query Sprint
         let id = Int(identifier)!
+
         let db = try! DatabaseManager()
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return [:]
         }
         
-        guard sprint.reviewReport?.dictionary.count > 0 else{
+        guard sprint.reviewReport?.tasks.count > 0 else{
             let reviewReport = SprintReviewReport()
             reviewReport.createdAt = NSDate()
             
@@ -70,8 +70,7 @@ class SprintReviewReportController: AuthController {
                 commentList.append(["comment":comment.dictionary])
             }
             values["commentList"] = commentList
-            print(values["reviewReport"])
-            
+
             return values
         }
         
@@ -91,7 +90,7 @@ class SprintReviewReportController: AuthController {
             }
         }
         values["commentList"] = commentList
-        print(values["reviewReport"])
+
         return values
         
     }
@@ -125,7 +124,7 @@ class SprintReviewReportController: AuthController {
             
             // Update the database
             db.updateObject(sprint.self, updateValues: reviewReport.dictionary)
-            response.redirectTo("/report/\(identifier)")
+            response.redirectTo("/reports/\(identifier)")
             
         }
     }
