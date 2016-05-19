@@ -9,19 +9,13 @@
 import Foundation
 import PerfectLib
 
-
-
 protocol DictionarySerializable {
-    
     init(dictionary: [String: Any])
 }
  
- 
- protocol CustomDictionaryConvertible {
+protocol CustomDictionaryConvertible {
     var dictionary: [String: Any] { get }
  }
-
-
 
 final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible {
     

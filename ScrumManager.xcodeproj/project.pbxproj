@@ -176,6 +176,7 @@
 				A34D08471CE548C400C83136 /* ScrumManagerDataTypes.swift */,
 				A36F4DE31CE5988600DDFC85 /* Burndown.swift */,
 				A36F4E551CEBF1C200DDFC85 /* ControllerAction.swift */,
+				09D331791CEB0C5100B9233A /* SprintReviewReport.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
