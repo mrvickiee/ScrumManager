@@ -128,7 +128,7 @@ class ProductBacklogController: AuthController {
             response.redirectTo(userStory)
             
         }
-        
+        response.requestCompletedCallback()
         
     }
     

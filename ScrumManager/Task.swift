@@ -24,7 +24,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var status: TaskStatus = .Unassigned
     
-    var workDone : Double = 0          // in hours
+    var workDone : NSTimeInterval = 0          // in seconds
     
     var identifier: Int = 0
     

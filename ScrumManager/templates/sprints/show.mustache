@@ -4,47 +4,74 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<div class="row medium-8 large-7 columns">
 
 {{#sprint}}
-    <article class="blog-post">
+<div class="row">
 
-        <a href="#"><h3>{{title}}</h3></a>
-        <p>{{body}}</p>
+    <div class="large-6 columns">
 
-    <h3>User Stories</h3>
-    {{#userStories}}
+        <h3> Detail </h3>
+        <dl>
+        <dt>Description</dt>
+        <dl>{{body}}</dl>
+        <dt>Date created</dt>
+        <dl>{{endDate}}</dl>
+        <dt>Expected duration</dt>
+        <dl></dl>
+        <dt>Expected completion date</dt>
+        <dl></dl>
+        </dl>
 
-        {{#user}}
-            <p><strong>{{name}}</strong></p>
-        {{/user}}
+    </div>
 
-        <p>{{userStory}}</p>
+    <div class="large-6 columns">
 
         <h3>Comments</h3>
+
+        <div style="height:400px;overflow-y:scroll;">
             {{#comments}}
-                {{#user}}
+            {{#user}}
+            <div class="profile-pic-med avatar">{{initials}}</div>
+
+            <div class="message">
                 <p><strong>{{name}}</strong></p>
                 {{/user}}
-                    <p>{{comment}}</p>
+
+                <p>{{comment}}</p>
+            </div>
+
             {{/comments}}
-    {{/userStories}}
+            <div class="row">
+                <div class="large-12 columns">
 
-<form action="{{url}}/comments" method="post">
-
-    <div class="row">
-        <div class="large-12 columns">
-            <label>Comment
-            <input type="text" name="comment"/>
-            </label>
+                    <form action="{{url}}/comments" method="post">
+                    <label>Comment
+                    <input type="text" name="comment" />
+                    </label>
+                    <input type="submit" value="Post">
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    <input type="submit" value="Post">"
 
-    </article>
-{{/sprint}}
+    </div>
+</div>
+
+<div class= "row">
+<h3> Sprint backlog</h3>
+
+
+{{#userStories}}
+
+{{title}}
+{{/userStories}}
+
+
 
 </div>
+
+
+{{/sprint}}
 
 
 
