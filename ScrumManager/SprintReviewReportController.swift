@@ -90,18 +90,19 @@ class SprintReviewReportController: AuthController {
             }
         }
         values["commentList"] = commentList
+        values["identifier"] = identifier
 
         return values
         
     }
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
-        
+      print("11")
     }
     
     
     func edit(request: WebRequest, response: WebResponse, identifier: String) {
-        
+        print("33")
     }
     
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {

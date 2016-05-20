@@ -50,10 +50,10 @@ This is the mustache template file for the tap tracker example.
         <div class="profile-pic-med avatar">{{initials}}</div>
         <div class="message">
             <strong>{{name}}</strong>
-            <a method="post" href="/report/{{comment}}/edit" style="display:{{visibility}}">
+            <a method="post" href="/reports/{{identifier}}/edit" style="display:{{visibility}}">
                 Edit
             </a>
-            <a method="post" href="/report/{{identifier}}/{{comment}}/delete" style="display:{{visibility}}">
+            <a method="post" href="/reports/{{identifier}}/{{comment}}/delete" style="display:{{visibility}}">
                 <i class="icon-trash"></i>
             </a>
             <br>
