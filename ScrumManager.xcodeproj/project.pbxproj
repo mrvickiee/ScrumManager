@@ -31,6 +31,7 @@
 		A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A37AF4991CE18A47004B0779 /* DashboardController.swift */; };
 		A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A386D94F1CC72F57008BDA1D /* Sprint.swift */; };
 		A3E4A1FC1CC08E7800B8AD80 /* templates in CopyFiles */ = {isa = PBXBuildFile; fileRef = A3FB67EE1CC08D4D00CB3A7A /* templates */; };
+		A3EB3B9C1CEDA60E004C9D12 /* ScrumDailyReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB3B9B1CEDA60E004C9D12 /* ScrumDailyReport.swift */; };
 		A3EE54F81CC099E30042FC02 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F71CC099E30042FC02 /* LoginHandler.swift */; };
 		A3EE54FA1CC09A660042FC02 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EE54F91CC09A660042FC02 /* UserController.swift */; };
 		A3EF9E531C98FB0400C3B053 /* ScrumManager.h in Headers */ = {isa = PBXBuildFile; fileRef = A3EF9E521C98FB0400C3B053 /* ScrumManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -102,6 +103,7 @@
 		A36F4E551CEBF1C200DDFC85 /* ControllerAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerAction.swift; sourceTree = "<group>"; };
 		A37AF4991CE18A47004B0779 /* DashboardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		A386D94F1CC72F57008BDA1D /* Sprint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprint.swift; sourceTree = "<group>"; };
+		A3EB3B9B1CEDA60E004C9D12 /* ScrumDailyReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrumDailyReport.swift; sourceTree = "<group>"; };
 		A3EE54F71CC099E30042FC02 /* LoginHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		A3EE54F91CC09A660042FC02 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		A3EF9E4F1C98FB0400C3B053 /* ScrumManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScrumManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,7 @@
 				A34D08471CE548C400C83136 /* ScrumManagerDataTypes.swift */,
 				A36F4DE31CE5988600DDFC85 /* Burndown.swift */,
 				A36F4E551CEBF1C200DDFC85 /* ControllerAction.swift */,
+				A3EB3B9B1CEDA60E004C9D12 /* ScrumDailyReport.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				A3FB67DF1CC06D5E00CB3A7A /* Extensions.swift in Sources */,
 				A386D9501CC72F57008BDA1D /* Sprint.swift in Sources */,
 				A37AF49A1CE18A47004B0779 /* DashboardController.swift in Sources */,
+				A3EB3B9C1CEDA60E004C9D12 /* ScrumDailyReport.swift in Sources */,
 				A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */,
 				6F01A80B1CC1DCD00022CCDA /* Routable.swift in Sources */,
 				A36F4DEB1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift in Sources */,

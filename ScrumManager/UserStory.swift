@@ -29,10 +29,10 @@ final class UserStory: Object,DBManagedObject, Commentable {
     //require ranking index
     //status
     
-    init(title: String, story: String, priority: Int) {
+    init(title: String, story: String, priority: UserStoryPriority) {
         self.title = title
         self.story = story
-        self.priority = UserStoryPriority(rawValue: priority)!
+        self.priority = priority
     }
     
     convenience init(dictionary: [String : Any]) {
@@ -49,9 +49,11 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
     //    let backlogRaw = dictionary["backlog"] as? Int ?? 0
         
-        let rawPriority = dictionary["priority"] as? Int
+        let priorityRaw = dictionary["priority"] as? Int ?? 0
         
-        self.init(title: title, story: story, priority: rawPriority!)
+        let priority = UserStoryPriority(rawValue: priorityRaw)!
+        
+        self.init(title: title, story: story, priority: priority)
         
         self._objectID = id
         

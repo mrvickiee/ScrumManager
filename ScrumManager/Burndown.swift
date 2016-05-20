@@ -27,6 +27,39 @@ struct Burndown {
         return currentDate.dateByAddingTimeInterval(numberOfDaysTillCompletition * secondsInDay)
     }
     
+}
+
+struct BurndownChart: CustomDictionaryConvertible {
     
+    var workRemaining: [NSTimeInterval] = []
     
+    var workRemainingInHours: [Int] {
+        
+        return workRemaining.map({ (duration) -> Int in
+           return Int(duration / (60 * 60))
+        })
+    }
+    
+    var labels: [String] = []
+    
+    static let dateFormatter: NSDateFormatter = NSDateFormatter()
+    
+    init(reports: [ScrumDailyReport], totalWorkRemaining: NSTimeInterval) {
+        
+        var workAchieved: NSTimeInterval = 0
+        var index = 1
+        for report in reports {
+            
+            workAchieved += report.dailyWorkDuration
+            let workRemainingForDay = totalWorkRemaining - workAchieved
+            workRemaining.append(workRemainingForDay)
+            labels.append("\(index)")
+            index += 1
+            
+        }
+    }
+    
+    var dictionary: [String : Any] {
+        return ["workRemaining": workRemainingInHours, "labels": labels]
+    }
 }

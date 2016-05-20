@@ -8,6 +8,12 @@
 <div class="large-12 columns">
 {{#userList}}
 <div class="row collapse user-list-column" data-equalizer>
+<div class="small-10 large-10 columns" data-equalizer-watch>
+<a href="/users/{{username}}">
+{{name}}<br>
+<span style="font-size: small">{{email}}</span>
+</a>
+</div>
 <div class="small-2 large-2 columns text-center user-list-delete-button"">
 <a method="post" href="/users/{{username}}/edit" style="display:{{visibility}}">
 Edit
@@ -16,12 +22,6 @@ Edit
 <i class="icon-trash"></i>
 </a>
 <img src={{profilePictureURL}} class="show-profile-image">
-</div>
-<div class="small-10 large-10 columns" data-equalizer-watch>
-<a href="/users/{{username}}">
-{{name}}<br>
-<span style="font-size: small">{{email}}</span>
-</a>
 </div>
 
 
