@@ -49,6 +49,30 @@ extension JSONArrayType {
     }
 }
 
+extension Int {
+    static func randomNumber(max: Int, min: Int = 0) -> Int{
+    
+       return Int(arc4random_uniform(UInt32(max)) + UInt32(min))
+    }
+}
+
+extension NSDate {
+    
+    func isSameDay(date:NSDate) -> Bool {
+        
+        let calender = NSCalendar.currentCalendar()
+        let flags: NSCalendarUnit = [.Day, .Month, .Year]
+        let compOne: NSDateComponents = calender.components(flags, fromDate: self)
+        let compTwo: NSDateComponents = calender.components(flags, fromDate: date)
+        
+        return (compOne.day == compTwo.day && compOne.month == compTwo.month && compOne.year == compTwo.year);
+    }
+    
+    
+    
+    
+}
+
 extension RangeReplaceableCollectionType where Generator.Element : Equatable {
     
     // Remove first collection element that is equal to the given `object`:

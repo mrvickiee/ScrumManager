@@ -128,7 +128,7 @@ class ProductBacklogController: AuthController {
             response.redirectTo(userStory)
             
         }
-        
+        response.requestCompletedCallback()
         
     }
     
@@ -137,8 +137,9 @@ class ProductBacklogController: AuthController {
         // Handle new post request
         if let title = request.param("title"), body = request.param("story"), priority = request.param("storyPriority") {
             
+            let userStoryPriority = UserStoryPriority(rawValue: Int(priority)!)!
             // Valid Article
-            let newUserStory = UserStory(title: title, story: body, priority: Int(priority)!)
+            let newUserStory = UserStory(title: title, story: body, priority: userStoryPriority)
             
             // Save Article
             do {

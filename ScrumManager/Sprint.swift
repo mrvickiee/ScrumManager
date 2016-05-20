@@ -62,7 +62,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary
         
-        self.reviewReport = SprintReviewReport(dictionary: reviewReport!)
+      //  self.reviewReport = SprintReviewReport(dictionary: reviewReport!)
         
         if let tasks = dictionary["tasks"] as? [Task] {
             self.tasks = tasks
@@ -107,6 +107,7 @@ extension Sprint {
         return [
             "title": title,
             "body": body,
+            "userStoryIDs" : userStoryIDs,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -119,10 +120,11 @@ extension Sprint {
     
     var dictionary: [String: Any] {
         var dict = keyValues
-        dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
-            return userStory.dictionary
-        })
         
+       // dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
+         //   return userStory.dictionary
+       // })
+ 
         let tasks = try! DatabaseManager().executeFetchRequest(Task.self)
         
         dict["tasks"] = tasks.map({ (task) -> [String: Any] in
@@ -130,6 +132,17 @@ extension Sprint {
         })
         
         return dict
+    }
+    
+    var totalAmountOfWork: NSTimeInterval {
+        
+        var amountOfWork: NSTimeInterval = 0
+        
+        for userStory in userStories {
+            amountOfWork += userStory.estimatedDuration ?? 0
+        }
+        
+        return amountOfWork
     }
     
 }

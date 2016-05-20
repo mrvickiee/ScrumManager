@@ -45,5 +45,6 @@ public func PerfectServerModuleInit() {
     Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
     
     print("\(Routing.Routes.description)")
+        
     
 }

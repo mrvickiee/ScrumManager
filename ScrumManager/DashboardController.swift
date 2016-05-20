@@ -36,7 +36,12 @@ class DashboardController: AuthController {
         let userTasks = try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
             return task.dictionary
         })
-        let dictionary = ["tasks": userTasks] as [String: Any]
+        
+        // Generate Burndown chart 
+        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 2))
+        
+        let dictionary = ["tasks": userTasks, "burndownChart": burndownChart.dictionary] as [String: Any]
+        
         return dictionary
     }
     

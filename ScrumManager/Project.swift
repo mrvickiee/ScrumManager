@@ -203,6 +203,8 @@ extension Project {
         
         try! DatabaseManager().updateObject(self, updateValues: ["sprintIDs": sprintIDs])
     }
+    
+    
 }
 
 extension Project: Routable {

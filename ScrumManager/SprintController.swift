@@ -16,18 +16,22 @@ import PerfectLib
     
     let pageTitle: String = "Sprints"
     
+    var projectID : String?
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
         if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
             print("new is called")
+            
+            
             let sprint = Sprint(body: body, title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
+
+            let databaseManager = try! DatabaseManager()
             
             
-            
-                let databaseManager = try! DatabaseManager()
+            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID!)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -37,9 +41,10 @@ import PerfectLib
                 sprint.userStoryIDs = userStoryIDs
             do{
                 try databaseManager.insertObject(sprint)
+                tmpProject?.addSprint(sprint)
                 
                 print("inserted \(sprint)")
-                response.redirectTo(modelPluralName)
+                response.redirectTo("sprint/\(sprint.identifier)")
                 
             }catch{
                 print("failed to create sprint")
@@ -51,7 +56,7 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
-        
+        projectID = request.param("projectID")
         let db = try! DatabaseManager()
         let userStories = db.executeFetchRequest(UserStory)
         var counter = 0
@@ -79,8 +84,19 @@ import PerfectLib
             return MustacheEvaluationContext.MapType()
         }
         
+        
+        
+        
+        
+        
+        
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
+        
+        let chosenUserStory = sprint.dictionary["userStories"]
+        
+        
+        
         
         //response.requestCompletedCallback()
         return values
@@ -118,6 +134,7 @@ import PerfectLib
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
         
         print("New Comment")
+        
         guard var sprint = getSprintWithID(Int(identifier)!) else {
             return response.redirectTo("/")
         }

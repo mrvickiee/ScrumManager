@@ -22,7 +22,6 @@ final class SprintReviewReport: Object, DBManagedObject{
     
     var comments: [Comment] = []
     
-    
     convenience init(dictionary: [String : Any]) {
         
         
