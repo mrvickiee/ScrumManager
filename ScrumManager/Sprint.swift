@@ -134,6 +134,17 @@ extension Sprint {
         return dict
     }
     
+    var totalAmountOfWork: NSTimeInterval {
+        
+        var amountOfWork: NSTimeInterval = 0
+        
+        for userStory in userStories {
+            amountOfWork += userStory.estimatedDuration ?? 0
+        }
+        
+        return amountOfWork
+    }
+    
 }
 
 extension Sprint : Routable {
