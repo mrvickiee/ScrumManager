@@ -14,11 +14,12 @@ class TaskController: AuthController {
     
     let pageTitle: String = "Tasks"
     
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
-        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
-        modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+    func  actions() -> [String: ControllerAction]  {
         
-        modelActions["assign"] = {(request, resp,identifier) in self.assignUser(request, response: resp, identifier: identifier)}
+        var modelActions:[String: ControllerAction] = [:]
+        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["assign"] = ControllerAction() {(request, resp,identifier) in self.assignUser(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -57,14 +58,19 @@ class TaskController: AuthController {
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["task"] = task.dictionary
+        var taskDictionary = task.dictionary
+        
         
         if task.isAssigned(user) {
             values["assignAction"] = "Unassign from task"
         } else {
             values["assignAction"] = "Accept task"
         }
-        
+        if let user = task.user {
+            taskDictionary["teamMembers"] = [user.dictionary]
+        }
+
+        values["task"] = taskDictionary
         
         return values
         

@@ -32,6 +32,9 @@ This is the mustache template file for the tap tracker example.
 <a href="{{urlPath}}/assign">{{assignAction}}</a>
 
 <h5>Assigned Team members</h5>
+{{#teamMembers}}
+<a href="{{pathURL}}">{{name}}</a>
+{{/teamMembers}}
 
 {{#comments}}
 {{#user}}

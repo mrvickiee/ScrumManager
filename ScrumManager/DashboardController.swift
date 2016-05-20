@@ -38,7 +38,7 @@ class DashboardController: AuthController {
         })
         
         // Generate Burndown chart 
-        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 2))
+        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         let dictionary = ["tasks": userTasks, "burndownChart": burndownChart.dictionary] as [String: Any]
         
