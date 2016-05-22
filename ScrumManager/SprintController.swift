@@ -44,7 +44,8 @@ import PerfectLib
                 tmpProject?.addSprint(sprint)
                 
                 print("inserted \(sprint)")
-                response.redirectTo("sprint/\(sprint.identifier)")
+                
+                response.redirectTo(sprint)
                 
             }catch{
                 print("failed to create sprint")

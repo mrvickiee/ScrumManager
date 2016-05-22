@@ -53,11 +53,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.comments = loadCommentsFromDictionary(dictionary)
         
         // Load User Stories
-        if let userStoryIdentifier = dictionary["userStories"] as? [String] {
-            userStoryIDs = userStoryIdentifier
- 
-        }
-        print("\(userStoryIDs)")
+        self.userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
         
         
         let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary

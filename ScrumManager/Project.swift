@@ -63,6 +63,8 @@ final class Project: Object, DBManagedObject {
         
         let productOwnerIdentifier:String = (dictionary["productOwnerID"] as? String!)!
         
+        let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
+        
         self.init(name: name, projectDescription: projectDesc ?? "")
         
         self._objectID = id
@@ -72,6 +74,8 @@ final class Project: Object, DBManagedObject {
         self.scrumMasterID = scrumMasterIdentifier
         
         self.productOwnerID = productOwnerIdentifier
+        
+        self.sprintIDs = sprintIDs
         
         if let startDateEpoch = dictionary["startDate"] as? Int {
             startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
@@ -84,7 +88,7 @@ final class Project: Object, DBManagedObject {
        // startDate = (dictionary["startDate"] as? String)!
         //endDate = (dictionary["endDate"] as? String)!
         
-        if let teamIDs = dictionary["teamMemberIDs"] as? [String] {
+        if let teamIDs = (dictionary["teamMemberIDs"] as? JSONArrayType)?.stringArray {
             teamMemberIDs = teamIDs
         }
         
@@ -197,11 +201,11 @@ extension Project {
     
     func addSprint(sprint: Sprint) {
         
-        if let objectID = sprint._objectID {
-            sprintIDs.append(objectID)
-        }
+        sprintIDs.append(sprint._objectID!)
         
         try! DatabaseManager().updateObject(self, updateValues: ["sprintIDs": sprintIDs])
+        
+        
     }
     
     

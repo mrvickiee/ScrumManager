@@ -30,7 +30,6 @@ enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
         }
     }
 }
-
 enum TaskStatus: Int, CustomJSONConvertible {
     case Unassigned
     case Todo

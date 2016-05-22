@@ -29,6 +29,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     //require ranking index
     //status
     
+    
     init(title: String, story: String, priority: UserStoryPriority) {
         self.title = title
         self.story = story
