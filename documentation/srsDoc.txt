@@ -1,0 +1,1719 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+SP-Management System
+Software Requirement Specification
+                                                Version 2.0 
+
+
+Revision History
+Date
+Version
+Description
+Author
+28/03/2016
+1.0
+First version of SRS
+Sui Paul Ang
+
+
+30/03/2016
+1.1
+Modified introduction, overall description, product function, functional requirements. Added non-functional requirements
+Ben Rogers
+01/04/2016
+1.11
+Modified functional requirements, added non-functional requirements
+Ben Rogers
+05/04/2016
+2.0
+Added functional requirements, modified constraints and user characteristics. Prepare for mid submission.
+Sui Paul Ang
+
+
+
+
+Table of Contents
+Introduction…………………………………………………………………....…….….17
+Purpose………………………………………………………………………....….17
+Scope……………………………………………………………………………….17
+References…………………………………………...........................................18
+Overview…………………………………………………………………………...18
+Overall Description…………………………………………………….......................18
+Product description………………………………………………………..…...…18
+System interface…………………………………………………………...18
+User interface…………………………………………………………....…19
+Hardware interface…………………………………………………………19
+Operations…………………………………………………………………..19
+Product functions………………………………………………………………….19
+User characteristics……………………………………………………………….20
+Constraints…………………………………………………………………………20
+Assumptions and Dependencies…………………………………………...…...21
+Specific Requirements……….……………………………………………………......21
+Functional requirements………………………………………………………….21
+User management subsystem……………………………………………21
+Project management subsystem…………………………………………27
+Report Management Subsystem…………………………………………49
+Non-functional requirements……………………………………………………..56
+
+
+
+
+Software Requirements Specification
+     Introduction
+1.1 Purpose
+The purpose of this document is to describe the specifications on the external behaviours of a web based scrum manager system. It also describes the non-functional requirements, product overview, constraints and other factors mandatory to provide a complete and thorough understanding of the scrum manager system.
+
+The document is targeted towards the system development team and potential users of the system.
+
+1.2 Scope
+The software system to be produced is a web-based scrum project management system, which will be referred to as “SP-Management System” throughout this document.
+
+SP-Management System aims to provide services to mainly three groups of users – Scrum Master, Product Owner and Team Members. In this system, Administrator is a specialized role of Scrum master. Administrator can perform all the functionality that a Scrum master can perform but in the global context of the system. The main responsibility of scrum master is to manage the team and project effectively and efficiently and regulate the users in the system.
+
+In order to fulfil the needs of all users, SP-management system is developed into three modules, each of which is an independent but correlated subsystem.
+Users Management Subsystem manages profiles of every users of SP-Management system.
+Project Management Subsystem manages the creation and management of project including 
+Report management subsystem is responsible for generating daily scrum report, sprint review report, release burndown chart and sprint burndown chart.
+
+Although SP-management system is built to manage the Scrum methodology process by providing useful tools to end-users and removing the limitation of time and space, it is unable to fully automate the entire process, which causes the following limitations:
+Team members are required to update the progress of each tasks they chosen manually.
+Development team have to discuss and estimate the efforts for each tasks in order for the system to generate corresponding charts. 
+
+
+1.3 Definitions, Acronyms and Abbreviations
+“Delete” refers to moving the target data to an archive.
+
+1.4 References
+SRS example (REQ_SoftwareRequirementsSpecification.pdf)
+SRS template (rup_srs.dot)
+
+1.5 Overview
+The remainder of this document is categorised into two main sections:
+Overall Description (section 2) –  describes the general factors that affect the To-Be system and its requirement.
+The Specific Requirements (section 3) – contains all software requirements that the system must meet in order to satisfy the end-users needs.
+
+2. Overall Description
+2.1   Product perspective 
+Currently, there is no project management system that is being utilised by the client. The software tools used by clients are from various vendors. The tools are not integrated and are unable to complement each other, for example, some of the features are redundant. This incurs costs which could be otherwise utilised on another aspect of the system. Furthermore, it is not specifically customized to the client’s business domain.  
+
+The SP-Management system has been developed to address these issues. In addition to that, SP-Management system is able to assist scrum masters to effectively manage and monitor the team. This allows greater interaction between the team and product owner and allows the team to work together regardless of the barrier of time and space.
+
+2.1.1 System Interface
+The SP-Management system to be developed is a web-based application that can be deployed on the internet. The end-users can simultaneously log into the system from any PC that have internet connections and interact with the system for their purposes such as update tasks progress, create new project and view burndown charts. 
+
+The system is built using client-server architecture.  The system is deployed on a web-server, users which is the client pc then send requests to the server. The server accepts these requests, process them, retrieve relevant information from database then return the results to the clients.
+
+2.1.2 User interface
+The user interfaces provided to client machines  can be accessed through any web browser from any platform (Mac, Windows or Linux). The user interfaces are consistent for all users. However, different roles of users will have different functionalities and accessibility.
+Database access to obtain user and project information will be performed indirectly through the SP-management system. 
+
+2.1.3 Hardware interfaces
+The system should able to execute on a personal computer with web browser installed and have active internet connection.
+
+2.1.4 Operations
+The SP-management system should be easy for all users to use. In other words, no specific information or skills are required to use the system. 
+
+The server installation and maintenance should be simple enough for the network administrator to access and perform and should not require any extra technical skill from the administrator.
+
+Backup and recovery operations must be specified in the case of a database corruption, power failure, or any incidents that may cause the system to fail.
+
+2.2 Product functions
+The main purpose of SP-management system is to assists in client’s Scrum methodology process. 
+
+For Scrum master, SP-management system helps them to manage the project through the following main functions:
+Monitor the team progress through visual charts and graphs
+Posting tasks up to the virtual board for team members to choose
+Providing numerical information regarding the time left, work remaining, etc dynamically 
+For team members, SP-management system provides these core functionalities:
+Choose tasks to work online without needing to inform the team manually
+Provide a comment area for them to conduct impromptu discussion
+Being informed about the project progress at all times
+
+For product owner, SP-management system helps them by providing these main functionalities:
+Allowing them to post user story online
+Monitor the progress of the project
+Allow product owner to easily provide feedback on the team progress
+More detailed information on the system functionalities will be listed in a later part of the document. Functionalities of the system tailored based on the client’s business need so that all activities and tasks carried out by client is simplified and more convenient.
+
+2.3 User characteristics
+The users of the SP-management system include Administrator, Scrum master, team members and product owner.
+Administrator is a specialized role of Scrum master. Administrator can perform everything the Scrum master can perform but in global context of the system. Administrator is also in charge of creating account and deactivating account for appropriate stakeholders to authorize their access to the system.
+Scrum master will manage the system, plan and create projects and sprint. Scrum master also monitor the team progress and address any issue the team face. They have strong knowledge on Scrum methodology. Scrum master only have full accessibility of the project they are in charge of.
+Product owner is the representative of the project’s stakeholders. Product owner is responsible of creating user story.
+Team members are developers who choose their own tasks and responsible of completing the tasks, giving ideas and opinion on the project.
+
+2.4 Constraints
+The system should strictly obey and satisfy the following constraints:
+Authentication: The system must check the email address and password of end-users when logging in.
+Access control: The system must provide appropriate access level to different users of different roles.
+The system must be able to run on the lab computer at University of Wollongong.
+The system must be developed by May 2016.
+
+
+
+
+
+
+
+2.5 Assumptions and dependencies
+The following assumptions and dependencies for the system are stated:
+All potential users excluding product owner must have basic understanding on Scrum methodology.
+All potential users have email address.
+All potential users should understand and able to read basic English.
+All potential users know how to operate a PC and web browser.
+
+Specific Requirements
+Each requirement specified (either functional or non-functional) of the SP-management system is ranked based on its degree of importance.
+Critical: Highest level of importance. Requirements that are ranked Critical are those that reflect the core functionalities of SP-management system and must be firstly implemented. Critical is equivalent to the client’s term of “core requirement”.
+Essential: medium level of importance. Essential requirements are those that reflect important functionalities of SP-management system and must be covered when Critical requirements have been implemented. Essential is equivalent to client’s term of “Non-core requirement”.
+Optional: lowest level of importance. These are functionalities that may or may not implemented in the system. Optional requirements are only considered when all Critical, Essential requirements are completed. Optional is equivalent to client’s term of “stretch goal”.
+
+3.1 Functional Requirements
+3.1.1 User Management Subsystem
+This section describes the functionalities that the system provides to Scrum Master, Team members and product owner to manage user profiles.
+
+3.1.1.1 Administrator Side
+This section includes all the function that administrator can perform to manage the profile of other users.
+
+
+
+
+
+
+
+
+
+Requirement #:F_3.1.1.1_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI interface for administrator to create a new account for scrum master, team members or product owner. Details required during account creation:
+Email as login id
+Full name
+Password
+Role (Product owner, Team member or scrum master)
+
+Rationale: Scrum master wants to create user account for team member or product owner to allow them to have access to the system.
+Source: Client – Daniel Avery
+Fit Criterion: A login page is displayed and the user can login to the Scrum Manager system.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+Requirement: #:F_3.1.1.1_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a GUI interface for administrator to deactivate a user account.
+Rationale: Scrum master wants to deactivate an account to remove the users rights to access to the system.
+Source: Client – Daniel Avery
+Fit Criterion: A user account is successfully deactivated.
+Dependencies: The to-be deactivated user account must exists. Refer to F_3.1.1.1_01.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+
+
+
+
+Requirement #:F_3.1.1.1_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI interface for administrator to edit existing user accounts information. Profile consists of:
+Email as login id
+Full name 
+Password 
+Role
+Expertise
+
+Rationale: Scrum master wants to edit user profile due to inaccurate information or user has changed/lost details
+Source: Client – Daniel Avery
+Fit Criterion: A user account is successfully edited.
+Dependencies: The to-be edited user account must exists. Refer to F_3.1.1.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+3.1.1.2 User side
+This section includes all functions that any user (Administrator, scrum master, product owner and team member) can use to interact with SP-Management system.
+Requirement #:F_3.1.1.2_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI interface for any users to login to SP-Management system.
+Rationale: Users want to login to SP-Management system.
+Source: Client – Daniel Avery
+Fit Criterion: A login page is displayed and users can login to the SP-Management system successfully.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+
+
+
+Requirement #:F_3.1.1.2_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for users to view other team members, product owner or scrum master profile page. A profile page contains:
+Email
+Full name
+Expertise
+Projects involved
+Users of the system can click on the user’s name to view their profile page.
+Rationale: User wants to view other user details in the company.
+Source: Client – Daniel Avery
+Fit Criterion: A user profile can be viewed successfully.
+Dependencies: The to-be viewed user account must exists. Refer to F_3.1.1.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #:F_3.1.1.2_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for users to edit their own profiles details.
+Editable profile details include:
+Email
+Password
+Expertise
+Full Name
+
+Rationale: User wants to edit their profile details.
+Source: Client – Daniel Avery
+Fit Criterion: A user profile details can be edited.
+Dependencies: The to-be edited user account must exists. Refer to F_3.1.1.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+
+
+
+Requirement #:F_3.1.1.2_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a dashboard for user. The dashboard will be displayed when user login to the system. The items displayed in dashboard is specific to user roles. Details of dashboard below assumed that users are involved in a project. If users are not involved in any project, the dashboard will show “No project involved” message.
+For Team members, dashboard consists of:
+Sprint burndown chart
+List of chosen task
+List of task available to choose from the sprint backlog
+Daily scrum report
+For product owner, dashboard consists of:
+Release burndown chart
+List of user story added to the product backlog
+A section which shows Project details (Project name, description, expected date of completion, scrum master in charge)
+For scrum master, dashboard consists of:
+Release burndown chart
+Sprint burndown chart
+Daily scrum report
+List of team members and their assigned tasks
+For Administrator, dashboard consists of:
+List of projects.
+
+Rationale: Each user should have their own customized dashboard to improve their productivity and user experience.
+Source: Client – Daniel Avery
+Fit Criterion: Each user with different role is displayed with correct dashboard successfully.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+Requirement #:F_3.1.1.2_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a personal messaging system that allow end-users of the system to send messages between them.
+Rationale: User wants to send a personal message to other user.
+Source: Client – Daniel Avery
+Fit Criterion: A personal message can be sent successfully.
+Dependencies: None.
+Rank of importance: Optional
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #:F_3.1.1.2_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system should allow users to receive notification regarding any new comments in the comment section they has commented in.
+Rationale: User wants to know when a user has posted or replied to their comment in the comment section.
+Source: Client – Daniel Avery
+Fit Criterion: A notification can be sent successfully to concerning user.
+Dependencies: None.
+Rank of importance: Optional
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3.1.2 Project Management Subsystem
+This section describes the functionalities that SP-Management system provides to the end-users of the system to manage the tasks, user stories, and creation of project and sprint.
+
+3.1.2.1 Project creation and management
+This section includes features for project creation and management.
+
+Requirement #: F_3.1.2.1_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for scrum master and administrator to create new project.
+Details for the new project include
+Title of the project
+Description
+End date of project
+Product owner
+Scrum master in charge (If scrum master is creating the project, system will automatically assumed he is the scrum master)
+Team members (minimum 3, there is no maximum limit for amount of team members, only one scrum master can be in the project)
+
+Rationale: Scrum master or Administrator wants to create a new project.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and Administrator successfully created a new project.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+
+
+
+
+Requirement #: F_3.1.2.1_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for scrum master and administrator to edit the details of the project. Administrator can edit any project details but Scrum Master can only edit the details of the project he in charge of. Editable details include:
+Title of the project
+Description
+End date of project
+Product owner
+Scrum master in charge (Only administrator can change this field)
+Team members (minimum 3, there is no maximum limit for amount of team members, only one scrum master can be in the project)
+
+Rationale: Scrum master or administrator wants to edit the details of existing project.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and administrator can edit the details of existing project successfully.
+Dependencies: The to-be edited project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.1_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow scrum master and administrator to delete existing project. Administrator can delete any project in the system but Scrum master can only delete the project he is in charge of. When deleting a project, the system will prompt a confirmation message before deleting the project. 
+Rationale: Scrum master or administrator wants to delete an existing project.
+Source: Client – Daniel Avery
+Fit Criterion: An existing project can be deleted by Scrum Master and administrator successfully.
+Dependencies: The to-be deleted project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.1_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator, scrum master, product owner and team members to view the details of the projects they are involved in. Administrator are allowed to view details of any project in the system. Information displayed on a project dashboard include:
+Title of the project
+Description
+End date
+Scrum master in charge
+Product owner
+Team members involved
+Sprint count
+
+Rationale: Users want to view the overall status of the project they are involved in.
+Source: Client – Daniel Avery
+Fit Criterion: The project can be viewed successfully by users that involved in the project.
+Dependencies: The to-be edited project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.1_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow users involved in the project to view the product backlog. There will be only one product backlog for each project. Product backlog contains all the user story created by product owner. The product backlog is in tabular format and sorted according to the ascending order of ranking index.
+Each entry consists of:
+Ranking index
+Title
+Priority
+Estimation
+Each title is clickable and is linked to the detailed page of user story.
+Rationale: User wants to view the product backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Product backlog can be viewed successfully by users involved in the project.
+Dependencies: For detailed description of ranking index, refer to F_3.1.2.2_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.1_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a real-time chat box section which allow all users involved in the project to chat.
+Rationale: Users in the project wants to communicate with each other.
+Source: Client – Daniel Avery
+Fit Criterion: Users can send message successfully using the chat box.
+Dependencies: None.
+Rank of importance: Optional
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.1_07
+Requirement Type:
+Functional
+Use case #:
+Description: The system should allow scrum master and administrator declare a project as finished. Scrum master and administrator is able to click “End project” button. System will display a confirmation box before executing the function. Project ended will show status as “Completed” and allow the team member in the project to be able to be assigned to other project.
+Rationale: Scrum master or administrator mark a project as completed.
+Source: Client – Daniel Avery
+Fit Criterion: An existing project can be mark as complete by Scrum Master and administrator successfully.
+Dependencies: The project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+3.1.2.2 User story creation and management
+This section includes all the features for user story creation and management.
+
+Requirement #: F_3.1.2.2_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI interface for administrator, product owner and Scrum Master to create user stories for the product backlog. Details required when creating user-story include:
+Title
+Description
+Ranking index (It is the numerical sequence of the user story, the index is useful if there are two user story with the same priority. The user story’s with lower ranking will be implemented first.)
+Priority (low, medium, high, critical or block).
+User story created will automatically moved to the product backlog.
+Rationale: Administrator, scrum master or product Owner wants to create user stories for implementation.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, scrum master and product Owner successfully create user stories.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.2_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator, scrum Master and product owner to modify the user story. Editable details include:
+Title
+Description
+Ranking index
+Estimation (Story point used in this system is a Fibonacci sequence) eg.(1,2,3,5,8,13,21,34,45)
+Priority (low, medium, high, critical or block).
+
+Rationale: Administrator, scrum master or product owner wants to modify the details of the user story.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, scrum Master and product owner able to modify the details of user story successfully.
+Dependencies: The to-be modified user story must exists and for detailed description of ranking index. Refer to F_3.1.2.2_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.2_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator, scrum Master and product owner to delete the user story. Deletion will moved it to an archive.
+Rationale: Administrator, Scrum master or product owner want to delete user story.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, scrum Master and product owner able to delete the user story successfully.
+Dependencies: The to-be deleted user story must exists. Refer to F_3.1.2.2_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+Requirement #: F_3.1.2.2_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to add estimates for each user story. Estimates are done in story points. Story point used in this system is a fibonacci sequence eg.(1,2,3,5,8,13,21,34,45)
+Rationale: Administrator or Scrum master wants to give estimation for each user story in the product backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Estimates can be added successfully by scrum master and administrator to a user story.
+Dependencies: The user story must exists. Refer to F_3.1.2.2_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.2_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow Scrum master, team members and product owner of the project to view the user story details. Details that can be viewed on each user story include:
+Title
+Description
+Ranking index
+Priority (low, medium, high, critical or block).
+Estimates in story points
+Comments section
+
+Rationale: Users involved in the projects wants to view the detail of the user story in more detail.
+Source: Client – Daniel Avery
+Fit Criterion: Details of user story can be viewed successfully by users involved in the project.
+Dependencies: The user story must exists. For detailed description of ranking index and estimates.  Refer to F_3.1.2.2_01 and F_3.1.2.2_04.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.2_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, product owner, scrum master and team member) to post comment in user story’s comment section of the project they are involved in.
+Details required when commenting include:
+Description (Max character of 250)
+User name (automatically captured by the system)
+Date created (automatically captured by the system)
+
+Rationale: User wants to post comment in the user story’s comment section to discuss about the user story.
+Source: Client – Daniel Avery
+Fit Criterion: User able to post comment in the user story’s comment section successfully.
+Dependencies: The to-be commented user story must exists. Refer to F_3.1.2.2_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+Requirement #: F_3.1.2.2_07
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, product owner scrum master and team member) to edit the comment they posted in the user story’s comment section.
+Rationale: User wants to edit comment they has posted in the user story’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to edit comment in the user story’s comment section successfully.
+Dependencies: The to-be edited comment must exists. Refer to F_3.1.2.2_06.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+Requirement #: F_3.1.2.2_08
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, product owner, scrum master and team member) to view the comments in the user story’s comment section.
+Rationale: User wants to view comments in the user story’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to view comments in the user story’s comment section successfully.
+Dependencies: The to-be viewed comment must exists. Refer to F_3.1.2.2_06.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+
+
+
+Requirement #: F_3.1.2.2_09
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, product owner, scrum master and team member) to remove the comment they have posted in the user’s story comment section.
+Rationale: User wants to remove comment they has posted in the user story’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to remove comment they posted in the user story’s comment section successfully.
+Dependencies: The to-be removed comment must exists. Refer to F_3.1.2.2_06.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.2_10
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for administrator and scrum master to remove comments other user has posted in the user story’s comment section.
+Rationale: Administrator or scrum master wants to remove comments in user story’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and scrum master able to remove comments in the comment section successfully.
+Dependencies: The to-be removed comment must exists. Refer to F_3.1.2.2_06.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+
+
+
+
+
+3.1.2.3 Sprint creation and management
+This section includes functionalities for sprint creation and management.
+
+Requirement #: F_3.1.2.3_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to create new sprint for the project. Details required when creating a new sprint:
+Sprint Unique ID (Generated by the system)
+Description
+Expected duration (in days)
+Select user stories that will be implemented for this sprint. ( minimum 1 , there is no maximum limit)
+
+Rationale: Administrator or scrum master wants to create new sprint for the project.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and Scrum master successfully create a sprint for the project.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to edit the details of each sprint. Editable details include:
+Description
+Expected duration (in days)
+Select user stories that will be accomplished for this sprint
+
+Rationale: Scrum master or administrator wants to edit the details of each sprint
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and administrator successfully edited the details of the sprint.
+Dependencies: The to-be edited sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+Modified by Paul Ang 04/04/2016
+
+
+Requirement #: F_3.1.2.3_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator, scrum master and team members involved in the project to view the details of each sprint in the project they are involved in. Information viewable for each sprint include:
+Sprint ID
+Sprint backlog which contain user story with elaborated tasks
+Date created
+Expected duration (in days)
+estimated time required to complete the sprint (Time estimation can be done by calculating the time needed to complete each tasks)
+Comment section
+
+Rationale: Users wants to view the details of sprint for the project.
+Source: Client – Daniel Avery
+Fit Criterion: User involved in the project successfully viewed the details of the sprint for the project.
+Dependencies: The to-be viewed sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 04/04/2016
+
+Requirement #: F_3.1.2.3_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to delete sprint created for the project. 
+Rationale: Administrator or scrum master wants to delete sprint in a particular project.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and scrum master successfully deleted a sprint in the project.
+Dependencies: The to-be deleted sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.3_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to post comment in the comment section of each sprint in the project they are involved in. 
+Details required when commenting include:
+Description (Max character of 250)
+User name (automatically captured by the system)
+Date created (automatically captured by the system)
+
+Rationale: User wants to post comment in the sprint to discuss the progress of the sprint or obstacles they faced.
+Source: Client – Daniel Avery
+Fit Criterion: User able to post comment in the sprint’s comment section successfully.
+Dependencies: The to-be commented sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to edit the comment they posted in each sprint of the project they are involved in.
+Rationale: User wants to edit comment they has posted in the sprint’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to edit comment they posted in the sprint’s comment section successfully.
+Dependencies: The to-be edited comment must exists. Refer to F_3.1.2.3_05.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_07
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to view the comments in the comment section in each sprint of the project they are involved in.
+Rationale: User wants to view comment other user has posted in the sprint’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to view comment other user has posted in the sprint’s comment section successfully.
+Dependencies: The to-be viewed comment must exists. Refer to F_3.1.2.3_05.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_08
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a GUI for administrator and scrum master to remove other user comment in the comment section of the sprint.
+Rationale: Administrator and scrum master wants to remove other user’s comment due to misleading or inappropriate comments.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and scrum master able to remove other user’s comment in the sprint’s comment section successfully.
+Dependencies: The to-be removed comment must exists. Refer to F_3.1.2.3_05.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_09
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for administrator, team member and scrum master to remove comment they posted in the comment section of the sprint.
+Rationale: Administrator, team member and scrum master wants to remove comment they posted in the comment section of the sprint.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, team member and scrum master able to remove the comment they posted successfully.
+Dependencies: The to-be removed comment must exists. Refer to F_3.1.2.3_05.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.2.3_10
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a sprint backlog which is viewable by administrator, scrum master and team member who are involved in the project. Sprint backlog consists of tasks which needed to be implemented in this sprint. The tasks are arranged in tabular form and sorted ascendingly according to priority. 
+Each row consists of:
+Title
+Priority
+Estimates
+Status
+Each row’s title is clickable and linked to their respective detailed task page.
+Rationale: Administrator, team member and scrum master wants to view the sprint backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, team member and scrum master able view the sprint backlog successfully.
+Dependencies: For more detailed description of task, refer to F_3.1.2.4_03.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+3.1.2.4 Tasks creation and management
+This section describes the functionalities for task creation and management.
+Requirement #: F_3.1.2.4_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to add tasks for each selected user story for the sprint backlog. Details required for creation of each tasks include:
+Select user story that this tasks is for
+Title
+Description
+Estimation in hours
+Priority  (low, medium, high, critical or block).
+User story with tasks added will be available in sprint backlog awaiting for team members to complete.
+Rationale: Administrator or scrum master wants to create tasks for each user story for sprint backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and scrum master successfully created tasks for user story.
+Dependencies: The user story must be selected for this sprint. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+Modified by Paul Ang 04/04/2016
+
+Requirement #: F_3.1.2.4_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and  scrum master to remove tasks from the sprint backlog.
+Rationale: Administrator or scrum master wants to remove the tasks in the sprint backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and administrator successfully removed task in the sprint backlog.
+Dependencies: The to-be removed task must exists. Refer to F_3.1.2.4_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 04/04/2016
+
+Requirement #: F_3.1.2.4_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator, scrum master and team members to view details of each tasks in the sprint backlog of the project they are involved in. Details include:
+Title
+Description
+Estimation in hours
+Priority  (low, medium, high, critical or block).
+Team member assigned to
+Status (Unassigned, Assigned, In-progress, Testing, Complete)
+Work done in hours. (Default is 0h)
+This task is for which user story
+Comment section
+
+Rationale: The team wants to view details of each tasks in the sprint backlog of the project they are involved in.
+Source: Client – Daniel Avery
+Fit Criterion: Tasks can be viewed successfully by the project team.
+Dependencies: The to-be viewed task must exists. Refer to F_3.1.2.4_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 04/04/2016
+
+
+
+Requirement #: F_3.1.2.4_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow administrator and scrum master to edit details of each tasks in the sprint backlog of the project they are involved in. Details include:
+Title
+Description
+Estimation in hours
+Priority  (low, medium, high, critical or block).
+Team member assigned to
+Status (Unassigned, Assigned, In-progress, Testing, Complete)
+Work done in hours. (Default is 0h)
+This task is for which user story
+
+Rationale: Administrator and scrum master wants to edit the details of each tasks in the sprint backlog of the project.
+Source: Client – Daniel Avery
+Fit Criterion: Details of the tasks can be edited successfully by the scrum master and administrator.
+Dependencies: The to-be edited task must exists. Refer to F_3.1.2.4_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 04/04/2016
+
+
+Requirement #: F_3.1.2.4_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for team member to choose any tasks they would like to perform from the sprint backlog. There is no limit as for how many tasks can a team member choose.
+Rationale: Team member wants to choose tasks they would like to perform in each sprint from sprint backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Team member successfully chosen tasks they would like to complete in each sprint.
+Dependencies: The tasks must exists. Refer to F_3.1.2.4_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.4_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for team member to remove tasks from their list of chosen tasks for each sprint. At the side of each selected tasks, there will be a “x” icon which indicate removal. The system will prompt a confirmation message before removing the task. The removed tasks will be available to choose for other team member in the sprint backlog. 
+Rationale: Team member wants to remove tasks in their to-do list they selected from the sprint backlog.
+Source: Client – Daniel Avery
+Fit Criterion: Team member successfully removed tasks from the to-do list and the task is available to select by other team member again in the sprint backlog.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.4_07
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for team member to view their list of chosen tasks in each sprint. The list will be displayed on a tabular format and sorted according to Priority, highest priority will be at the first. Details displayed by each row in the table include:
+Title
+Priority (low, medium, high, critical or block).
+Status (Unassigned, Assigned, In-progress, Testing, Complete)
+Work done in hours. (Default is 0h)
+Each row is clickable and is linked to the tasks detailed description page.
+Rationale: Team member wants to view the tasks they have selected in each sprint.
+Source: Client – Daniel Avery
+Fit Criterion: Team member successfully view the list of tasks they selected in each sprint.
+Dependencies: For more detailed description of information that can be viewed on the tasks, refer to F_3.1.2.4_03.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Paul Ang 5/04/2016
+
+Requirement #: F_3.1.2.4_08
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the team members to update their progress on each tasks. Progress details include:
+Status (Unassigned, Assigned, In-progress, Testing, Complete)
+Hours worked on
+
+Rationale: Team member wants to update the progress of their tasks.
+Source: Client – Daniel Avery
+Fit Criterion: Team member successfully updated the progress of their tasks.
+Dependencies: The to-be updated tasks must be selected by the team member. Refer to F_3.1.2.4_05.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+
+Requirement #: F_3.1.2.4_09
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to comment on the tasks in the sprint backlog. Details required when commenting include:
+Description (Max character of 250)
+User name (automatically captured by the system)
+Date created (automatically captured by the system)
+
+Rationale: User wants to comment on the tasks to discuss on the implementation method, opinion or looking for help.
+Source: Client – Daniel Avery
+Fit Criterion: User able to comment on a task successfully.
+Dependencies: The to-be commented task must exists. Refer to F_3.1.2.4_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+
+Requirement #: F_3.1.2.4_10
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to edit the comment they posted for each tasks.
+Rationale: User wants to edit the comment they posted for the task.
+Source: Client – Daniel Avery
+Fit Criterion: User able to edit the comment they posted successfully.
+Dependencies: The to-be edited comment must exists. Refer to F_3.1.2.4_09.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.4_11
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to remove the comment they posted for each tasks.
+Rationale: User wants to remove the comment they posted for the task.
+Source: Client – Daniel Avery
+Fit Criterion: User able to remove the comment they posted successfully.
+Dependencies: The to-be removed comment must exists. Refer to F_3.1.2.4_09.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+Requirement #: F_3.1.2.4_12
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the users (administrator, scrum master and team member) to view the comments in the task’s comment section.
+Rationale: User wants to view  the comments in the task’s comment section.
+Source: Client – Daniel Avery
+Fit Criterion: User able to view the comment other user has posted successfully.
+Dependencies: The to-be viewed comment must exists. Refer to F_3.1.2.4_09.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 4/04/2016
+
+
+Requirement #: F_3.1.2.4_13
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a GUI for the administrator and scrum master to delete comment other user has posted in the task’s comment section.
+Rationale: Administrator or scrum master wants to remove the comment other user has posted for the task.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator and scrum master able to remove the comments posted in the task’s comment section successfully.
+Dependencies: The to-be deleted comment must exists. Refer to F_3.1.2.4_09.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.2.4_14
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a GUI animation for team members to drag the task from sprint backlog to their to-do bucket list.
+Rationale: Team members wants to have drag and drop feature to improve their user experience.
+Source: Client – Daniel Avery
+Fit Criterion: Team member is able to drag and drop the task to their to-do list.
+Dependencies: None.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 5/04/2016
+
+
+
+
+
+
+
+
+
+
+
+
+
+Requirement #: F_3.1.2.4_15
+Requirement Type:
+Functional
+Use case #:
+Description: The system should provide a GUI for team member to record their time taken to worked on a task. The system should allow team member to click on “start” on a task and click “stop” when they finish working on a task. The system will automatically update the time spent on the task.
+Rationale: Team member wants the system to record the time automatically.
+Source: Client – Daniel Avery
+Fit Criterion: Team member are able to use the system feature to keep track of the time they spent on a particular task.
+Dependencies: The task must be selected by the team member. Refer to F_3.1.2.4_05.
+Rank of importance: Optional
+Supporting Materials: None
+History:
+Created by Paul Ang 5/04/2016
+
+3.1.3 Report Management Subsystem
+This section describes the functionalities that the system provides to the end-users in generating reports and charts such as burndown charts, sprint review, daily scrum and the commenting mechanism for each report.
+
+3.1.3.1 Chart creation and management
+This section describes the types of charts generated by the system.
+
+Requirement #: F_3.1.3.1_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a graphical sprint burndown chart for administrator, scrum master and team member of the project to view. Sprint burndown chart is dynamically updated each time a team member update their tasks and hours worked. The graph consists of :
+Y-axis : Hours worked by the team
+X-axis :  The duration of sprint (days) 
+Sprint burndown chart shows the performance of the team in the specific sprint.
+Rationale: Administrator, Team member,  or scrum master wants to view the sprint burndown chart for each sprint to get a hold of the team performance in each sprint.
+Source: Client – Daniel Avery
+Fit Criterion: Team member, scrum master and administrator able to view the sprint burndown chart successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+Modified by Paul Ang 4/04/2016
+
+Requirement #: F_3.1.3.1_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall provide a GUI for the administrator, team members, scrum master and product owner of each project to view the release burndown chart. Release burndown chart is dynamically updated each time a sprint is completed. The graph consists of :
+Y-axis : Story points
+X-axis : Sprint id
+Release burndown chart shows the overall performance of the team in the whole project.
+Rationale: Administrator, team member, scrum master and product owner wants to view the release burndown chart for each sprint.
+Source: Client – Daniel Avery
+Fit Criterion: Administrator, team member, scrum master and product owner able to view the release burndown chart successfully.
+Dependencies: The project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+Modified by Paul Ang 5/04/2016
+
+
+3.1.3.2 Report creation and management
+This section describes the types of report generated by the system.
+
+Requirement #: F_3.1.3.2_01
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall generate the sprint review report automatically at the end of each sprint which is viewable by the administrator, team members, product owner and scrum master of that project. Sprint review report includes 
+What user story was done and what has not been completed in the sprint
+comment section. 
+User story is considered complete if and only if all tasks is completed. Otherwise, it will be reported as incomplete. It is a summary of things that were fully completed and an area to allow people to discuss about the sprint.
+Rationale: Administrator, scrum master, product owner and team members wants to view the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Sprint review report is generated automatically at the end of each sprint, which is viewable by all the users involved in the project and able to comment.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+Requirement #: F_3.1.3.2_02
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall generate the daily scrum report automatically, which is only viewable by administrator, team members and scrum master involved in the project. Daily scrum report should be displayed on the project dashboard of the users. Daily scrum report includes
+A daily digest of status and progress of each tasks in a particular sprint (to-do, in progress, completed). It will be updated daily. 
+A comment section that allows users to comment.
+
+Rationale: Scrum master, administrator or team members wants to view the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Daily scrum report is generated automatically at the end of each sprint, which is viewable by scrum master, administrator and team members involved in the project and able to comment.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 1/04/2016
+
+Requirement #: F_3.1.3.2_03
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator or team members involved in a project to comment on the daily scrum report. 
+Details required when commenting include:
+Description (Max character of 250)
+User name (automatically captured by the system)
+Date created (automatically captured by the system)
+
+Rationale: Scrum master, administrator or team members wants to comment in the daily scrum report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master, administrator and team members involved in a project is able to comment on the daily scrum report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.3.2_04
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator or team members involved in a project to view comments in the comment section of the daily scrum report. 
+Rationale: Scrum master, administrator or team members wants to view comments in the daily scrum report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master, administrator and team members involved in a project is able to view the comments on the daily scrum report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.3.2_05
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator or team members involved in a project to delete comments they posted in the comment section of the daily scrum report. 
+Rationale: Scrum master, administrator or team members wants to delete comments they posted in the daily scrum report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master, administrator and team members involved in a project is able to delete the comments they posted on the daily scrum report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+
+
+
+Requirement #: F_3.1.3.2_06
+Requirement Type:
+Functional
+Use case #:
+Description: The system should allow the scrum master and administrator to delete comments in the comment section of the daily scrum report. 
+Rationale: Scrum master or administrator wants to delete inappropriate comment in the comment section of daily scrum report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and administrator able to delete other user comment in the daily scrum report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+Requirement #: F_3.1.3.2_07
+Requirement Type:
+Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator, product owner and team member involved in a project to comment on the sprint review report. 
+Details required when commenting include:
+Description (Max character of 250)
+User name (automatically captured by the system)
+Date created (automatically captured by the system)
+
+Rationale: Scrum master, product owner, administrator or team members wants to comment in the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Users involved in a project is able to comment on the sprint review report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+
+Requirement #: F_3.1.3.2_08
+Requirement Type: Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator, product owner and team member involved in a project to view comments on the sprint review report. 
+Rationale: Scrum master, product owner, administrator or team members wants to view comment in the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master, product owner, administrator or team members involved in a project is able to view comment on the sprint review report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+Requirement #: F_3.1.3.2_09
+Requirement Type: Functional
+Use case #:
+Description: The system shall allow the scrum master, administrator, product owner and team member involved in a project to delete comments they posted on the sprint review report. 
+Rationale: Scrum master, product owner, administrator or team members wants to delete  comment they posted in the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master, product owner, administrator or team members involved in a project is able to delete comment they posted on the sprint review report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+
+
+
+
+
+
+Requirement #: F_3.1.3.2_10
+Requirement Type: Functional
+Use case #:
+Description: The system should allow the scrum master and administrator to delete comments posted in the comment section of sprint review report.
+Rationale: Scrum master or administrator wants to delete inappropriate comments in the comment section of the sprint review report.
+Source: Client – Daniel Avery
+Fit Criterion: Scrum master and administrator able to delete comments in the comment section of sprint review report successfully.
+Dependencies: The sprint must exists. Refer to F_3.1.2.3_01.
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+
+Requirement #: F_3.1.3.2_11
+Requirement Type:
+Functional
+Use case #:
+Description: The system should allow the scrum master to comment on what went wrong at the end of the project. The system should prompt a pop out box which allow scrum master to comment when clicking the “End project” button. 
+Rationale: Scrum master wants to comment on the overall progress of the project, any obstacles face and review for future reference.
+Source: Client – Daniel Avery
+Fit Criterion: A comment section exists which allow scrum master to comment on the project overall performance.
+Dependencies: The project must exists. Refer to F_3.1.2.1_01.
+Rank of importance: Optional
+Supporting Materials: None
+History:
+Created by Paul Ang 21/03/2016
+Modified by Ben Rogers 30/03/2016
+
+
+
+
+
+
+
+
+
+
+3.2 Non-functional Requirements
+The following are non-functional requirements of the system.
+
+Requirement #: NF_3.2_01
+Requirement Type:
+Performance
+Use case #:
+Description: System shall be able to work 24 hours per day, seven days per week except during maintenance time.
+Rationale: All users want to access the system 24/7.
+Source: Client – Daniel Avery
+Fit Criterion: Any user can use the system at any time (24 hours per day, seven days per week).
+Dependencies: None.
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+
+
+Requirement #: NF_3.2_02
+Requirement Type:
+Performance
+Use case #:
+Description: System should respond to any action of any user within 30 seconds to 2 minutes.
+Rationale: A user wants to receive a response to his action quickly.
+Source: Client – Daniel Avery
+Fit Criterion: Any response to any users action should be performed within 30 seconds to 2 minutes.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+Modified by Ben Rogers on 06/04/2016
+
+
+
+
+
+
+
+
+Requirement #: NF_3.2_03
+Requirement Type:
+Performance
+Use case #:
+Description: The system shall display confirmation to users within 30 seconds after the user submits information to the system
+Rationale: A user wants a response from the system.
+Source: Client – Daniel Avery
+Fit Criterion: The system should display confirmation to the user within 30 seconds after the user submits information to the system.
+Dependencies:  None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+Modified by Ben Rogers 06/04/2016
+
+Requirement #: NF_3.2_04
+Requirement Type:
+Usability
+Use case #:
+Description: The system shall be a web-based graphical user interface and the language should be in English.
+Rationale: User wants to use GUI with English language to interact with the system.
+Source: Client – Daniel Avery
+Fit Criterion: The system able to runs on a web client with graphical user interface and in English.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+
+
+
+
+
+
+
+
+
+
+
+
+
+Requirement #: NF_3.2_05
+Requirement Type:
+Usability
+Use case #:
+Description: The system should provide a User Manual for the user. The user manual shall include step by step instructions on using the system and definitions for terms and acronyms.
+Rationale: To guide users in using the system.
+Source: Client – Daniel Avery
+Fit Criterion: User manual is provided and accessible to all users.
+Dependencies: None
+Rank of importance: Optional
+Supporting Materials: User Manual
+History:
+Created by Ben Rogers 30/03/2016
+
+Requirement #: NF_3.2_06
+Requirement Type:
+Usability
+Use case #:
+Description: The system shall not require users to have any specific knowledge or special technical skill to be able to use it. The system should be user-friendly enough and appropriate for a computer-literate user community with no additional training on the system so that users can use it after at most one day of exploring the system.
+Rationale: Users want to use the system without having to take any training records on the system.
+Source: Client – Daniel Avery
+Fit Criterion: The user can use the system after at most one day of exploring the system.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+
+
+
+
+
+
+
+
+
+Requirement #: NF_3.2_07
+Requirement Type:
+Reliability
+Use case #:
+Description: System should be able to recover from failure within no more than 1.5 hours.
+Rationale: The system should recover from failure as soon as possible to support 24/7 services.
+Source: Client – Daniel Avery
+Fit Criterion: System should recover within no more than 1.5 hours.
+Dependencies: None
+Rank of importance: Essential
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+
+Requirement #: NF_3.2_08
+Requirement Type:
+Reliability
+Use case #:
+Description: System shall be able to support up a scalable amount of simultaneous users at any time.
+Rationale: To support simultaneous usage of the system.
+Source: Client – Daniel Avery
+Fit Criterion: The system should allow a scalable amount of simultaneous users at any time.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+
+Requirement #: NF_3.2_09
+Requirement Type:
+Performance
+Use case #:
+Description: The system shall be able to store at least 4 user profiles.
+Rationale: To allow user to access their profiles. 
+Source: Client – Daniel Avery
+Fit Criterion: The system should successfully store at least 4 user profiles.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 30/03/2016
+Modified by Ben Rogers 06/04/2016
+
+Requirement #: NF_3.2_10
+Requirement Type:
+Performance
+Use case #:
+Description: The system shall be able to load a graph or report in no longer than 60 seconds
+Rationale: A user wants to see a graph or report in a suitable timeframe.
+Source: Client – Daniel Avery
+Fit Criterion: The system successfully load a graph or report in no longer than 60 seconds.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 01/04/2016
+
+Requirement #: NF_3.2_11
+Requirement Type:
+Availability
+Use case #:
+Description: The system shall be accessible from the UOW lab computers.
+Rationale: A user wants to show the product to the client.
+Source: Client – Daniel Avery
+Fit Criterion: The system should successfully run on the UOW lab computers.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 01/04/2016
+
+Requirement #: NF_3.2_12
+Requirement Type:
+Platform
+Use case #:
+Description: The system shall be accessible from any computer running Ubuntu or Windows 7 and a modern web browser.
+Rationale: A user wants to use the system.
+Source: Client – Daniel Avery
+Fit Criterion: The system successfully run on a machine running either Windows 7 or Ubuntu with a modern web browser.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 01/04/2016
+Modified by Ben Rogers 06/04/2016
+
+Requirement #: NF_3.2_13
+Requirement Type:
+Security
+Use case #:
+Description: The system shall be able to transmit information securely to a server without any changes in information.
+Rationale: A user wants their information securely delivered.
+Source: Client – Daniel Avery
+Fit Criterion: The system should successfully transmit information securely to a server without any changes in information.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 01/04/2016
+
+
+Requirement #: NF_3.2_14
+Requirement Type:
+Usability
+Use case #:
+Description: The system shall follow the W3C  standards.
+Rationale: To support international web-based application standards.
+Source: Client – Daniel Avery
+Fit Criterion: The system is able to load in web-browser that support W3C standards successfully.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: W3C Standards https://www.w3.org/TR/
+History:
+Created by Ben Rogers 01/04/2016
+
+Requirement #: NF_3.2_15
+Requirement Type:
+Accuracy
+Use case #:
+Description: All graph data must accurately display information to within two degrees of accuracy.
+Rationale: To provide accurate information to the end-users of the system.
+Source: Client – Daniel Avery
+Fit Criterion: Graph data is able to display information within accuracy of two degrees successfully.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 01/04/2016
+Modified by Ben Rogers on 06/04/2016
+
+Requirement #: NF_3.2_16
+Requirement Type:
+Security
+Use case #:
+Description: The access permissions for system data may only be changed by the system’s administrator.
+Rationale: Admin wants control over the access permissions.
+Source: Client – Daniel Avery
+Fit Criterion: Access rights are granted and modified by the system administrator
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 06/04/2016
+
+Requirement #: NF_3.2_17
+Requirement Type:
+Reliability
+Use case #:
+Description: The system shall have a mean time between failures (MBTF) of 1 months.
+Rationale: The client wants the system to be reliable.
+Source: Client – Daniel Avery
+Fit Criterion: System has a mean time between failures of 1 months.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None 
+History:
+Created by Ben Rogers 06/04/2016
+
+Requirement #: NF_3.2_18
+Requirement Type:
+Throughput
+Use case #:
+Description: The system shall be able to create up to 100 projects a day.
+Rationale: The client wants the system to be reliable enough to support multiple projects.
+Source: Client – Daniel Avery
+Fit Criterion: System can support the creation of up to 100 projects a day.
+Dependencies: None
+Rank of importance: Critical
+Supporting Materials: None
+History:
+Created by Ben Rogers 06/04/2016
+
