@@ -15,6 +15,16 @@ class UserController: AuthController {
     
     let modelPluralName: String = "users"
     
+    func actions() -> [String: ControllerAction] {
+        var modelActions:[String: ControllerAction] = [:]
+        modelActions["deactivate"] = ControllerAction() {(request, resp,identifier) in self.deactivate(request, response: resp, identifier: identifier)}
+        
+        modelActions["activate"] = ControllerAction() {(request, resp,identifier) in self.activate(request, response: resp, identifier: identifier)}
+        
+        
+        return modelActions
+    }
+
     
     var anonymousUserCanView: Bool {
         return (try! DatabaseManager().countForFetchRequest(User.self)) == 0
@@ -32,6 +42,14 @@ class UserController: AuthController {
 
         for user in tempUserList{
             userList.append(user.dictionary)
+            if user.isActive{
+                userList[userList.count-1]["isActive"] = "none"
+                userList[userList.count-1]["isUnActive"] = "run-in"
+            }else{
+                
+                userList[userList.count-1]["isActive"] = "run-in"
+                userList[userList.count-1]["isUnActive"] = "none"
+            }
         }
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList
@@ -64,6 +82,7 @@ class UserController: AuthController {
             expertises.append(["expertise":expertise])
         }
         values["expertisesList"] = expertises
+        
         return values
     }
     
@@ -250,6 +269,36 @@ class UserController: AuthController {
         
         response.redirectTo("/users")
         response.requestCompletedCallback()
+    }
+    
+    func activate (request: WebRequest, response: WebResponse, identifier: String) {
+        let user = User.userWithUsername(identifier)
+        user?.isActive = true
+        do {
+            try DatabaseManager().updateObject(user!)
+        } catch {
+            print(error)
+
+        }
+        
+        response.redirectTo("/users")
+        response.requestCompletedCallback()
+    }
+    
+    
+    func deactivate (request: WebRequest, response: WebResponse, identifier: String) {
+        let user = User.userWithUsername(identifier)
+        user?.isActive = false
+        do {
+            try DatabaseManager().updateObject(user!)
+        } catch {
+            print(error)
+            
+        }
+        
+        response.redirectTo("/users")
+        response.requestCompletedCallback()
+
     }
     
     

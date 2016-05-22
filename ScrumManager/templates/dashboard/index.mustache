@@ -2,6 +2,8 @@
 <div class = "row">
 <div class="large-6 columns">
 {{#burndownChart}}
+<h3>Burndown Chart</h3>
+
 <canvas id="canvas" height="300" width="300"></canvas>
 <script>
 var ctx = document.getElementById("canvas");
@@ -10,11 +12,18 @@ type: 'bar',
 data: {
 labels: {{{labels}}},
 datasets: [{
+type: 'bar',
 label: '# of Hours',
 data: {{workRemaining}},
 backgroundColor: "#2199e8"
-
-}]
+},
+{
+type: 'line',
+label: 'Expected Hours remaining',
+data: {{projectedWorkRemaining}},
+fill: false
+}
+]
 },
 options: {
 scales: {
@@ -33,7 +42,7 @@ beginAtZero:true
 <h3>Assigned Tasks</h3>
 
 {{#tasks}}
-<a href="{{urlPath}}"><h4>{{body}}</h4></a>
+<a href="{{urlPath}}"><h4>{{title}}</h4></a>
 {{/tasks}}
 
 </div>

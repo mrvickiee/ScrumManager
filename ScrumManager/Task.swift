@@ -79,9 +79,9 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.workDone = (dictionary["workDone"] as? Double)!
+        self.workDone = dictionary["workDone"] as? Double ?? 0
         
-        self.estimates = (dictionary["estimates"] as? Double)!
+        self.estimates = (dictionary["estimates"] as? Double) ?? 0
         
         self._objectID = id
         

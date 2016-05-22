@@ -26,9 +26,10 @@ final class SprintReviewReport: Object, DBManagedObject{
         
         
         self.init()
-        
+
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
+
             for eachComment in commentsArray{
                 let dict = (eachComment as? JSONDictionaryType)?.dictionary
                 self.comments.append(Comment(dictionary: dict!))
@@ -74,20 +75,33 @@ final class SprintReviewReport: Object, DBManagedObject{
     
 }
 
-//extension SprintReviewReport : Routable {
-//    
-//    var dictionary: [String: Any] {
-//        return [
-//            "userStoriesCompleted": userStoriesCompleted,
-//            "tasks": tasks,
-//            "createdAt": NSDateFormatter().stringFromDate(createdAt!),
-//            "comments": comments.map({ (comment) -> [String: Any] in
-//                return comment.dictionary
-//            }),
-//        ]
-//    }
-//    
-//    var pathURL : String { return "/reports" }
-//    var editURL : String { return "/" }
-//    
-//}
+extension SprintReviewReport : Routable {
+    
+    var dictionary: [String: Any] {
+        return [
+            "userStoriesCompleted": userStoriesCompleted,
+            "tasks": tasks,
+            "createdAt": NSDateFormatter().stringFromDate(createdAt!),
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+        ]
+    }
+    
+    var keyValues:[String: Any] {
+        return [
+            "userStoriesCompleted": userStoriesCompleted,
+            "tasks": tasks,
+            "createdAt": NSDateFormatter().stringFromDate(createdAt!),
+            "comments": comments.map({ (comment) -> [String: Any] in
+                return comment.dictionary
+            }),
+
+        ]
+        
+    }
+    
+    var pathURL : String { return "/reports" }
+    var editURL : String { return "/reports" }
+    
+}

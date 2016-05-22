@@ -15,19 +15,17 @@ class SprintReviewReportController: AuthController {
     
     let modelPluralName: String = "reports"
     
-    
-    func actions() -> [String: (WebRequest,WebResponse, String) -> ()] {
-        var modelActions:[String: (WebRequest,WebResponse, String) -> ()] = [:]
-        modelActions["comments"] = {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+    func actions() -> [String: ControllerAction] {
+        var modelActions:[String: ControllerAction] = [:]
+        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
-        modelActions["edit"] = {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
+         modelActions["edit"] = ControllerAction() {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
         
-        modelActions["delete"] = {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
+         modelActions["delete"] = ControllerAction() {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
-    
-    
+
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         return [:]
     }
@@ -40,7 +38,7 @@ class SprintReviewReportController: AuthController {
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return [:]
         }
-        
+
         guard sprint.reviewReport?.tasks.count > 0 else{
             let reviewReport = SprintReviewReport()
             reviewReport.createdAt = NSDate()
@@ -90,18 +88,17 @@ class SprintReviewReportController: AuthController {
             }
         }
         values["commentList"] = commentList
-
         return values
         
     }
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
-        
+      print("11")
     }
     
     
     func edit(request: WebRequest, response: WebResponse, identifier: String) {
-        
+        print("33")
     }
     
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
@@ -123,7 +120,7 @@ class SprintReviewReportController: AuthController {
             reviewReport.comments.append(newComment)
             
             // Update the database
-            db.updateObject(sprint.self, updateValues: reviewReport.dictionary)
+            db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")
             
         }
