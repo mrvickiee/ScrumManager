@@ -56,9 +56,9 @@ final class Sprint: Object, DBManagedObject, Commentable {
         self.userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
         
         
-        let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary
-        
-        self.reviewReport = SprintReviewReport(dictionary: reviewReport!)
+        if let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary {
+            self.reviewReport = SprintReviewReport(dictionary: reviewReport)
+        }
         
         if let tasks = dictionary["tasks"] as? [Task] {
             self.tasks = tasks

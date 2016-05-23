@@ -27,8 +27,10 @@ struct Action: CustomDictionaryConvertible {
     
     let name : String
     
+    var isDestructive: Bool = false
+    
     var dictionary: [String: Any] {
-        return ["url": url, "icon": icon, "name": name]
+        return ["url": url, "icon": icon, "name": name, "isDestructive": isDestructive]
     }
 
 }

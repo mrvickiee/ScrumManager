@@ -63,6 +63,10 @@ h3 a {
     color: black;
 }
 
+.destructive a {
+    color: red;
+}
+
 body {
 }
 

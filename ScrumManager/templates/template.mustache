@@ -19,23 +19,21 @@ This is the mustache template file for the tap tracker example.
 
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="/stylesheets/foundation.min.js"></script>
-    <script src="js/foundation/foundation.topbar.js"></script>
-
-    <script src="/stylesheets/foundation-datepicker.js"></script>
     <script src="/stylesheets/Chart.min.js"></script>
-
-
-
     <title>Scrum Manager</title>
 </head>
 <body>
 
-    <div class="row">
-        <div class="large-2 columns">
+    <div class="expanded row large-collapse">
+        <div class="large-3 columns">
 <div class="top-bar" style="top-margin:0px;">
 <div class="top-bar-left">
+<ul class="dropdown menu" data-dropdown-menu>
+<li>
+<a href="{{pathURL}}">{{projectName}}</a>
 <ul class="menu">
-<li class="menu-text">My Project</li>
+<li><a href="{{projectPathURL}}">About</a></li>
+<li><a href="/projects">Switch Projects</a></li>
 </ul>
 </div>
 </div>
@@ -66,12 +64,8 @@ This is the mustache template file for the tap tracker example.
             </nav>
 
 
-
-
-
-
         </div>
-        <div class="large-10 columns">
+        <div class="large-9 columns">
 
 <div class="top-bar" style="top-margin:0px;">
 <div class="top-bar-left">
@@ -80,7 +74,7 @@ This is the mustache template file for the tap tracker example.
 
 
 {{#actions}}
-<li><a href="{{url}}"><i class="{{icon}}"></i>{{name}}</a></li>
+<li><a class="{{#isDestructive}}destructive{{/isDestructive}}" href="{{url}}"><i class="{{icon}}"></i>{{name}}</a></li>
 {{/actions}}
 </ul>
 </div>
@@ -91,7 +85,7 @@ This is the mustache template file for the tap tracker example.
 <li>
 <a href="{{pathURL}}">{{name}}</a>
 <ul class="menu">
-<li><a href="/users/0/edit">Edit Profile</a></li>
+<li><a href="{{pathURL}}/edit">Edit Profile</a></li>
 <li><a href="/logout">Log out</a></li>
 </ul>
 </li>

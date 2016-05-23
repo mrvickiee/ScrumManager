@@ -12,19 +12,16 @@ This is the mustache template file for the tap tracker example.
 
 <h3>{{title}}</h3>
 
-<h4>Description</h4>
-<h5 class="subheader">{{story}}</h5>
-
-<h4>Priority</h4>
-<h5 class="subheader">{{priority}}</h5>
-
-
-<h4>Status</h4>
-<h5 class="subheader">{{}}</h5>
-
-
-<h4>Estimates In Story Point</h4>
-<h5 class="subheader">{{estimatedDuration}}</h5>
+<dl>
+<dt>Description</dt>
+<dl>{{story}}</dl>
+<dt>Priority</dt>
+<dl>{{priority}}</dl>
+<dt>Status</dt>
+<dl>{{}}</dl>
+<dt>Estimates</dt>
+<dl>{{estimatedDuration}}</dl>
+</dl>
 
 </div>
 

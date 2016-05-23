@@ -67,11 +67,9 @@ extension NSDate {
         
         return (compOne.day == compTwo.day && compOne.month == compTwo.month && compOne.year == compTwo.year);
     }
-    
-    
-    
-    
 }
+
+
 
 extension RangeReplaceableCollectionType where Generator.Element : Equatable {
     

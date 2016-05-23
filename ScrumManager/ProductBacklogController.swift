@@ -19,7 +19,7 @@ class ProductBacklogController: AuthController {
     
     //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
     
-    func actions() -> [String: ControllerAction] {
+    func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         

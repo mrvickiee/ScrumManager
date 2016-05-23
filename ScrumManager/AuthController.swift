@@ -24,6 +24,18 @@ protocol AuthController: RESTController, RoutableController {
     
 }
 
+struct ScrumManagerSession {
+   
+    let userID: String
+    
+    let projectID: String?
+    
+    let projectName: String?
+    
+    let projectPathURL: String?
+    
+}
+
 extension AuthController {
     
     var anonymousUserCanView: Bool {
@@ -32,6 +44,21 @@ extension AuthController {
     
     var pageTitle: String {
         return "Scrum Manager"
+    }
+    
+    func currentSession(request: WebRequest, response: WebResponse) -> ScrumManagerSession? {
+        
+        let currentSession = response.getSession("user")
+        
+        let userID = currentSession["user_id"] as! String
+        
+        let projectName = currentSession["projectName"] as? String
+        
+        let projectID = currentSession["projectID"] as? String
+        
+        let projectPathURL = currentSession["projectPathURL"] as? String
+        
+        return ScrumManagerSession(userID: userID, projectID: projectID, projectName: projectName, projectPathURL: projectPathURL)
     }
     
     func currentUser(request: WebRequest, response: WebResponse) -> User? {
@@ -52,6 +79,16 @@ extension AuthController {
         return user
     }
     
+    func currentProject(request: WebRequest, response: WebResponse) -> Project? {
+        let session = currentSession(request, response: response)
+        
+        guard let projectID = session?.projectID, let project = try! DatabaseManager().getObjectWithID(Project.self, objectID: projectID)  else {
+            return nil
+        }
+
+        return project
+    }
+    
     func getUserInformation(request: WebRequest, response: WebResponse) -> [String: Any] {
         print("Getting user informmation")
 
@@ -62,6 +99,10 @@ extension AuthController {
         } else {
             return [:]
         }
+    }
+    
+    func availableActionsForControllerObjects() -> [Action] {
+        return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
     }
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -79,9 +120,16 @@ extension AuthController {
             return
         }
         
+       
+        
         // Add logged in user information to provided values for templates
         var values: MustacheEvaluationContext.MapType = ["user": user.viewDictionary]
         values["pageTitle"] = pageTitle
+        
+        if let session = currentSession(request, response: response) {
+            values["projectName"] = session.projectName
+            values["projectPathURL"] = session.projectPathURL
+        }
         
         values.update(routeDictionary)
         
@@ -113,7 +161,7 @@ extension AuthController {
                     if let action = request.urlVariables["action"]{
                         print("Found action \(action)")
                         
-                        if let controllerAction = actions()[action] {
+                        if let controllerAction = controllerActions()[action] {
                             if let url =  controllerAction.templateURL, mustacheDataSource = controllerAction.mustacheDataSource {
                                 
                                 let templateURL = request.documentRoot + url
@@ -153,10 +201,12 @@ extension AuthController {
                         values["url"] = "/\(modelPluralName)/\(identifier)"
                         let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
                         let editURL = "/\(modelPluralName)/\(identifier)/edit"
-
-                        values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         
-
+                        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+                        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+                        values["actions"] = [editAction.dictionary, deleteAction.dictionary]
+                        
+                       // values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                     }
                 }
@@ -183,8 +233,12 @@ extension AuthController {
                 
                // var values = try! list(request, response: response)
                 values.update(try! list(request, response: response))
-              
-                values["actions"] = [Action(url: newURL, icon: "icon-plus", name: "").dictionary]
+              //[Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false).dictionary]
+                
+                values["actions"] = availableActionsForControllerObjects().map({ (action) -> [String: Any] in
+                    return action.dictionary
+                })
+ 
                 // Add routing
                
                 response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
@@ -194,8 +248,6 @@ extension AuthController {
         }
         
         response.requestCompletedCallback()
-
-        
     }
     
     
