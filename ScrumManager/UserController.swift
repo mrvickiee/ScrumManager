@@ -15,7 +15,7 @@ class UserController: AuthController {
     
     let modelPluralName: String = "users"
     
-    func actions() -> [String: ControllerAction] {
+    func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["deactivate"] = ControllerAction() {(request, resp,identifier) in self.deactivate(request, response: resp, identifier: identifier)}
         

@@ -225,7 +225,7 @@ import PerfectLib
         return [:]
     }
     
-    func actions() -> [String: ControllerAction] {
+    func controllerActions() -> [String: ControllerAction] {
         
         var modelActions:[String: ControllerAction] = [:]
     

@@ -16,7 +16,7 @@ class ProjectController: AuthController {
     
     var modelPluralName: String = "projects"
     
-    func actions() -> [String : ControllerAction] {
+    func controllerActions() -> [String : ControllerAction] {
         return ["set": ControllerAction() {(request, resp,identifier) in self.switchProjects(request, response: resp, identifier: identifier)}]
         
 

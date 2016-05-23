@@ -80,9 +80,9 @@ extension AuthController {
     }
     
     func currentProject(request: WebRequest, response: WebResponse) -> Project? {
-        let currentSession = response.getSession("project")
+        let session = currentSession(request, response: response)
         
-        guard let projectID = currentSession["projectID"] as? String, let project = try! DatabaseManager().getObjectWithID(Project.self, objectID: projectID)  else {
+        guard let projectID = session?.projectID, let project = try! DatabaseManager().getObjectWithID(Project.self, objectID: projectID)  else {
             return nil
         }
 
@@ -99,6 +99,10 @@ extension AuthController {
         } else {
             return [:]
         }
+    }
+    
+    func availableActionsForControllerObjects() -> [Action] {
+        return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
     }
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -157,7 +161,7 @@ extension AuthController {
                     if let action = request.urlVariables["action"]{
                         print("Found action \(action)")
                         
-                        if let controllerAction = actions()[action] {
+                        if let controllerAction = controllerActions()[action] {
                             if let url =  controllerAction.templateURL, mustacheDataSource = controllerAction.mustacheDataSource {
                                 
                                 let templateURL = request.documentRoot + url
@@ -197,10 +201,12 @@ extension AuthController {
                         values["url"] = "/\(modelPluralName)/\(identifier)"
                         let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
                         let editURL = "/\(modelPluralName)/\(identifier)/edit"
-
-                        values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         
-
+                        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+                        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+                        values["actions"] = [editAction.dictionary, deleteAction.dictionary]
+                        
+                       // values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
                     }
                 }
@@ -227,8 +233,12 @@ extension AuthController {
                 
                // var values = try! list(request, response: response)
                 values.update(try! list(request, response: response))
-              
-                values["actions"] = [Action(url: newURL, icon: "icon-plus", name: "").dictionary]
+              //[Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false).dictionary]
+                
+                values["actions"] = availableActionsForControllerObjects().map({ (action) -> [String: Any] in
+                    return action.dictionary
+                })
+ 
                 // Add routing
                
                 response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
@@ -238,8 +248,6 @@ extension AuthController {
         }
         
         response.requestCompletedCallback()
-
-        
     }
     
     

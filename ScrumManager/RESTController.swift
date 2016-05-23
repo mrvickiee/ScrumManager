@@ -32,11 +32,24 @@ protocol RESTController: RequestHandler {
     
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType
     
-    func actions() -> [String: ControllerAction]
+    func controllerActions() -> [String: ControllerAction]
     
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
+    
+    func availableActionsForControllerObjects() -> [Action]
 }
 
 extension RESTController {
+    
+    
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
+    {
+        return []
+    }
+    
+    func availableActionsForControllerObjects() -> [Action] {
+        return []
+    }
     
     var modelPluralName: String {
         return "\(modelName)s"
@@ -46,7 +59,7 @@ extension RESTController {
         return [:]
     }
     
-    func actions() -> [String: ControllerAction] {
+    func controllerActions() -> [String: ControllerAction] {
         return [:]
     }
     

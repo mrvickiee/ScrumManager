@@ -1,5 +1,6 @@
 <div style="margin-top:2%">
 <div class = "row">
+{{#project}}
 <div class="large-6 columns">
 {{#burndownChart}}
 <h3>Burndown Chart</h3>
@@ -46,4 +47,8 @@ beginAtZero:true
 {{/tasks}}
 
 </div>
+{{/project}}
+{{^project}}
+<h1>No projects </h1>
+{{/project}}
 </div>

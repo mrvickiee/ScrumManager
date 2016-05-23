@@ -29,9 +29,13 @@ class DashboardController: AuthController {
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         
+        let session = currentSession(request, response: response)
+        
         guard let user = currentUser(request, response: response) else {
             return [:]
         }
+        
+        
         
         let userTasks = try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
             return task.dictionary
@@ -40,9 +44,18 @@ class DashboardController: AuthController {
         // Generate Burndown chart 
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
-        let dictionary = ["tasks": userTasks, "burndownChart": burndownChart.dictionary] as [String: Any]
+        if let _ = session?.projectID {
+            let dictionary = ["project": ["tasks": userTasks, "burndownChart": burndownChart.dictionary] as [String: Any]] as [String: Any]
+            return dictionary
+        }
+        else {
+            return [:]
+        }
         
-        return dictionary
+    }
+    
+    func availableActionsForControllerObjects() -> [Action] {
+        return []
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{

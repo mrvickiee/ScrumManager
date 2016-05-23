@@ -74,7 +74,7 @@ This is the mustache template file for the tap tracker example.
 
 
 {{#actions}}
-<li><a href="{{url}}"><i class="{{icon}}"></i>{{name}}</a></li>
+<li><a class="{{#isDestructive}}destructive{{/isDestructive}}" href="{{url}}"><i class="{{icon}}"></i>{{name}}</a></li>
 {{/actions}}
 </ul>
 </div>
