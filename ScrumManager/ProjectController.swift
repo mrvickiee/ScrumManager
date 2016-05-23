@@ -53,9 +53,21 @@ class ProjectController: AuthController {
         projectDictionary["scrumMasterName"] = scrumMaster?.name
         projectDictionary["productOwnerName"] = productOwner?.name
         projectDictionary["sprintURL"] = "/sprints/new?projectID=\(project._objectID!)"
+		projectDictionary["formattedDate"] = project.getFormattedDate()
+		
+		var sprintCounter = 1
+		let sprintJSON = project.sprints.map { (sprint) -> [String:Any] in
+			var tmp =  sprint.dictionary
+			tmp["formattedDate"] = sprint.getFormattedDate()
+			tmp["count"] = sprintCounter
+			sprintCounter += 1
+			return tmp
+		}
+		
+		
+		
         
-        
-        let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson]
+		let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson,"sprint" : sprintJSON]
         return values
     }
     

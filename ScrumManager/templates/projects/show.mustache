@@ -1,69 +1,73 @@
 <div style="margin-top:1%">
-<div class = "row">
-<div class="medium-6 columns">
-{{#project}}
-<h3>Details</h3>
-<dl>
-<dt>Project</dt>
-<dl>{{name}}</dl>
-<dt>Description</dt>
-<dl>{{projectDescription}}</dl>
-<dt>End Date</dt>
-<dl>{{endDate}}</dl>
-<dt>Scrum Master</dt>
-<dl>{{scrumMasterName}}</dl>
-<dt>Product Owner</dt>
-<dl>{{productOwnerName}}</dl>
-</dl>
-{{/project}}
-</div>
+	<div class = "row">
 
+		<div class="medium-6 columns">
+		{{#project}}
+		<h3>Details</h3>
+		<dl>
+		<dt>Project</dt>
+		<dl>{{name}}</dl>
+		<dt>Description</dt>
+		<dl>{{projectDescription}}</dl>
+		<dt>End Date</dt>
+		<dl>{{formattedDate}}</dl>
+		<dt>Scrum Master</dt>
+		<dl>{{scrumMasterName}}</dl>
+		<dt>Product Owner</dt>
+		<dl>{{productOwnerName}}</dl>
+		</dl>
+		{{/project}}
+		</div>
 
-<h3>Team members </h3>
+		<div class = "medium-6 columns">
+				<h3>Team members </h3>
+				<table class="medium-6 columns" id="memberList" >
+							<thead>
+								<tr>
+									<th>No.</th>
+									<th>Name</th>
+									<th>Email</th>
+								</tr>
 
-<table class="medium-6 columns">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                </tr>
+							</thead>
 
-            </thead>
+							<tbody>
+				{{#teamMember}}
+								<tr>
+									<td>{{count}}</td>
+									<td>{{name}}</td>
+									<td>{{email}}</td>
+								</tr>
+				{{/teamMember}}
+							</tbody>
+				</table>
+		</div>
 
-            <tbody>
-{{#teamMember}}
-                <tr>
-                    <td>{{count}}</td>
-                    <td>{{name}}</td>
-                    <td>{{email}}</td>
-                </tr>
-{{/teamMember}}
-            </tbody>
-        </table>
-     </div>
+	</div>
 </div>
 
 <div class="row align-bottom">
     <div class="large-12 columns">
-    <table class="large-12 columns" style="margin-top:1%">
+    <table class="large-12 columns" id="sprintTable" style="margin-top:1%">
         <thead>
             <tr>
                 <th>No.</th>
+				<th>Description</th>
                 <th>Date created</th>
                 <th>Duration</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-{{#sprints}}
+{{#sprint}}
             <tr>
+				<td>Sprint {{count}}</td>
                 <td>{{title}}</td>
-                <td> 12/07/2015</td>
-                <td> 15 days</td>
-                <td> Ended </td>
+				<td>{{formattedDate}}</td>
+				<td> {{duration}} hours</td>
+				<td> {{status}} </td>
             </tr>
-{{/sprints}}
+{{/sprint}}
         </tbody>
     </table>
 
@@ -76,3 +80,18 @@
 
     </div>
 </div>
+<script>
+$("#memberList").DataTable({
+paging:false,
+searching:true,
+autowidth:false,
+info:false
+}
+
+);
+
+$("#sprintTable").DataTable({
+paging:false,
+info:false
+})
+</script>

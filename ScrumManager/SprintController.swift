@@ -24,7 +24,7 @@ import PerfectLib
             print("new is called")
             
             
-            let sprint = Sprint(body: body, title: title, duration: duration)
+            let sprint = Sprint(title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
 
@@ -84,13 +84,6 @@ import PerfectLib
         guard let sprint = tempSprint else {
             return MustacheEvaluationContext.MapType()
         }
-        
-        
-        
-        
-        
-        
-        
         
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
@@ -211,7 +204,6 @@ import PerfectLib
             }
             
             oldSprint.title = newTitle
-            oldSprint.body = newBody
             oldSprint.duration = duration
             oldSprint.userStoryIDs = newUserStoryIDs
             

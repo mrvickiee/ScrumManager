@@ -36,8 +36,8 @@ final class Project: Object, DBManagedObject {
     
     var startDate: NSDate?
     
-    var endDate: NSDate?
-    
+	var endDate: NSDate?
+		
     
     //------- END Attribute
     init(name: String, projectDescription: String) {
@@ -204,11 +204,16 @@ extension Project {
         sprintIDs.append(sprint._objectID!)
         
         try! DatabaseManager().updateObject(self, updateValues: ["sprintIDs": sprintIDs])
-        
-        
     }
-    
-    
+	
+	func getFormattedDate()->String{
+		let dateFormatter = NSDateFormatter()
+		dateFormatter.dateFormat = "dd-MM-yyyy"
+		
+		return dateFormatter.stringFromDate(endDate!)
+	}
+	
+	
 }
 
 extension Project: Routable {

@@ -11,6 +11,8 @@ import PerfectLib
 import MongoDB
 
 final class UserStory: Object,DBManagedObject, Commentable {
+	
+	var type : storyType
     
     var title: String
     
@@ -24,16 +26,23 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var priority: UserStoryPriority
     
-    var estimatedDuration: Double?      //story points
+    var estimatedDuration: NSTimeInterval = 0      //story points
+	
+	var rakingIndex:Int?
+	
+	var epicLink : String = "None"
+	
+	var component : String
+	
+	var status: systemWideStatus = .Incomplete
+	
     
-    //require ranking index
-    //status
-    
-    
-    init(title: String, story: String, priority: UserStoryPriority) {
+	init(title: String, story: String, priority: UserStoryPriority, component: String, type:storyType) {
         self.title = title
         self.story = story
         self.priority = priority
+		self.component = component
+		self.type = type
     }
     
     convenience init(dictionary: [String : Any]) {
@@ -46,25 +55,35 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let identifier = dictionary["identifier"] as! Int
         
-        let timeEstimate = dictionary["estimatedDuration"] as? Int ?? 0
-        
-    //    let backlogRaw = dictionary["backlog"] as? Int ?? 0
+        let timeEstimate = dictionary["estimatedDuration"] as? Double ?? 0
         
         let priorityRaw = dictionary["priority"] as? Int ?? 0
-        
+		
+		let statusRaw = dictionary["status"] as? Int ?? 0
+		
+		let typeRaw = dictionary["type"] as? Int ?? 0
+		
+		let component = dictionary["component"] as? String ?? ""
+		
+        let status = systemWideStatus(rawValue: statusRaw)!
+		
         let priority = UserStoryPriority(rawValue: priorityRaw)!
+		
+		let type = storyType(rawValue: typeRaw)!
+
         
-        self.init(title: title, story: story, priority: priority)
+        self.init(title: title, story: story, priority: priority, component: component,type: type)
+		
+		
+		self.status = status
         
         self._objectID = id
-        
+		
         self.identifier = identifier
         
-        self.estimatedDuration = Double(timeEstimate)
+        self.estimatedDuration = timeEstimate
         
-     //   self.backlog = BacklogType(rawValue: backlogRaw)!
-        
-       
+  
         
         // Load Comments
         
@@ -93,6 +112,8 @@ final class UserStory: Object,DBManagedObject, Commentable {
         story = ""
         title = ""
         priority = .High
+		component = ""
+		type = .new
         super.init()
 
         return nil
@@ -110,6 +131,11 @@ extension UserStory {
             "title": title,
             "story": story,
             "priority" : priority,
+            "status": status,
+            "epic" : epicLink,
+            "component" : component,
+            "estimate" : estimatedDuration,
+            "type": type,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -125,6 +151,11 @@ extension UserStory {
             "title": title,
             "story": story,
             "priority" : priority,
+            "status" : status,
+            "estimate" : estimatedDuration,
+            "epic" : epicLink,
+            "type" : type,
+            "component":  component,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),

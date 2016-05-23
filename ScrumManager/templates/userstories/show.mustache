@@ -4,29 +4,58 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<div class="row large-12 columns">
-
-{{#userStory}}
-<article class="blog-post">
-
-
 <h3>{{title}}</h3>
 
-<dl>
-<dt>Description</dt>
-<dl>{{story}}</dl>
-<dt>Priority</dt>
-<dl>{{priority}}</dl>
-<dt>Status</dt>
-<dl>{{}}</dl>
-<dt>Estimates</dt>
-<dl>{{estimatedDuration}}</dl>
-</dl>
+<div class="row">
+<div class ="large-6 columns">
+
+{{#userStory}}
+
+
+
+	<dl>
+	<dt>Type</dt>
+	<dl>{{type}}</dl>
+	<dt>Title</dt>
+	<dl>{{title}}</dl>
+	<dt>Description</dt>
+	<dl>{{story}}</dl>
+	<dt>Priority</dt>
+	<dl>{{priority}}</dl>
+
+
+
+	</dl>
 
 </div>
 
+<div class = "large-6 columns">
+	<dl>
+		<dt> Component </dt>
+		<dl>{{component}} </dl>
+		<dt> Epic link </dt>
+		<dl> {{epic}} </dl>
+		<dt>Estimates in hour</dt>
+		<dl>{{estimate}}</dl>
+		<dt>Status</dt>
+		<dl>{{status}}</dl>
+	</dl>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
 <h4>Comments</h4>
-<div class="row large-12 columns" style="height:500px;overflow-y:scroll;">
+<div class="row large-12 columns">
 {{#comments}}
 {{#user}}
 <div class="profile-pic-med avatar">{{initials}}</div>
@@ -51,7 +80,6 @@ This is the mustache template file for the tap tracker example.
 </form>
 </div>
 
-</article>
 {{/userStory}}
 
 
