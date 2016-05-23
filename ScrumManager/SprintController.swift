@@ -90,11 +90,16 @@ import PerfectLib
         
         
         
+        
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
         
         let chosenUserStory = sprint.dictionary["userStories"]
         
+        // Generate Burndown chart
+        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        
+        values["burndownChart"] = burndownChart.dictionary
         
         
         
@@ -229,10 +234,4 @@ import PerfectLib
         return modelActions
     }
     
-
-    
-    
-    
-    
- 
  }

@@ -16,6 +16,12 @@ class ProjectController: AuthController {
     
     var modelPluralName: String = "projects"
     
+    func actions() -> [String : ControllerAction] {
+        return ["set": ControllerAction() {(request, resp,identifier) in self.switchProjects(request, response: resp, identifier: identifier)}]
+        
+
+    }
+    
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         let databaseManager = try! DatabaseManager()
         
@@ -29,8 +35,6 @@ class ProjectController: AuthController {
         
         let scrumMaster = project.scrumMaster
         let productOwner = project.productOwner
-        
-        
         
         var counter = 1
         
@@ -52,20 +56,27 @@ class ProjectController: AuthController {
         
         
         let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson]
-       
-        
-        
-        
-        
-        
         return values
     }
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
         
+        guard let user  = currentUser(request, response: response) else {
+            return [:]
+        }
+        
+        let projects: [Project]
+
         let databaseManager = try! DatabaseManager()
 
-        let projects = databaseManager.executeFetchRequest(Project.self)
+        switch user.role {
+        case .Admin:
+             projects = databaseManager.executeFetchRequest(Project.self)
+        default:
+            projects = user.projects
+            
+        }
+
         let projectsJSON = projects.map { (project) -> [String: Any] in
             return project.dictionary
         }
@@ -97,10 +108,6 @@ class ProjectController: AuthController {
             return scrumMasterDic
         }
         
-        
-        
-        
-        
         let values: MustacheEvaluationContext.MapType = ["teamMembers" : teamMembersJSON,
                                                          "productOwners" : productOwnerJSON,
                                                          "scrumMasters":scrumMasterJSON]
@@ -111,7 +118,7 @@ class ProjectController: AuthController {
     func new(request: WebRequest, response: WebResponse){
         //get all the input from the form
         
-        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwner = request.param("productOwner"),members = request.params("teamMembers"){
+        if let scrumMasterID = request.param("scrumMaster"), projectTitle = request.param("projectTitle"), projectDesc = request.param("projectDescription"), endDate = request.param("endDate"), productOwnerID = request.param("productOwner"),members = request.params("teamMembers"){
             
             let database = try! DatabaseManager()
             
@@ -127,24 +134,60 @@ class ProjectController: AuthController {
             let projectCount = database.countForFetchRequest(Project)
             
             let project = Project(name: projectTitle, projectDescription: projectDesc)      //create new project object
+            project._objectID = database.generateUniqueIdentifier()
+
             project.scrumMaster = scrumMaster
             project.identifier = projectCount
-            project._objectID = database.generateUniqueIdentifier()
             project.startDate = NSDate()
             project.endDate = dateFormatter.dateFromString(endDate)// tmp
-            project.productOwnerID = productOwner
+            project.productOwnerID = productOwnerID
             project.teamMemberIDs = members
             
             do {
                 try database.insertObject(project)
+                
+                // Update Scrum Master
+                scrumMaster.addProject(project)
+                database.updateObject(scrumMaster)
+                
+                // Update Product Owner
+                if let productOwner = database.getObjectWithID(User.self, objectID: productOwnerID) {
+                    productOwner.addProject(project)
+                    database.updateObject(productOwner)
+                }
+                
+                // Update Team Members
+                let teamMembers = database.getObjectsWithIDs(User.self, objectIDs: members)
+                for teamMember in teamMembers {
+                    teamMember.addProject(project)
+                    database.updateObject(teamMember)
+                }
+                
                 response.redirectTo("/projects")
-            }catch{
+            } catch {
                 print("Fail to add new project")
             }
             
-        }else{
-            response.requestCompletedCallback()
         }
+        
+        response.requestCompletedCallback()
+    }
+    
+    func switchProjects(request: WebRequest, response: WebResponse, identifier: String) {
+        
+        let databaseManager = try! DatabaseManager()
+
+        guard let project = databaseManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first else {
+            response.setStatus(404, message: "Not a valid project")
+            response.requestCompletedCallback()
+            return
+        }
+        
+        let session = response.getSession("user")
+        session.setProject(project)
+        
+        response.redirectTo("/")
+        response.requestCompletedCallback()
         
     }
     

@@ -62,7 +62,12 @@ class LoginHandler: RequestHandler {
                     // Setup Session
                     let session = response.getSession("user")
                     session["user_id"] = user._objectID
-                    //∂session.commit()
+                    
+                    let db = try! DatabaseManager()
+                    if let project = db.executeFetchRequest(Project.self).first {
+                        session.setProject(project)
+                    }
+                
                     
                     response.redirectTo("/")
                 }

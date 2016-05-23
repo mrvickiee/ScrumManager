@@ -92,3 +92,13 @@ extension MustacheTemplate {
         } 
     }
 }
+
+extension SessionManager {
+    
+    func setProject(project: Project) {
+        self["projectID"] = project._objectID
+        self["projectName"] = project.name
+        self["projectPathURL"] = project.pathURL
+    }
+    
+}

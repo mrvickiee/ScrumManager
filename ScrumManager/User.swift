@@ -33,6 +33,8 @@ final class User: Object {
     
     var project: String = "-"
     
+    var projectIDs: [String] = []
+    
     var role: UserRole = UserRole.TeamMember
     
     var username: String!
@@ -95,6 +97,8 @@ final class User: Object {
         self.username = username
         
         self.assignedTaskIDs = taskIDsArray
+        
+        self.projectIDs = (dictionary["projectIDs"]  as? JSONArrayType)?.stringArray ?? []
         
         if project != "" {
             self.project = project
@@ -180,6 +184,16 @@ extension User {
     
     func removeTask(task: Task) {
         assignedTaskIDs.removeObject(task._objectID!)
+    }
+    
+    func addProject(project: Project) {
+        
+        projectIDs.append(project._objectID!)
+    }
+    
+    var projects: [Project] {
+        let db = try! DatabaseManager()
+        return db.getObjectsWithIDs(Project.self, objectIDs: projectIDs)
     }
     
     var initials: String {

@@ -19,7 +19,6 @@ class UserController: AuthController {
     var anonymousUserCanView: Bool {
         return (try! DatabaseManager().countForFetchRequest(User.self)) == 0
     }
-    
    
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         let tempUserList = getUserList()
@@ -146,6 +145,25 @@ class UserController: AuthController {
             
         }
     }
+    
+    func changeProjects(request: WebRequest, response: WebResponse, identifier: String) ->  MustacheEvaluationContext.MapType {
+        
+        guard let user = User.userWithUsername(identifier) else {
+            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.requestCompletedCallback()
+            
+            return ["identifier":identifier]
+        }
+        
+        // get user projects
+        let userProjects = user.projects
+        let projectsJSON = userProjects.map { (project) -> [String: Any] in
+            return project.dictionary
+        }
+        
+        return ["projects": projectsJSON]
+    }
+    
     
     // When load edit page
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
