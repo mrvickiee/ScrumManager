@@ -37,6 +37,8 @@ final class User: Object {
     
     var role: UserRole = UserRole.TeamMember
     
+    var isActive: Bool = true
+    
     var username: String!
     
     init(email: String, name: String, authKey: String, role: Int, profilePictureURL: String) {
@@ -88,6 +90,8 @@ final class User: Object {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
+        let isActive = dictionary["isActive"] as? Bool ?? true
+        
         self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw, profilePictureURL: pictureURL)
                 
         self._objectID = id
@@ -103,6 +107,8 @@ final class User: Object {
         if project != "" {
             self.project = project
         }
+        
+        self.isActive = isActive
         
     }
     
