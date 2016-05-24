@@ -64,9 +64,6 @@ class ProjectController: AuthController {
 			return tmp
 		}
 		
-		
-		
-        
 		let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson,"sprint" : sprintJSON]
         return values
     }
@@ -78,7 +75,6 @@ class ProjectController: AuthController {
         }
         
         let projects: [Project]
-
         let databaseManager = try! DatabaseManager()
 
         switch user.role {
@@ -151,7 +147,7 @@ class ProjectController: AuthController {
             project.scrumMaster = scrumMaster
             project.identifier = projectCount
             project.startDate = NSDate()
-            project.endDate = dateFormatter.dateFromString(endDate)// tmp
+            project.endDate = dateFormatter.dateFromString(endDate)
             project.productOwnerID = productOwnerID
             project.teamMemberIDs = members
             
@@ -227,7 +223,6 @@ class ProjectController: AuthController {
             oldProject.name = projectTitle
             oldProject.projectDescription = projectDesc
             oldProject.scrumMaster = scrumMaster
-           // oldProject._objectID = oldProject._objectID
             oldProject.startDate = NSDate()
             oldProject.endDate = NSDate()// tmp
             oldProject.productOwnerID = productOwner
