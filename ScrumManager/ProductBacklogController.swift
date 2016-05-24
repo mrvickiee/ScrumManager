@@ -36,8 +36,6 @@ class ProductBacklogController: AuthController {
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
             var userStoryDict = userStory.dictionary
-            userStoryDict["index"] = counter
-            counter += 1
             
             return userStoryDict
         }

@@ -55,7 +55,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         let identifier = dictionary["identifier"] as! Int
         
-        let timeEstimate = dictionary["estimatedDuration"] as? Double ?? 0
+        let timeEstimate = dictionary["estimate"] as? Int ?? 0
         
         let priorityRaw = dictionary["priority"] as? Int ?? 0
 		
@@ -81,7 +81,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
 		
         self.identifier = identifier
         
-        self.estimatedDuration = timeEstimate
+        self.estimatedDuration = Double(timeEstimate)
         
   
         
@@ -152,7 +152,7 @@ extension UserStory {
             "story": story,
             "priority" : priority,
             "status" : status,
-            "estimate" : estimatedDuration,
+            "estimate" : Int(estimatedDuration/360),
             "epic" : epicLink,
             "type" : type,
             "component":  component,

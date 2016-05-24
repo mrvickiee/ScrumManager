@@ -4,21 +4,51 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-	<div class="row medium-8 large-7 columns">
+<div class = "row" style="top-margin:2%">
 
-		{{#userStories}}
-		<article class="blog-post">
+<table class="large-12 columns" id="storyList" >
+		<thead>
+			<tr>
+				<th>Ranking</th>
+				<th>Title</th>
+				<th>Type</th>
+				<th>Priority</th>
+				<th>Estimation</th>
+				<th>Epic Link</th>
+				<th>Status</th>
+				<th></th>
+			</tr>
+		</thead>
+{{#userStories}}
+		<tbody>
+			<tr>
+				<td>{{rankingIndex}}</td>
+				<td>{{title}}</td>
+				<td>{{type}}</td>
+				<td>{{priority}}</td>
+				<td>{{estimate}} hours</td>
+				<td>{{epicLink}}</td>
+				<td>{{status}}</td>
+				<td><a href=""class="warning button">Estimate</a>
+					<a href=""class="alert button">Delete</a>
+				</td>
+			</tr>
+{{/userStories}}
+		</tbody>
+	</table>
 
-<a href="{{urlPath}}"><h3>{{title}}</h3></a>
-			<p>{{story}}</p>
-           
-
-		</article>
-		{{/userStories}}
-
-	</div>
 
 
 
 
+</div>
 
+
+
+<script>
+	$("#storyList").DataTable({
+		paging:false,
+		searching:false,
+		info:false
+	});
+</script>
