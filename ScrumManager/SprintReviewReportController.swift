@@ -75,7 +75,9 @@ class SprintReviewReportController: AuthController {
         var commentList : [[String:Any]] = []
         var num = 0
         for comment in sprint.reviewReport!.comments{
-            if user!.role != .ScrumMaster && user!.role != .Admin {
+            if user!.email == comment.user?.email{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num])
+            }else if user!.role != .ScrumMaster && user!.role != .Admin{
                 commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num])
             }else{
                 commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num])
@@ -83,17 +85,39 @@ class SprintReviewReportController: AuthController {
             num += 1
         }
         values["commentList"] = commentList
+        values["identifier"] = identifier
         return values
         
     }
     
     func update(identifier: String, request: WebRequest, response: WebResponse) {
-      print("11")
+
     }
     
     
     func edit(request: WebRequest, response: WebResponse, identifier: String) {
-        print("33")
+        // 0: Sprint identifier, 1: New comment, 2: index of old comment
+        let informationGet = identifier.componentsSeparatedByString("_")
+        print(informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
+        
+        let id = Int(informationGet[0])!
+        
+        let newComment = informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        let indexOfOldComment = Int(informationGet[2])
+        
+        let db = try! DatabaseManager()
+        
+        guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else{
+            return
+        }
+        
+        sprint.reviewReport?.comments[indexOfOldComment!].comment = newComment
+        
+        db.updateObject(sprint)
+        
+        response.redirectTo("/reports/\(id)")
+
     }
     
     func newComment(request: WebRequest, response: WebResponse,identifier: String) {
@@ -117,7 +141,7 @@ class SprintReviewReportController: AuthController {
             for eachComment in (sprint.reviewReport?.comments)!{
                 print(eachComment.comment)
             }
-            print(sprint.identifierDictionary)
+
             // Update the database
             db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")
@@ -135,6 +159,24 @@ class SprintReviewReportController: AuthController {
     }
     
     func delete(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Sprint identifier, 1: Comment position
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let deleteIndex = Int(informationGet[1])
+        
+        let db = try! DatabaseManager()
+        
+        guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        sprint.reviewReport?.comments.removeAtIndex(deleteIndex!)
+        
+        db.updateObject(sprint)
+        
+        response.redirectTo("/reports/\(id)")
     }
     
     

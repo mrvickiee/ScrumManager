@@ -37,19 +37,28 @@ class UserController: AuthController {
         let existingUser = currentUser(request, response: response)!
         if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
             visibility = "run-in"
-        }
-
-        for user in tempUserList{
-            userList.append(user.dictionary)
-            if user.isActive{
+            for user in tempUserList{
+                userList.append(user.dictionary)
+                if user.isActive{
+                    userList[userList.count-1]["isActive"] = "none"
+                    userList[userList.count-1]["isUnActive"] = "run-in"
+                }else{
+                    
+                    userList[userList.count-1]["isActive"] = "run-in"
+                    userList[userList.count-1]["isUnActive"] = "none"
+                }
+            }
+        }else{
+            for user in tempUserList{
+                userList.append(user.dictionary)
                 userList[userList.count-1]["isActive"] = "none"
-                userList[userList.count-1]["isUnActive"] = "run-in"
-            }else{
-                
-                userList[userList.count-1]["isActive"] = "run-in"
                 userList[userList.count-1]["isUnActive"] = "none"
             }
+            userList[userList.count-1]["isActive"] = "none"
+            userList[userList.count-1]["isUnActive"] = "none"
         }
+
+        
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList
         values["visibility"] = visibility
@@ -79,6 +88,9 @@ class UserController: AuthController {
         var expertises = [[String:Any]]()
         for expertise in user.expertises{
             expertises.append(["expertise":expertise])
+        }
+        if expertises.count == 0 {
+            expertises.append(["expertise":"-"])
         }
         values["expertisesList"] = expertises
         
