@@ -15,7 +15,7 @@ class SprintReviewReportController: AuthController {
     
     let modelPluralName: String = "reports"
     
-    func actions() -> [String: ControllerAction] {
+    func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
@@ -61,13 +61,6 @@ class SprintReviewReportController: AuthController {
             // Set Current username
             let user = currentUser(request, response: response)
             values["user"] = user?.name
-            
-            // Set comment list be post by others
-            var commentList : [[String:Any]] = []
-            for comment in reviewReport.comments{
-                commentList.append(["comment":comment.dictionary])
-            }
-            values["commentList"] = commentList
 
             return values
         }
@@ -80,12 +73,14 @@ class SprintReviewReportController: AuthController {
         
         // Set comment list be post by others
         var commentList : [[String:Any]] = []
+        var num = 0
         for comment in sprint.reviewReport!.comments{
             if user!.role != .ScrumMaster && user!.role != .Admin {
-                commentList.append(["comment":comment.dictionary, "visibility": "none"])
+                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num])
             }else{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in"])
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num])
             }
+            num += 1
         }
         values["commentList"] = commentList
         return values
@@ -119,6 +114,10 @@ class SprintReviewReportController: AuthController {
             let newComment = Comment(comment: comment, user: user)
             reviewReport.comments.append(newComment)
             
+            for eachComment in (sprint.reviewReport?.comments)!{
+                print(eachComment.comment)
+            }
+            print(sprint.identifierDictionary)
             // Update the database
             db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")

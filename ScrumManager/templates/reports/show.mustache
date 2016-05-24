@@ -48,16 +48,22 @@ This is the mustache template file for the tap tracker example.
 
         </div>
         <div class="profile-pic-med avatar">{{initials}}</div>
-        <div class="message">
+        <div class="message large-10 columns">
             <strong>{{name}}</strong>
-            <a method="post" href="{{url}}/edit" style="display:{{visibility}}">
-                Edit
-            </a>
+
+            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}')" style="display:{{visibility}}">Edit</a>
+
             <a method="post" href="{{url}}/delete" style="display:{{visibility}}">
                 <i class="icon-trash"></i>
             </a>
             <br>
-            <span>{{comment}}</span><br>
+            <div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
+                {{comment}}
+            </div>
+            <a method="post" href="{{url}}/edit" style="display:none" id="saveButton{{commentIndicator}}">
+            Post
+            </a>
+            <br>
         </div>
         <br>
     </div>

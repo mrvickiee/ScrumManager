@@ -123,7 +123,8 @@ extension Sprint {
             }),
             "urlPath": pathURL,
             "identifier": identifier,
-            "duration": duration
+            "duration": duration,
+            "reviewReport": reviewReport?.dictionary
         ]
         
     }

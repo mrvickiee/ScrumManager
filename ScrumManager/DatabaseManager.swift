@@ -51,11 +51,11 @@ class DatabaseManager {
     }
     
     func updateObject(object: DBManagedObject, updateValues: [String: Any]) {
-    if let identifierDictionary = object.identifierDictionary {
-        let query: [String: Any] = ["_id": identifierDictionary]
-        update(object.dynamicType, predicate: query, update: updateValues)
+        if let identifierDictionary = object.identifierDictionary {
+            let query: [String: Any] = ["_id": identifierDictionary]
+            update(object.dynamicType, predicate: query, update: updateValues)
 
-    }
+        }
     }
     
     func updateObject(object: DBManagedObject) {

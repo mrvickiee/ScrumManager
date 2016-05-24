@@ -128,15 +128,18 @@ $("#image").change(function() {
 
 $("#endDate").datepicker();
 
-
-
-
-
 });
 
         </script>
-
-
+        <script>
+            function editComment(a, b){
+                alert(b);
+                document.getElementById(a).setAttribute("contenteditable", "true");
+                document.getElementById(a).style.backgroundColor = "rgba(0,0,0,.2)";
+                document.getElementById(a).style.marginLeft = "4px";
+                document.getElementById(b).style.display = "block";
+            }
+        </script>
     </body>
     </html>
 

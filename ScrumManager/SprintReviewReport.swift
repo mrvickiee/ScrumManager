@@ -78,10 +78,13 @@ final class SprintReviewReport: Object, DBManagedObject{
 extension SprintReviewReport : Routable {
     
     var dictionary: [String: Any] {
+        
+        let dateFormater = NSDateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         return [
             "userStoriesCompleted": userStoriesCompleted,
             "tasks": tasks,
-            "createdAt": NSDateFormatter().stringFromDate(createdAt!),
+            "createdAt": dateFormater.stringFromDate(createdAt!),
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
