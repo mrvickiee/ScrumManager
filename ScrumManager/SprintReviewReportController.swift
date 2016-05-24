@@ -70,7 +70,7 @@ class SprintReviewReportController: AuthController {
         // Set Current username
         let user = currentUser(request, response: response)
         values["user"] = user?.name
-        
+
         // Set comment list be post by others
         var commentList : [[String:Any]] = []
         var num = 0

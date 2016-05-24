@@ -23,8 +23,6 @@ final class User: Object {
     
     var authKey: String
     
-    var profilePictureURL: String = ""
-    
     var name: String
     
     var expertises = [String]()
@@ -41,12 +39,11 @@ final class User: Object {
     
     var username: String!
     
-    init(email: String, name: String, authKey: String, role: Int, profilePictureURL: String) {
+    init(email: String, name: String, authKey: String, role: Int) {
         self.email = email
         self.name = name
         self.authKey = authKey
         self.role = UserRole(rawValue: role)!
-        self.profilePictureURL = profilePictureURL
     }
     
     class func userWithEmail(email: String) -> User? {
@@ -74,9 +71,7 @@ final class User: Object {
         let name = dictionary["name"] as! String
         
         let authKey = dictionary["authKey"] as! String
-        
-        let pictureURL = dictionary["profilePictureURL"] as? String ?? ""
-        
+                
         let username = dictionary["username"] as? String ?? User.usernameFromName(name)
         
         // Need further display to modify it
@@ -92,7 +87,7 @@ final class User: Object {
         
         let isActive = dictionary["isActive"] as? Bool ?? true
         
-        self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw, profilePictureURL: pictureURL)
+        self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw)
                 
         self._objectID = id
         
@@ -148,7 +143,7 @@ extension User: DBManagedObject {
         
     }
     
-    static func create(name: String, email: String, password: String, pictureURL: String, role: Int) throws -> User {
+    static func create(name: String, email: String, password: String, role: Int) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -161,7 +156,7 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey, role: role, profilePictureURL: pictureURL)
+        let user = User(email: email, name: name, authKey: authKey, role: role)
         user.username = User.usernameFromName(name)
         do {
             try DatabaseManager().insertObject(user)

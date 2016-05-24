@@ -70,7 +70,7 @@ extension AuthController {
         guard let currentUserID = currentSession["user_id"] as? String, let user = try! DatabaseManager().getObjectWithID(User.self, objectID: currentUserID) else {
             
             if anonymousUserCanView {
-                return User(email: "", name: "anonymous", authKey: "", role: 0, profilePictureURL: "")
+                return User(email: "", name: "anonymous", authKey: "", role: 0)
             }
             
             return  nil

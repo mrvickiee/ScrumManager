@@ -9,6 +9,7 @@
 {{#userList}}
 <div class="row collapse user-list-column" data-equalizer>
 <div class="small-8 large-8 columns" data-equalizer-watch>
+<div class="profile-pic-med avatar">{{initials}}</div>
 <a href="/users/{{username}}">
 {{name}}<br>
 <span style="font-size: small">{{email}}</span>
@@ -27,7 +28,7 @@ Deactivate
 <a method="post" href="/users/{{username}}/delete" style="display:{{visibility}}">
 <i class="icon-trash"></i>
 </a>
-<img src={{profilePictureURL}} class="show-profile-image">
+
 </div>
 
 
