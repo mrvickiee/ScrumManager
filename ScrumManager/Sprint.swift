@@ -20,18 +20,19 @@ final class Sprint: Object, DBManagedObject, Commentable {
     var tasks : [Task] = []
     
     var title: String
-    
-    var body: String
-    
-    var reviewReport: SprintReviewReport?
+
+	var reviewReport: SprintReviewReport?
+	
+	var dateCreated = NSDate()
     
     var duration: NSTimeInterval
     
     var identifier: Int = 0
+	
+	var status: systemWideStatus = .InProgress
     
-    init(body: String, title: String, duration: Double) {
+    init(title: String, duration: Double) {
         self.title = title
-        self.body = body
         self.duration = duration
     }
     
@@ -41,25 +42,26 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        let body = dictionary["body"] as! String
-        
         let duration = Double(dictionary["duration"] as? Int ?? 0)
         
         let identifier = dictionary["identifier"] as! Int
-        
-        self.init(body: body, title: title, duration: duration)
+		
+		let rawStatus = dictionary["status"] as? Int ?? 0
+		
+        self.init(title: title, duration: duration)
         self._objectID = id
         self.identifier = identifier
         self.comments = loadCommentsFromDictionary(dictionary)
-        
+		
+		if let startDateEpoch = dictionary["dateCreated"] as? Int {
+			self.dateCreated = NSDate(timeIntervalSince1970: Double(startDateEpoch))
+		}
+		
         // Load User Stories
-        if let userStoryIdentifier = dictionary["userStories"] as? [String] {
-            userStoryIDs = userStoryIdentifier
- 
-        }
-        print("\(userStoryIDs)")
+        self.userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
         
-        
+		self.status = systemWideStatus(rawValue: rawStatus)!
+		
         if let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary {
             self.reviewReport = SprintReviewReport(dictionary: reviewReport)
         }
@@ -96,7 +98,14 @@ final class Sprint: Object, DBManagedObject, Commentable {
 }
 
 extension Sprint {
-    
+	
+	func getFormattedDate()->String{
+		let dateFormatter = NSDateFormatter()
+		dateFormatter.dateFormat = "dd-MM-yyyy"
+		
+		return dateFormatter.stringFromDate(dateCreated)
+	}
+	
     var userStories: [UserStory] {
         // Query Database
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
@@ -106,14 +115,16 @@ extension Sprint {
         
         return [
             "title": title,
-            "body": body,
             "userStoryIDs" : userStoryIDs,
+            "dateCreated" : dateCreated,
+            "status" : status,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
             "urlPath": pathURL,
             "identifier": identifier,
-            "duration": duration
+            "duration": duration,
+            "reviewReport": reviewReport?.dictionary
         ]
         
     }

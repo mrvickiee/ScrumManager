@@ -13,6 +13,24 @@ enum BacklogType: Int, CustomJSONConvertible {
     case ReleaseBacklog
 }
 
+
+enum systemWideStatus:Int, CustomStringConvertible, CustomJSONConvertible{
+	case Incomplete
+	case InProgress
+	case Completed
+	
+	var description: String {
+		switch(self) {
+		case .Incomplete: return "Incomplete"
+		case .InProgress: return "In progress"
+		case .Completed: return "Completed"
+		}
+	}
+
+	
+}
+
+
 enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
     case Low
     case Medium
@@ -53,6 +71,20 @@ enum TaskStatus: Int,CustomStringConvertible, CustomJSONConvertible {
         }
     }
     
+}
+
+enum storyType: Int,CustomJSONConvertible, CustomStringConvertible{
+	case bug
+	case new
+	case improvement
+	
+	var description: String {
+		switch(self) {
+		case .bug: return "Bug"
+		case .new: return "New functionalities"
+		case .improvement: return "Improvement"
+		}
+	}
 }
 
 

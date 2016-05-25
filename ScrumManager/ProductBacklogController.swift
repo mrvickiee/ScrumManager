@@ -36,8 +36,6 @@ class ProductBacklogController: AuthController {
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
             var userStoryDict = userStory.dictionary
-            userStoryDict["index"] = counter
-            counter += 1
             
             return userStoryDict
         }
@@ -135,11 +133,12 @@ class ProductBacklogController: AuthController {
     func new(request: WebRequest, response: WebResponse) {
         
         // Handle new post request
-        if let title = request.param("title"), body = request.param("story"), priority = request.param("storyPriority") {
-            
+		if let title = request.param("title"), body = request.param("story"), priority = request.param("storyPriority"), component = request.param("component"), typeRaw = request.param("type") {
+		
             let userStoryPriority = UserStoryPriority(rawValue: Int(priority)!)!
+			let type = storyType(rawValue: Int(typeRaw)!)!
             // Valid Article
-            let newUserStory = UserStory(title: title, story: body, priority: userStoryPriority)
+            let newUserStory = UserStory(title: title, story: body, priority: userStoryPriority, component: component, type: type)
             
             // Save Article
             do {

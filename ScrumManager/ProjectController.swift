@@ -53,9 +53,18 @@ class ProjectController: AuthController {
         projectDictionary["scrumMasterName"] = scrumMaster?.name
         projectDictionary["productOwnerName"] = productOwner?.name
         projectDictionary["sprintURL"] = "/sprints/new?projectID=\(project._objectID!)"
-        
-        
-        let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson]
+		projectDictionary["formattedDate"] = project.getFormattedDate()
+		
+		var sprintCounter = 1
+		let sprintJSON = project.sprints.map { (sprint) -> [String:Any] in
+			var tmp =  sprint.dictionary
+			tmp["formattedDate"] = sprint.getFormattedDate()
+			tmp["count"] = sprintCounter
+			sprintCounter += 1
+			return tmp
+		}
+		
+		let values :MustacheEvaluationContext.MapType = ["project": projectDictionary,"teamMember" : teamMemberJson,"sprint" : sprintJSON]
         return values
     }
     
@@ -66,7 +75,6 @@ class ProjectController: AuthController {
         }
         
         let projects: [Project]
-
         let databaseManager = try! DatabaseManager()
 
         switch user.role {
@@ -139,7 +147,7 @@ class ProjectController: AuthController {
             project.scrumMaster = scrumMaster
             project.identifier = projectCount
             project.startDate = NSDate()
-            project.endDate = dateFormatter.dateFromString(endDate)// tmp
+            project.endDate = dateFormatter.dateFromString(endDate)
             project.productOwnerID = productOwnerID
             project.teamMemberIDs = members
             
@@ -215,7 +223,6 @@ class ProjectController: AuthController {
             oldProject.name = projectTitle
             oldProject.projectDescription = projectDesc
             oldProject.scrumMaster = scrumMaster
-           // oldProject._objectID = oldProject._objectID
             oldProject.startDate = NSDate()
             oldProject.endDate = NSDate()// tmp
             oldProject.productOwnerID = productOwner

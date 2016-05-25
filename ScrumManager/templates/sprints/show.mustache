@@ -24,86 +24,94 @@ This is the mustache template file for the tap tracker example.
 
     </div>
 
-    <div class="large-6 columns">
 
-        <h3>Comments</h3>
+	<div class="large-6 columns">
+		<h3>Sprint Burndown Chart</h3>
 
-        {{#comments}}
-        {{#user}}
-        <div class="profile-pic-med avatar">{{initials}}</div>
+		{{#burndownChart}}
+		<canvas id="canvas" height="300" width="300"></canvas>
+		<script>
+			var ctx = document.getElementById("canvas");
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+				labels: {{{labels}}},
+				datasets: [{
+				type: 'bar',
+				label: '# of Hours',
+				data: {{workRemaining}},
+				backgroundColor: "#2199e8"
+			},
+			{
+				type: 'line',
+				label: 'Expected Hours remaining',
+				data: {{projectedWorkRemaining}},
+				fill: false
+			}
+			]
+			},
+				options: {
+				scales: {
+				yAxes: [{
+				ticks: {
+				beginAtZero:true
+			}
+			}]
+			}
+			}
+			});
+		</script>
+		{{/burndownChart}}
 
-        <div class="message">
-            <p><strong>{{name}}</strong></p>
-            {{/user}}
 
-            <p>{{comment}}</p>
-        </div>
 
-        {{/comments}}
-        <div class="row">
-            <div class="large-12 columns">
 
-                <form action="{{url}}/comments" method="post">
-                    <label>Comment
-                        <input type="text" name="comment" />
-                    </label>
-                    <input type="submit" value="Post">
-                </form>
-            </div>
-        </div>
-    </div>
+	</div>
+
+
+
 
 </div>
-{{/sprint}}
 
 <div class="row">
-    <div class="large-12 columns">
-        <h3>Sprint Burndown</h3>
-
-        {{#burndownChart}}
-        <canvas id="canvas" height="300" width="300"></canvas>
-        <script>
-        var ctx = document.getElementById("canvas");
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{{labels}}},
-                datasets: [{
-                    type: 'bar',
-                    label: '# of Hours',
-                    data: {{workRemaining}},
-                    backgroundColor: "#2199e8"
-                },
-                {
-                    type: 'line',
-                    label: 'Expected Hours remaining',
-                    data: {{projectedWorkRemaining}},
-                    fill: false
-                }
-                ]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
-                }
-            }
-        });
-        </script>
-        {{/burndownChart}}
-
-        <h3> Sprint backlog</h3>
-        {{#userStories}}
-
-        {{title}}
-        {{/userStories}}
+<h3> Sprint backlog</h3>
 
 
-    </div>
-    
+
+</div>
+
+
+<div class="row">
+	<div class="large-12 columns">
+
+	<h3>Comments</h3>
+
+	{{#comments}}
+	{{#user}}
+	<div class="profile-pic-med avatar">{{initials}}</div>
+
+	<div class="message">
+	<p><strong>{{name}}</strong></p>
+	{{/user}}
+
+	<p>{{comment}}</p>
+	</div>
+
+	{{/comments}}
+	<div class="row">
+	<div class="large-12 columns">
+
+	<form action="{{url}}/comments" method="post">
+	<label>Comment
+	<input type="text" name="comment" />
+	</label>
+	<input type="submit" value="Post">
+	</form>
+	</div>
+	</div>
+	</div>
+
+{{/sprint}}
 </div>
 
 

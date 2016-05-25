@@ -5,7 +5,7 @@
 //  Created by Benjamin Johnson on 9/02/2016.
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
 //
-
+// test
 
 import PerfectLib
 
@@ -21,6 +21,7 @@ class UserController: AuthController {
         
         modelActions["activate"] = ControllerAction() {(request, resp,identifier) in self.activate(request, response: resp, identifier: identifier)}
         
+        modelActions["update"] = ControllerAction() {(request, resp,identifier) in self.update(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -37,19 +38,28 @@ class UserController: AuthController {
         let existingUser = currentUser(request, response: response)!
         if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
             visibility = "run-in"
-        }
-
-        for user in tempUserList{
-            userList.append(user.dictionary)
-            if user.isActive{
+            for user in tempUserList{
+                userList.append(user.dictionary)
+                userList[userList.count-1]["initials"] = user.initials
+                if user.isActive{
+                    userList[userList.count-1]["isActive"] = "none"
+                    userList[userList.count-1]["isUnActive"] = "run-in"
+                }else{
+                    
+                    userList[userList.count-1]["isActive"] = "run-in"
+                    userList[userList.count-1]["isUnActive"] = "none"
+                }
+            }
+        }else{
+            for user in tempUserList{
+                userList.append(user.dictionary)
+                userList[userList.count-1]["initials"] = user.initials
                 userList[userList.count-1]["isActive"] = "none"
-                userList[userList.count-1]["isUnActive"] = "run-in"
-            }else{
-                
-                userList[userList.count-1]["isActive"] = "run-in"
                 userList[userList.count-1]["isUnActive"] = "none"
             }
         }
+
+        
         var values: MustacheEvaluationContext.MapType = [:]
         values["userList"] = userList
         values["visibility"] = visibility
@@ -80,13 +90,17 @@ class UserController: AuthController {
         for expertise in user.expertises{
             expertises.append(["expertise":expertise])
         }
+        if expertises.count == 0 {
+            expertises.append(["expertise":"-"])
+        }
         values["expertisesList"] = expertises
         
+        values["initials"] = user.initials
         return values
     }
     
     // When Submit button in edit page is clicked
-    func update(identifier: String, request: WebRequest, response: WebResponse) {
+    func update(request: WebRequest, response: WebResponse, identifier: String) {
         // Get the information for the page
         if let name = request.param("name"),
             email = request.param("email"),
@@ -100,28 +114,6 @@ class UserController: AuthController {
                 return
             }
 
-            var profilePic = ""
-            // Get Profile Picture
-            if let uploadedFile = request.fileUploads.first {
-                
-                let fileName = uploadedFile.fileName
-                print("Profile Pic uploaded: \(fileName)")
-                
-                // Save profile picture to disk
-                if let file = uploadedFile.file {
-                    // Copy file
-                    do {
-                        let saveLocation = "/resources/pictures/" + uploadedFile.fileName
-                        profilePic = saveLocation
-                        print(saveLocation)
-                        
-                        try file.copyTo(saveLocation, overWrite: true)
-                    } catch {
-                        print(error)
-                    }
-                }
-                
-            }
             
             guard password == password2 else {
                 response.setStatus(500, message: "The passwords did not match.")
@@ -153,9 +145,7 @@ class UserController: AuthController {
             if user.expertises != resultExpertises {
                 query["expertises"] = resultExpertises
             }
-            if profilePic != "" {
-                query["profilePictureURL"] = profilePic
-            }
+
             print(query)
             
             try! DatabaseManager().updateObject(user, updateValues: query)
@@ -207,6 +197,7 @@ class UserController: AuthController {
         }else{
             values["visibility"] = "run-in"
         }
+        values["initials"] = user.initials
         return values
         
     }
@@ -231,12 +222,10 @@ class UserController: AuthController {
                 return
             }
 
-            // Default pic
-            let pictureURL: String = "/resources/default.jpg"
             
             do {
                 
-                _ = try User.create(name, email: email, password: password, pictureURL: pictureURL, role: Int(role)!)
+                _ = try User.create(name, email: email, password: password, role: Int(role)!)
                 
             } catch {
                 print(error)
@@ -276,7 +265,7 @@ class UserController: AuthController {
         let loginUser = currentUser(request, response: response)
         
         if loginUser?.username == deleteUser.username{
-            response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
+            response.setStatus(404, message: "The file \(request.requestURI()) was invalid.")
             response.requestCompletedCallback()
             return
         }
@@ -305,7 +294,15 @@ class UserController: AuthController {
     
     
     func deactivate (request: WebRequest, response: WebResponse, identifier: String) {
+        // Skip if users wan to deactive themselves
+        let currentUserLogin = currentUser(request, response: response)
         let user = User.userWithUsername(identifier)
+        if currentUserLogin?.email == user?.email{
+            response.setStatus(404, message: "The file \(request.requestURI()) was invalid.")
+            response.redirectTo("/users")
+            response.requestCompletedCallback()
+            return
+        }
         user?.isActive = false
         do {
             try DatabaseManager().updateObject(user!)
@@ -313,9 +310,9 @@ class UserController: AuthController {
             print(error)
             
         }
-        
         response.redirectTo("/users")
         response.requestCompletedCallback()
+        
 
     }
     

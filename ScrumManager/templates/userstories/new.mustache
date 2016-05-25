@@ -10,6 +10,16 @@ This is the mustache template file for the tap tracker example.
 
 <div class="row">
 <div class="large-12 columns">
+
+<label> Type
+<select name="type">
+<option value="0">Bug</option>
+<option value="1">New functionalities</option>
+<option value="2">Improvement</option>
+</select>
+</label>
+
+
 <label>Title
 <input type="text" name="title" />
 </label>
@@ -26,6 +36,19 @@ This is the mustache template file for the tap tracker example.
 <option value="3">Critical</option>
 <option value="4">Block</option>
 </select>
+</label>
+
+<label> Epic link
+
+<select name="epicLink">
+<option value="0">None</option>
+</select>
+</label>
+
+<label> Component
+
+<input type = "text" name="component" />
+
 </label>
 
 </div>

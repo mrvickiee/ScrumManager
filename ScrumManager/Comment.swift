@@ -19,7 +19,7 @@ protocol CustomDictionaryConvertible {
 
 final class Comment: Object, DictionarySerializable, CustomDictionaryConvertible {
     
-    let comment: String
+    var comment: String
     
     private let userID: String // User who made the comment
     
