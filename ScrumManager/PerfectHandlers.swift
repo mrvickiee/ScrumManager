@@ -25,7 +25,7 @@ public func PerfectServerModuleInit() {
     Routing.addRoutesForRESTController(TaskController())
     Routing.addRoutesForRESTController(DashboardController())
     Routing.addRoutesForRESTController(SprintController())
- //   Routing.addRoutesForRESTController(SprintReviewReportController())
+    Routing.addRoutesForRESTController(SprintReviewReportController())
     
    // Routing.addRoutesForRESTController(SprintController())
     

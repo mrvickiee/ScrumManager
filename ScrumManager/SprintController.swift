@@ -17,12 +17,12 @@ import PerfectLib
     let pageTitle: String = "Sprints"
     
     var projectID : String = ""
+
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
-            print("new is called")
-                        
+        if let title = request.param("title") , rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
+
             let sprint = Sprint(title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
@@ -89,7 +89,24 @@ import PerfectLib
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
+        
         values["sprint"] = sprint.dictionary
+        // For deletion and editing 
+        let user = currentUser(request, response: response)
+        var commentList : [[String:Any]] = []
+        var num = 0
+        for comment in sprint.comments{
+            if user!.email == comment.user?.email{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num])
+            }else if user!.role != .ScrumMaster && user!.role != .Admin{
+                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num])
+            }else{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num])
+            }
+            num += 1
+        }
+        values["commentList"] = commentList
+
         
         let chosenUserStory = sprint.userStories
 		
@@ -105,6 +122,7 @@ import PerfectLib
         
         values["burndownChart"] = burndownChart.dictionary
 		values["userStory"] =  storyJSON
+        values["identifier"] = identifier
 			
         
         //response.requestCompletedCallback()
@@ -188,7 +206,7 @@ import PerfectLib
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
 
-
+        
 			guard let sprint = getSprintWithID(Int(identifier)!) else {
 				return MustacheEvaluationContext.MapType()
 			}
@@ -240,6 +258,52 @@ import PerfectLib
 		return "ABLE TO RETURN VALUE"
 	}
 	
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Sprint identifier, 1: New comment, 2: index of old comment
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let newComment = informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        let indexOfOldComment = Int(informationGet[2])
+        
+        let db = try! DatabaseManager()
+        
+        guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else{
+            return
+        }
+        
+        sprint.comments[indexOfOldComment!].comment = newComment
+        
+        db.updateObject(sprint)
+        
+        response.redirectTo("/sprints/\(id)")
+        
+    }
+
+    
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Sprint identifier, 1: Comment position
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let deleteIndex = Int(informationGet[1])
+        
+        let db = try! DatabaseManager()
+        
+        guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        sprint.comments.removeAtIndex(deleteIndex!)
+        
+        db.updateObject(sprint)
+        
+        response.redirectTo("/sprints/\(id)")
+    }
+
     
     func controllerActions() -> [String: ControllerAction] {
         
@@ -248,6 +312,10 @@ import PerfectLib
         modelActions["comments"] = ControllerAction() {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
 		
 		modelActions["obtain"] = ControllerAction() {(request,response, identifier) in self.obtainTasks(request, response: response, identifier: identifier)}
+        
+        modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
 		
         return modelActions
     }

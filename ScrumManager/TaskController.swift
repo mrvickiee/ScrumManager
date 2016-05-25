@@ -21,6 +21,10 @@ class TaskController: AuthController {
         
         modelActions["assign"] = ControllerAction() {(request, resp,identifier) in self.assignUser(request, response: resp, identifier: identifier)}
         
+        modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
+        
         return modelActions
     }
     
@@ -71,6 +75,25 @@ class TaskController: AuthController {
         }
 
         values["task"] = taskDictionary
+        
+        // Set Current username
+        let current_user = currentUser(request, response: response)
+        
+        // Set comment list be post by others
+        var commentList : [[String:Any]] = []
+        var num = 0
+        for comment in task.comments{
+            if current_user!.email == comment.user?.email{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else if current_user!.role != .ScrumMaster && current_user!.role != .Admin{
+                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }
+            num += 1
+        }
+        values["commentList"] = commentList
+        values["identifier"] = identifier
         
         return values
         
@@ -214,6 +237,53 @@ class TaskController: AuthController {
         }
         response.requestCompletedCallback()
     }
+    
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Tasks identifier, 1: New comment, 2: index of old comment
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let newComment = informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        let indexOfOldComment = Int(informationGet[2])
+        
+        let db = try! DatabaseManager()
+        
+        guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": id]).first else{
+            return
+        }
+
+        task.comments[indexOfOldComment!].comment = newComment
+        
+        db.updateObject(task)
+        
+        response.redirectTo("/tasks/\(id)")
+        
+    }
+    
+    
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Tasks identifier, 1: Comment position
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let deleteIndex = Int(informationGet[1])
+        
+        let db = try! DatabaseManager()
+        
+        guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        task.comments.removeAtIndex(deleteIndex!)
+        
+        db.updateObject(task)
+        
+        response.redirectTo("/tasks/\(id)")
+    }
+
     
     
 }

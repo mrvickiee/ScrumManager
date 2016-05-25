@@ -106,7 +106,8 @@ class UserController: AuthController {
             email = request.param("email"),
             password = request.param("password"),
             password2 = request.param("password2"),
-            expertises = request.param("expertises"){
+            expertises = request.param("expertises"),
+            roleGet = request.param("role"){
             guard let user = User.userWithUsername(identifier) else {
                 response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
                 response.requestCompletedCallback()
@@ -133,6 +134,9 @@ class UserController: AuthController {
             let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
             
             var query : [String: Any] = [:]
+            let roleInt = Int(roleGet)!
+            
+            query["role"] = roleInt
             if user.email != email {
                 query["email"] =  email
             }

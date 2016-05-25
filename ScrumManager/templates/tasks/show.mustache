@@ -36,12 +36,38 @@ This is the mustache template file for the tap tracker example.
 <a href="{{pathURL}}">{{name}}</a>
 {{/teamMembers}}
 
-{{#comments}}
-{{#user}}
-<p><strong>{{name}}</strong></p>
-{{/user}}
-<p>{{comment}}</p>
-{{/comments}}
+<h3>Comments</h3>
+{{#commentList}}
+{{#comment}}
+<div class="large-12 columns">
+
+<span class="profile-pic-med avatar">{{initials}}</span>
+
+<div class="message large-10 columns">
+<strong>{{name}}</strong>
+<br>
+<div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
+{{comment}}
+</div>
+<a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
+
+<a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
+Post
+</a>
+
+<a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+<a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+Delete
+</a>
+
+
+<br>
+</div>
+</div>
+{{/comment}}
+{{/commentList}}
 
 <form action="{{url}}/comments" method="post">
 

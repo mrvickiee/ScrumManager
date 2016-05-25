@@ -138,7 +138,7 @@ body {
     box-shadow: 0 0 2px rgba(0,0,0, .8);
     width:100%;
     text-align: center;
-    color: blue;
+/*    color: blue;*/
 }
 
 .edit-profile-img-upload-button{
@@ -200,6 +200,19 @@ body {
 .blueButton{
     height: 5px;
     line-height:5px;
+}
+
+.title{
+    width:80%;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    line-height:1px;
+    margin:10px 0 20px;
+}
+.title span{
+    background-color: white;
+    margin-left: 10px;
+    color:gray;
+    font-weight: bold;
 }
 
 /* Side bar menu height according to the screen*/

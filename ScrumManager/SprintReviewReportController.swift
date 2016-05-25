@@ -4,28 +4,8 @@
 ////
 ////  Created by Fagan Ooi on 17/05/2016.
 ////  Copyright © 2016 Benjamin Johnson. All rights reserved.
-////
-//
-//import Foundation
-//import PerfectLib
-//
-//class SprintReviewReportController: AuthController {
-//	
-//    let modelName = "report"
-//    
-//    let modelPluralName: String = "reports"
-//    
-//    func controllerActions() -> [String: ControllerAction] {
-//        var modelActions:[String: ControllerAction] = [:]
-//        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
-//        
-//         modelActions["edit"] = ControllerAction() {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
-//        
-//         modelActions["delete"] = ControllerAction() {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
-//        
-//        return modelActions
-//    }
-//
+
+
 
 import Foundation
 import PerfectLib
@@ -40,9 +20,9 @@ class SprintReviewReportController: AuthController {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
-         modelActions["edit"] = ControllerAction() {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
+         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
-         modelActions["delete"] = ControllerAction() {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
+         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -91,7 +71,6 @@ class SprintReviewReportController: AuthController {
         values["reviewReport"] = sprint.reviewReport?.dictionary
         // Set Current username
         let user = currentUser(request, response: response)
-        values["user"] = user?.name
 
         // Set comment list be post by others
         var commentList : [[String:Any]] = []
@@ -117,10 +96,9 @@ class SprintReviewReportController: AuthController {
     }
     
     
-    func edit(request: WebRequest, response: WebResponse, identifier: String) {
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Sprint identifier, 1: New comment, 2: index of old comment
         let informationGet = identifier.componentsSeparatedByString("_")
-        print(informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         
         let id = Int(informationGet[0])!
         
@@ -175,7 +153,7 @@ class SprintReviewReportController: AuthController {
         return [:]
     }
     
-    func delete(request: WebRequest, response: WebResponse, identifier: String) {
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Sprint identifier, 1: Comment position
         let informationGet = identifier.componentsSeparatedByString("_")
         

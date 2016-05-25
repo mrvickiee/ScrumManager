@@ -131,7 +131,33 @@ $("#endDate").datepicker();
 });
 
         </script>
-        
+
+<script>
+function editComment(commentIndicator, saveButton, cancelButton){
+document.getElementById(commentIndicator).setAttribute("contenteditable", "true");
+document.getElementById(commentIndicator).style.backgroundColor = "rgba(0,0,0,.1)";
+document.getElementById(commentIndicator).style.marginLeft = "3px";
+document.getElementById(cancelButton).style.marginLeft = "3px";
+document.getElementById(cancelButton).style.display = "inline-flex";
+document.getElementById(saveButton).style.display = "inline-flex";
+}
+
+function postEditComment(commentColumn, saveButton, sprintID, commentIndicator){
+var editComment = document.getElementById(commentColumn).innerHTML;
+var path = sprintID+"_"+editComment+"_"+commentIndicator+"/updatecomment";
+document.getElementById(saveButton).href = path;
+
+}
+
+function cancelEditComment(commentIndicator, saveButton, cancelButton){
+document.getElementById(commentIndicator).setAttribute("contenteditable", "false");
+document.getElementById(commentIndicator).style.backgroundColor = "white";
+document.getElementById(commentIndicator).style.marginLeft = "-3px";
+document.getElementById(cancelButton).style.marginLeft = "-3px";
+document.getElementById(cancelButton).style.display = "none";
+document.getElementById(saveButton).style.display = "none";
+}
+</script>
     </body>
     </html>
 
