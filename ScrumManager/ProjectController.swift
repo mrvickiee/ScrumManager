@@ -69,7 +69,9 @@ class ProjectController: AuthController {
     }
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
-        
+		
+		//let encode = JSON().encode(<#T##a: JSONDictionaryType##JSONDictionaryType#>)
+		
         guard let user  = currentUser(request, response: response) else {
             return [:]
         }

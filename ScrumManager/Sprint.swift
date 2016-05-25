@@ -21,7 +21,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var title: String
 
-	var reviewReport: SprintReviewReport?
+	//var reviewReport: SprintReviewReport?
 	
 	var dateCreated = NSDate()
     
@@ -63,7 +63,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
 		self.status = systemWideStatus(rawValue: rawStatus)!
 		
         if let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary {
-            self.reviewReport = SprintReviewReport(dictionary: reviewReport)
+        //    self.reviewReport = SprintReviewReport(dictionary: reviewReport)
         }
         
         if let tasks = dictionary["tasks"] as? [Task] {
@@ -124,7 +124,7 @@ extension Sprint {
             "urlPath": pathURL,
             "identifier": identifier,
             "duration": duration,
-            "reviewReport": reviewReport?.dictionary
+          //  "reviewReport": reviewReport?.dictionary
         ]
         
     }

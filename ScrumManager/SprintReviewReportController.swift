@@ -1,9 +1,30 @@
+////
+////  SprintReviewReportController.swift
+////  ScrumManager
+////
+////  Created by Fagan Ooi on 17/05/2016.
+////  Copyright © 2016 Benjamin Johnson. All rights reserved.
+////
 //
-//  SprintReviewReportController.swift
-//  ScrumManager
+//import Foundation
+//import PerfectLib
 //
-//  Created by Fagan Ooi on 17/05/2016.
-//  Copyright © 2016 Benjamin Johnson. All rights reserved.
+//class SprintReviewReportController: AuthController {
+//	
+//    let modelName = "report"
+//    
+//    let modelPluralName: String = "reports"
+//    
+//    func controllerActions() -> [String: ControllerAction] {
+//        var modelActions:[String: ControllerAction] = [:]
+//        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+//        
+//         modelActions["edit"] = ControllerAction() {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
+//        
+//         modelActions["delete"] = ControllerAction() {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
+//        
+//        return modelActions
+//    }
 //
 
 import Foundation

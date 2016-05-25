@@ -16,7 +16,7 @@ import PerfectLib
     
     let pageTitle: String = "Sprints"
     
-    var projectID : String?
+    var projectID : String = ""
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
@@ -31,7 +31,7 @@ import PerfectLib
             let databaseManager = try! DatabaseManager()
             
             
-            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID!)
+            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -57,7 +57,8 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
-        projectID = request.param("projectID")
+		if let projectIdentifier = request.param("projectID"){
+		projectID = projectIdentifier
         let db = try! DatabaseManager()
         let userStories = db.executeFetchRequest(UserStory)
         var counter = 0
@@ -72,13 +73,15 @@ import PerfectLib
         
         let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
-
-        
+		}else{
+			return [:]
+		}
+		
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
-        let id=Int(identifier)!
+		let id=Int(identifier)!
         let tempSprint:Sprint? = getSprintWithID(id)
         
         guard let sprint = tempSprint else {
@@ -88,14 +91,21 @@ import PerfectLib
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
         
-        let chosenUserStory = sprint.dictionary["userStories"]
-        
+        let chosenUserStory = sprint.userStories
+		
+		let storyJSON = chosenUserStory.map { (userstory) -> [String:Any] in
+			
+			return userstory.dictionary
+			
+		}
+		
+		
         // Generate Burndown chart
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         values["burndownChart"] = burndownChart.dictionary
-        
-        
+		values["userStory"] =  storyJSON
+			
         
         //response.requestCompletedCallback()
         return values
@@ -178,15 +188,15 @@ import PerfectLib
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
 
-        
-        guard let sprint = getSprintWithID(Int(identifier)!) else {
-            return MustacheEvaluationContext.MapType()
-        }
-        
-            
-        let values = ["sprint": sprint.dictionary] as MustacheEvaluationContext.MapType
-        return values
-        
+
+			guard let sprint = getSprintWithID(Int(identifier)!) else {
+				return MustacheEvaluationContext.MapType()
+			}
+			
+				
+			let values = ["sprint": sprint.dictionary] as MustacheEvaluationContext.MapType
+			return values
+
     }
     
 
@@ -217,13 +227,28 @@ import PerfectLib
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType {
         return [:]
     }
+	
+	func obtainTasks(request: WebRequest, response: WebResponse, identifier:String) -> String{
+	
+		let take1 = request.param("test1")!
+		print(take1)
+		print(identifier)
+		let project = currentProject(request, response: response)
+		
+//		let encodedTest = try! JSON().encode((project?.dictionary)!)
+		//let encodedTest = ["test" : "hello world"] as MustacheEvaluationContext.MapType
+		return "ABLE TO RETURN VALUE"
+	}
+	
     
     func controllerActions() -> [String: ControllerAction] {
         
         var modelActions:[String: ControllerAction] = [:]
     
         modelActions["comments"] = ControllerAction() {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
-        
+		
+		modelActions["obtain"] = ControllerAction() {(request,response, identifier) in self.obtainTasks(request, response: response, identifier: identifier)}
+		
         return modelActions
     }
     
