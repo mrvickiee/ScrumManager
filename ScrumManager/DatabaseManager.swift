@@ -161,7 +161,8 @@ class DatabaseManager {
     }
     
     func insertObject(object: DBManagedObject) throws {
-       try! database.insert(object)
+			try! database.insert(object)
+		
     }
     
     func deleteObject(object: DBManagedObject) throws {

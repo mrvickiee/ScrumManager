@@ -21,12 +21,8 @@ import PerfectLib
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
         if let title = request.param("title") , rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
-            print("new is called")
-            
-            
+
             let sprint = Sprint(title: title, duration: duration)
-            print("\(sprint)")
-            print("\(request.param("title"))")
 
             let databaseManager = try! DatabaseManager()
             
@@ -81,7 +77,7 @@ import PerfectLib
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
-        let id=Int(identifier)!
+		let id=Int(identifier)!
         let tempSprint:Sprint? = getSprintWithID(id)
         
         guard let sprint = tempSprint else {
@@ -188,15 +184,15 @@ import PerfectLib
     func edit(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
 
-        
-        guard let sprint = getSprintWithID(Int(identifier)!) else {
-            return MustacheEvaluationContext.MapType()
-        }
-        
-            
-        let values = ["sprint": sprint.dictionary] as MustacheEvaluationContext.MapType
-        return values
-        
+
+			guard let sprint = getSprintWithID(Int(identifier)!) else {
+				return MustacheEvaluationContext.MapType()
+			}
+			
+				
+			let values = ["sprint": sprint.dictionary] as MustacheEvaluationContext.MapType
+			return values
+
     }
     
 
@@ -227,13 +223,28 @@ import PerfectLib
     func beforeAction(request: WebRequest, response: WebResponse) -> MustacheEvaluationContext.MapType {
         return [:]
     }
+	
+	func obtainTasks(request: WebRequest, response: WebResponse, identifier:String) -> String{
+	
+		let take1 = request.param("test1")!
+		print(take1)
+		print(identifier)
+		let project = currentProject(request, response: response)
+		
+//		let encodedTest = try! JSON().encode((project?.dictionary)!)
+		//let encodedTest = ["test" : "hello world"] as MustacheEvaluationContext.MapType
+		return "ABLE TO RETURN VALUE"
+	}
+	
     
     func controllerActions() -> [String: ControllerAction] {
         
         var modelActions:[String: ControllerAction] = [:]
     
         modelActions["comments"] = ControllerAction() {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
-        
+		
+		modelActions["obtain"] = ControllerAction() {(request,response, identifier) in self.obtainTasks(request, response: response, identifier: identifier)}
+		
         return modelActions
     }
     

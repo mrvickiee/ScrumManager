@@ -159,7 +159,8 @@ extension UserStory {
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
-            "urlPath": pathURL
+            "urlPath": pathURL,
+            "objectID": _objectID!
         ]
     }
     /*

@@ -154,11 +154,7 @@ class TaskController: AuthController {
             // Post comment
             let newComment = Comment(comment: comment, user: user)
             userStory.addComment(newComment)
-            
-            
-            
             response.redirectTo(userStory)
-            
         }
         
         
