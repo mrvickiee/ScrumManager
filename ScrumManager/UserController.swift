@@ -36,7 +36,7 @@ class UserController: AuthController {
         var userList = [[String:Any]]()
         var visibility = "none"
         let existingUser = currentUser(request, response: response)!
-        if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
+        if existingUser.role == .Admin {
             visibility = "run-in"
             for user in tempUserList{
                 userList.append(user.dictionary)
@@ -192,7 +192,7 @@ class UserController: AuthController {
         
     
         var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
-        if user.role != .ScrumMaster && user.role != .Admin {
+        if user.role != .Admin {
             values["visibility"] = "none"
         }else{
             values["visibility"] = "run-in"
