@@ -24,6 +24,8 @@ import PerfectLib
             print("new is called")
             
             
+            
+            
             let sprint = Sprint(body: body, title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
@@ -31,7 +33,7 @@ import PerfectLib
             let databaseManager = try! DatabaseManager()
             
             
-            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID!)
+            let tmpProject = databaseManager.executeFetchRequest(Project.self).first! //currentProject(request, response: response)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -41,10 +43,10 @@ import PerfectLib
                 sprint.userStoryIDs = userStoryIDs
             do{
                 try databaseManager.insertObject(sprint)
-                tmpProject?.addSprint(sprint)
+                tmpProject.addSprint(sprint)
                 
                 print("inserted \(sprint)")
-                response.redirectTo("sprint/\(sprint.identifier)")
+                response.redirectTo("sprints/\(sprint.identifier)")
                 
             }catch{
                 print("failed to create sprint")

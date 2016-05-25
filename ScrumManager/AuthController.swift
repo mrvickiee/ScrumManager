@@ -155,7 +155,8 @@ extension AuthController {
                     // Call Show
                     values.update(try! create(request, response: response))
                     response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                
+                    response.requestCompletedCallback()
+                    return
                 default:
                     
                     if let action = request.urlVariables["action"]{
@@ -220,6 +221,7 @@ extension AuthController {
             if requestMethod == .POST {
                 
                 new(request, response: response)
+                return
                 
             } else {
                 print("Listing models")

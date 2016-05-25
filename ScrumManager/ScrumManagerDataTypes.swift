@@ -31,12 +31,28 @@ enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
     }
 }
 
-enum TaskStatus: Int, CustomJSONConvertible {
+enum TaskStatus: Int,CustomStringConvertible, CustomJSONConvertible {
     case Unassigned
     case Todo
     case InProgress
     case Testing
     case Completed
+    
+    var description: String {
+        switch self {
+        case .Unassigned:
+            return "Unassigned"
+        case .Todo:
+            return "Todo"
+        case .InProgress:
+            return "In progress"
+        case .Testing:
+            return "Testing"
+        case .Completed:
+            return "Completed"
+        }
+    }
+    
 }
 
 
