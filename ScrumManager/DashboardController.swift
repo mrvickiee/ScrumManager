@@ -36,16 +36,29 @@ class DashboardController: AuthController {
         }
         
         
-        
-        let userTasks = try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
+        let databaseManager = try! DatabaseManager()
+        let userTasks = databaseManager.getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
             return task.dictionary
         })
+        
+        let sprintTasks = databaseManager.executeFetchRequest(Task.self).map { (task) -> [String: Any] in
+            return task.dictionary
+        }
+        
+        
+        // Get Projects
+        if user.role == .Admin {
+            let projects = databaseManager.executeFetchRequest(Project.self).map({ (project) -> [String: Any] in
+                return project.dictionary
+            })
+            
+        }
         
         // Generate Burndown chart 
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         if let _ = session?.projectID {
-            let dictionary = ["project": ["tasks": userTasks, "burndownChart": burndownChart.dictionary] as [String: Any]] as [String: Any]
+            let dictionary = ["project": ["tasks": userTasks, "burndownChart": burndownChart.dictionary, "sprintTasks": sprintTasks] as [String: Any]] as [String: Any]
             return dictionary
         }
         else {
@@ -54,7 +67,7 @@ class DashboardController: AuthController {
         
     }
     
-    func availableActionsForControllerObjects() -> [Action] {
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
         return []
     }
     

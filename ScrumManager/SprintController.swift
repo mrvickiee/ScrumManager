@@ -20,7 +20,7 @@ import PerfectLib
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
+        if let title = request.param("title"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
             print("new is called")
             
             
@@ -30,8 +30,11 @@ import PerfectLib
 
             let databaseManager = try! DatabaseManager()
             
+            guard let tmpProject = currentProject(request, response: response) else {
+                response.requestCompletedCallback()
+                return
+            }
             
-            let tmpProject = databaseManager.executeFetchRequest(Project.self).first! //currentProject(request, response: response)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -42,10 +45,9 @@ import PerfectLib
             do{
                 try databaseManager.insertObject(sprint)
                 tmpProject.addSprint(sprint)
+                databaseManager.updateObject(tmpProject)
                 
                 print("inserted \(sprint)")
-                response.redirectTo("sprints/\(sprint.identifier)")
-                
                 response.redirectTo(sprint)
                 
             }catch{
@@ -104,8 +106,11 @@ import PerfectLib
     }
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        let db = try! DatabaseManager()
-        let sprints = db.executeFetchRequest(Sprint)
+        guard let project = currentProject(request, response: response) else {
+            return [:]
+        }
+        
+        let sprints = project.sprints
         var counter = 0
         let sprintJSONs = sprints.map { (sprint) -> [String:Any] in
             var sprintDictionary = sprint.dictionary

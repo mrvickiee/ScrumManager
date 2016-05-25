@@ -101,8 +101,20 @@ extension AuthController {
         }
     }
     
-    func availableActionsForControllerObjects() -> [Action] {
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        
         return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
+    }
+    
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
+    {
+    let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
+        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+        
+        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+        
+        return [editAction, deleteAction]
     }
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -201,12 +213,8 @@ extension AuthController {
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
                         values["url"] = "/\(modelPluralName)/\(identifier)"
-                        let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
-                        let editURL = "/\(modelPluralName)/\(identifier)/edit"
                         
-                        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
-                        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
-                        values["actions"] = [editAction.dictionary, deleteAction.dictionary]
+                        values["actions"] = availableActionsForObjectWithIdentifier(identifier, request: request, response: response)
                         
                        // values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
@@ -238,7 +246,7 @@ extension AuthController {
                 values.update(try! list(request, response: response))
               //[Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false).dictionary]
                 
-                values["actions"] = availableActionsForControllerObjects().map({ (action) -> [String: Any] in
+                values["actions"] = availableActionsForControllerObjects(request, response: response).map({ (action) -> [String: Any] in
                     return action.dictionary
                 })
  

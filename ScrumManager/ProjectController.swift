@@ -68,6 +68,10 @@ class ProjectController: AuthController {
         return values
     }
     
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        return []
+    }
+    
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
         
         guard let user  = currentUser(request, response: response) else {
