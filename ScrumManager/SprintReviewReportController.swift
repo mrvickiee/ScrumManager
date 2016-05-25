@@ -49,6 +49,7 @@ class SprintReviewReportController: AuthController {
             for eachID in userStoryIdentifier{
                 sprint.reviewReport?.userStoriesCompleted.append(["userstory":eachID])
             }
+            
 
             // Load Tasks
             for task in sprint.tasks{

@@ -28,9 +28,9 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var identifier: Int = 0
     
-    var userID: String? = "" // User who is assigned to task
+    var userID: String = ""// User who is assigned to task
         
-    var UserStoryID: String? = ""// belong to which UserStoryID
+    var UserStoryID: String = "" // belong to which UserStoryID
 
    // lazy var user: User? = try! DatabaseManager().getObjectWithID(User.self, objectID: self.userID ?? "")
     
@@ -147,23 +147,6 @@ extension Task {
 		
     }
     
-    var dictionary: [String: Any] {
-        return [
-            "title" : title,
-            "description" : description,
-            "comments" : comments.map({ (comment) -> [String:Any] in
-                return comment.dictionary
-            }),
-            "estimates" : estimates,
-            "priority" : priority,
-            "status" : status,
-            "workDone" : workDone,
-            "identifier" : identifier,
-            "userID" : userID,
-            "UserStoryID" : UserStoryID
-        ]
-    }
-
     
     var user: User? {
         get {

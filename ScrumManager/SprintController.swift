@@ -126,6 +126,7 @@ import PerfectLib
         
         values["burndownChart"] = burndownChart.dictionary
 		values["userStory"] =  storyJSON
+		values["tasks"] = taskJSON
         values["identifier"] = identifier
 			
         
