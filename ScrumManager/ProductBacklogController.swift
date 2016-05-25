@@ -35,7 +35,7 @@ class ProductBacklogController: AuthController {
         let userStories = db.executeFetchRequest(UserStory)
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
-            var userStoryDict = userStory.dictionary
+            let userStoryDict = userStory.dictionary
             
             return userStoryDict
         }
