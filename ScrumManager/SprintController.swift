@@ -16,11 +16,11 @@ import PerfectLib
     
     let pageTitle: String = "Sprints"
     
-    var projectID : String?
+    var projectID : String = ""
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , body = request.param("body"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
+        if let title = request.param("title") , rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
             print("new is called")
             
             
@@ -31,7 +31,7 @@ import PerfectLib
             let databaseManager = try! DatabaseManager()
             
             
-            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID!)
+            let tmpProject = databaseManager.getObjectWithID(Project.self, objectID: projectID)
  
                 sprint._objectID = databaseManager.generateUniqueIdentifier()
                 
@@ -57,7 +57,8 @@ import PerfectLib
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
         
-        projectID = request.param("projectID")
+		if let projectIdentifier = request.param("projectID"){
+		projectID = projectIdentifier
         let db = try! DatabaseManager()
         let userStories = db.executeFetchRequest(UserStory)
         var counter = 0
@@ -72,8 +73,10 @@ import PerfectLib
         
         let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
-
-        
+		}else{
+			return [:]
+		}
+		
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
@@ -88,14 +91,21 @@ import PerfectLib
         var values: MustacheEvaluationContext.MapType = [:]
         values["sprint"] = sprint.dictionary
         
-        let chosenUserStory = sprint.dictionary["userStories"]
-        
+        let chosenUserStory = sprint.userStories
+		
+		let storyJSON = chosenUserStory.map { (userstory) -> [String:Any] in
+			
+			return userstory.dictionary
+			
+		}
+		
+		
         // Generate Burndown chart
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         values["burndownChart"] = burndownChart.dictionary
-        
-        
+		values["userStory"] =  storyJSON
+			
         
         //response.requestCompletedCallback()
         return values

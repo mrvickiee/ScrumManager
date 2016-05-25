@@ -73,9 +73,28 @@ This is the mustache template file for the tap tracker example.
 
 </div>
 
-<div class="row">
+<div class="row large-12 columns">
 <h3> Sprint backlog</h3>
+<table id="sprintBacklog">
+	<thead>
+		<tr>
+			<td>Title</td>
+			<td>Priority</td>
+			<td>Estimates</td>
+			<td>Status</td>
 
+		</tr>
+	</thead>
+	<tbody>
+{{#userStory}}
+	<td>title</td>
+	<td>priority</td>
+	<td>estimate</td>
+	<td>status</td>
+{{/userStory}}
+	</tbody>
+
+</table>
 
 
 </div>
@@ -116,6 +135,17 @@ This is the mustache template file for the tap tracker example.
 
 
 
+<script>
+
+$('#sprintBacklog').DataTable({
+paging:false,
+info:false
+})
+
+
+
+
+</script>
 
 
 
