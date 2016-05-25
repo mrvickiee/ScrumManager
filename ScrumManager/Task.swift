@@ -112,6 +112,7 @@ extension Task {
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
 			}),
+			"urlPath": pathURL
 			
 		]
 		
@@ -132,6 +133,7 @@ extension Task {
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
 			}),
+			"urlPath": pathURL
 			
 		]
 		
@@ -147,8 +149,12 @@ extension Task {
 	
     var user: User? {
         get {
+			if(userID != ""){
                 return try! DatabaseManager().getObjectWithID(User.self, objectID: userID)
-        }
+			}else{
+				return nil
+			}
+		}
         
         set {
             userID = (newValue?._objectID)!
