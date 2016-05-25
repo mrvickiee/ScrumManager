@@ -175,7 +175,6 @@ body {
     min-width: 40%;
     margin-left: -15px;
     padding: 3%;
-    /*display:block;*/
 }
 
 .userEditButton{
@@ -186,11 +185,23 @@ body {
     padding: 3%;
 }
 
-.show-profile-image{
-    width:40px;
-    height:40px;
-    border-radius: 100%;
+.orangeButton{
+    background-color: orange;
+    height: 5px;
+    line-height:5px;
 }
+
+.redButton{
+    background-color: red;
+    height: 5px;
+    line-height:5px;
+}
+
+.blueButton{
+    height: 5px;
+    line-height:5px;
+}
+
 /* Side bar menu height according to the screen*/
 @media screen and (max-width: 1024px) { /* Specific to this particular image */
     .user-management-side-menu {

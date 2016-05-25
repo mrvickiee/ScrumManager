@@ -5,17 +5,15 @@ This is the mustache template file for the tap tracker example.
 }}
 
 
-<div class="callout large primary">
     <div class="row column text-center">
         <h1>Sprint Review Report</h1>
     </div>
-</div>
 {{#reviewReport}}
 <div class="small-12 medium-12 large-12 columns">
     <strong>Created At: {{createdAt}}</strong>
 </div>
 
-<div class="row medium-8 large-7 columns">
+<div class="row medium-8 large-7 columns" style=" border-style: solid;border-top: thick double #ff0000;">
     <div class="small-12 medium-12 large-12 columns">
         <strong>User Stories Completed</strong>
     </div>
@@ -37,12 +35,12 @@ This is the mustache template file for the tap tracker example.
 {{#tasks}}
 <div class="row medium-8 large-7 columns">
     <div class="small-9 medium-9 large-9 columns">{{task}}</div>
-    <div class="small-3 medium-3 large-3 columns">{{status }}</div>
+<div class="small-3 medium-3 large-3 columns"><i class="{{icon}}"></i>{{status }}</div>
 </div>
 
 {{/tasks}}
 
-<h3>Comments</h3>
+<h5>Comments</h5>
 {{#commentList}}
 {{#comment}}
 {{#user}}
@@ -54,20 +52,22 @@ This is the mustache template file for the tap tracker example.
         <div class="profile-pic-med avatar">{{initials}}</div>
         <div class="message large-10 columns">
             <strong>{{name}}</strong>
-
-            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}')" style="display:{{visibility}}">Edit</a>
-
-
-            <a method="post" href="{{identifier}}_{{commentIndicator}}/delete" style="display:{{visibility}}">
-                <i class="icon-trash"></i>
-            </a>
             <br>
             <div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
                 {{comment}}
             </div>
-            <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')">
+            <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
             Post
             </a>
+
+            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+            <a method="post" href="{{identifier}}_{{commentIndicator}}/delete" style="display:{{visibility}}" class="redButton button">
+            Delete
+            </a>
+
+
             <br>
         </div>
         <br>
@@ -94,9 +94,10 @@ This is the mustache template file for the tap tracker example.
 <script>
 function editComment(a, b){
 document.getElementById(a).setAttribute("contenteditable", "true");
-document.getElementById(a).style.backgroundColor = "rgba(0,0,0,.2)";
-document.getElementById(a).style.marginLeft = "4px";
-document.getElementById(b).style.display = "block";
+document.getElementById(a).style.backgroundColor = "rgba(0,0,0,.1)";
+document.getElementById(a).style.marginLeft = "3px";
+document.getElementById(b).style.marginLeft = "3px";
+document.getElementById(b).style.display = "inline-flex";
 }
 
 function postEditComment(commentColumn, saveButton, sprintID, commentIndicator){
@@ -105,4 +106,11 @@ var path = sprintID+"_"+editComment+"_"+commentIndicator+"/edit";
 document.getElementById(saveButton).href = path;
 
 }
+
+var canvas = document.getElementById("drawLine");
+var context = canvas.getContext("2d");
+ctx.beginPath();
+context.moveTo(0,0);
+context.lineTo(0,400px);
+context.stroke;
 </script>

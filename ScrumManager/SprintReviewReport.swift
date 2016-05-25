@@ -49,8 +49,9 @@ final class SprintReviewReport: Object, DBManagedObject{
         if let tasksList = (dictionary["tasks"] as? JSONArrayType)?.array {
             for eachJson in tasksList{
                 let dict = (eachJson as? JSONDictionaryType)?.dictionary
-                self.tasks.append(["task": dict!["task"]as! String, "status": dict!["status"]as! String])
+                self.tasks.append(["task": dict!["task"]as! String, "status": dict!["status"]as! String, "icon": dict!["icon"]as! String])
             }
+            
             
             
         }

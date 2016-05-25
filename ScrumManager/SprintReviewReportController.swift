@@ -39,24 +39,25 @@ class SprintReviewReportController: AuthController {
             return [:]
         }
 
-        guard sprint.reviewReport?.tasks.count > 0 else{
-            let reviewReport = SprintReviewReport()
-            reviewReport.createdAt = NSDate()
+        guard sprint.reviewReport?.createdAt != nil else{
+            
+            sprint.reviewReport?.createdAt = NSDate()
             
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs
             for eachID in userStoryIdentifier{
-                reviewReport.userStoriesCompleted.append(["userstory":eachID])
+                sprint.reviewReport?.userStoriesCompleted.append(["userstory":eachID])
             }
-            
+
             // Load Tasks
             for task in sprint.tasks{
-                reviewReport.tasks.append(["task": task.title, "status": task.status])
+                sprint.reviewReport?.tasks.append(["task": task.title, "status": task.status.description, "icon":
+                    TaskStatusIcon(rawValue: task.status.rawValue)?.description])
             }
+            db.updateObject(sprint)
             
-            db.updateObject(sprint.self, updateValues: reviewReport.dictionary)
             var values: MustacheEvaluationContext.MapType = [:]
-            values["reviewReport"] = reviewReport.dictionary
+            values["reviewReport"] = sprint.reviewReport?.dictionary
             
             // Set Current username
             let user = currentUser(request, response: response)
@@ -137,11 +138,6 @@ class SprintReviewReportController: AuthController {
             // Post comment
             let newComment = Comment(comment: comment, user: user)
             reviewReport.comments.append(newComment)
-            
-            for eachComment in (sprint.reviewReport?.comments)!{
-                print(eachComment.comment)
-            }
-
             // Update the database
             db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")
