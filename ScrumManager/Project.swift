@@ -63,6 +63,8 @@ final class Project: Object, DBManagedObject {
         
         let productOwnerIdentifier:String = (dictionary["productOwnerID"] as? String!)!
         
+        let userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
+        
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
         
         self.init(name: name, projectDescription: projectDesc ?? "")
@@ -76,6 +78,8 @@ final class Project: Object, DBManagedObject {
         self.productOwnerID = productOwnerIdentifier
         
         self.sprintIDs = sprintIDs
+        
+        self.userStoryIDs = userStoryIDs
         
         if let startDateEpoch = dictionary["startDate"] as? Int {
             startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))

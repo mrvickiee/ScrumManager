@@ -155,12 +155,10 @@ class TaskController: AuthController {
             let newComment = Comment(comment: comment, user: user)
             userStory.addComment(newComment)
             
-            
-            
             response.redirectTo(userStory)
             
         }
-        
+        response.requestCompletedCallback()
         
     }
     

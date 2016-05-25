@@ -246,6 +246,12 @@ class UserController: AuthController {
     // When create page is load
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
+        if let user = currentUser(request, response: response)  {
+            if user.role != .Admin {
+                response.redirectTo("/login")
+            }
+        }
+        
         var values: [String: Any] = [:]
         values["userRoles"] = UserRole.allUserRoles.map({ (userRole) -> [String: Any] in
             return userRole.userDictionary

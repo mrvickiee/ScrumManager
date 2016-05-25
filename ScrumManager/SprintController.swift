@@ -24,9 +24,7 @@ import PerfectLib
             print("new is called")
             
             
-            
-            
-            let sprint = Sprint(body: body, title: title, duration: duration)
+            let sprint = Sprint(title: title, duration: duration)
             print("\(sprint)")
             print("\(request.param("title"))")
 
@@ -47,6 +45,8 @@ import PerfectLib
                 
                 print("inserted \(sprint)")
                 response.redirectTo("sprints/\(sprint.identifier)")
+                
+                response.redirectTo(sprint)
                 
             }catch{
                 print("failed to create sprint")
@@ -144,11 +144,10 @@ import PerfectLib
             // Post comment
             let newComment = Comment(comment: comment, user: user)
             sprint.addComment(newComment)
-            
-            
             response.redirectTo(sprint)
             
         }
+        
         response.requestCompletedCallback()
         
     }

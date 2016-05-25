@@ -50,7 +50,7 @@ extension AuthController {
         
         let currentSession = response.getSession("user")
         
-        let userID = currentSession["user_id"] as! String
+        let userID = currentSession["user_id"] as? String
         
         let projectName = currentSession["projectName"] as? String
         
@@ -58,7 +58,7 @@ extension AuthController {
         
         let projectPathURL = currentSession["projectPathURL"] as? String
         
-        return ScrumManagerSession(userID: userID, projectID: projectID, projectName: projectName, projectPathURL: projectPathURL)
+        return ScrumManagerSession(userID: userID ?? "Anoymous", projectID: projectID, projectName: projectName, projectPathURL: projectPathURL)
     }
     
     func currentUser(request: WebRequest, response: WebResponse) -> User? {
@@ -171,6 +171,7 @@ extension AuthController {
                                 
                             } else {
                                 controllerAction.action?(request, response, identifier)
+                                return 
                             }
                             
                         } else if action == "destroy" {

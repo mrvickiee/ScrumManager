@@ -16,7 +16,7 @@ class ProductBacklogController: AuthController {
     let modelPluralName: String = "userstories"
     
     let pageTitle: String = "Product Backlog"
-    
+        
     //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
     
     func controllerActions() -> [String: ControllerAction] {
@@ -32,7 +32,11 @@ class ProductBacklogController: AuthController {
         // Get Articles
         
         let db = try! DatabaseManager()
-        let userStories = db.executeFetchRequest(UserStory)
+        guard let project = currentProject(request , response: response) else {
+            return [:]
+        }
+        
+        let userStories = project.userStories
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
             var userStoryDict = userStory.dictionary
@@ -153,6 +157,12 @@ class ProductBacklogController: AuthController {
                 
                 newUserStory.identifier = userStoryCount
                 try databaseManager.insertObject(newUserStory)
+                
+                if let project = currentProject(request, response: response) {
+                    project.addUserStory(newUserStory)
+                    databaseManager.updateObject(project)
+                }
+                
                 response.redirectTo("/userstories")
             } catch {
                 
