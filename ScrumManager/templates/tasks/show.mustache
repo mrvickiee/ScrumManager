@@ -35,26 +35,37 @@ This is the mustache template file for the tap tracker example.
 {{#teamMembers}}
 <a href="{{pathURL}}">{{name}}</a>
 {{/teamMembers}}
+<div class="row">
+<div class="large-12 columns">
+
+<h3>Comments</h3>
 
 {{#comments}}
 {{#user}}
+<div class="profile-pic-med avatar">{{initials}}</div>
+
+<div class="message">
 <p><strong>{{name}}</strong></p>
 {{/user}}
+
 <p>{{comment}}</p>
+</div>
+
 {{/comments}}
-
-<form action="{{url}}/comments" method="post">
-
 <div class="row">
 <div class="large-12 columns">
+
+<form action="{{url}}/comments" method="post">
 <label>Comment
 <input type="text" name="comment" />
 </label>
-</div>
-</div>
 <input type="submit" value="Post">
-
 </form>
+</div>
+</div>
+</div>
+
+</div>
 
 </article>
 {{/task}}
