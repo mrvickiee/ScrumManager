@@ -17,11 +17,11 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var userStoryIDs: [String] = []
     
-    var tasks : [Task] = []
+    var taskIDs : [String] = []
     
     var title: String
 
-	//var reviewReport: SprintReviewReport?
+	var reviewReport: SprintReviewReport?
 	
 	var dateCreated = NSDate()
     
@@ -63,12 +63,10 @@ final class Sprint: Object, DBManagedObject, Commentable {
 		self.status = systemWideStatus(rawValue: rawStatus)!
 		
         if let reviewReport = (dictionary["reviewReport"] as? JSONDictionaryType)?.dictionary {
-        //    self.reviewReport = SprintReviewReport(dictionary: reviewReport)
+            self.reviewReport = SprintReviewReport(dictionary: reviewReport)
         }
         
-        if let tasks = dictionary["tasks"] as? [Task] {
-            self.tasks = tasks
-        }
+        self.taskIDs =  (dictionary["taskIDs"] as? JSONArrayType)?.stringArray ?? []
         
         
     }
@@ -106,6 +104,11 @@ extension Sprint {
 		return dateFormatter.stringFromDate(dateCreated)
 	}
 	
+	var tasks:[Task]{
+		return try! DatabaseManager().getObjectsWithIDs(Task.self, objectIDs: taskIDs)
+		
+	}
+	
     var userStories: [UserStory] {
         // Query Database
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
@@ -118,6 +121,7 @@ extension Sprint {
             "userStoryIDs" : userStoryIDs,
             "dateCreated" : dateCreated,
             "status" : status,
+            "taskIDs" : taskIDs,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -131,17 +135,8 @@ extension Sprint {
     
     var dictionary: [String: Any] {
         var dict = keyValues
-        
-       // dict["userStories"] = userStories.map({ (userStory) -> [String: Any] in
-         //   return userStory.dictionary
-       // })
  
-        let tasks = try! DatabaseManager().executeFetchRequest(Task.self)
-        
-        dict["tasks"] = tasks.map({ (task) -> [String: Any] in
-            return task.dictionary
-        })
-        
+		
         return dict
     }
     
@@ -155,6 +150,15 @@ extension Sprint {
         
         return amountOfWork
     }
+	
+	func addTask(task : Task){
+		if let objectID = task._objectID{
+			taskIDs.append(objectID)
+		}
+		
+		try! DatabaseManager().updateObject(self,updateValues: ["taskIDs":taskIDs])
+		
+	}
     
 }
 

@@ -18,7 +18,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var comments: [Comment] = []
     
-    var estimates: Double = 0          //in hours
+    var estimates: NSTimeInterval = 0          //in hours
     
     var priority: UserStoryPriority
     
@@ -28,9 +28,9 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var identifier: Int = 0
     
-    var userID: String? // User who is assigned to task
+    var userID: String = ""// User who is assigned to task
         
-    var UserStoryID: String? // belong to which UserStoryID
+    var UserStoryID: String = "" // belong to which UserStoryID
 
    // lazy var user: User? = try! DatabaseManager().getObjectWithID(User.self, objectID: self.userID ?? "")
     
@@ -69,7 +69,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         self.init(title: taskBody, description: taskDesc, rawPriority: rawPriority )
         
-        self.userID = dictionary["userID"] as? String
+        self.userID = (dictionary["userID"] as? String) ?? ""
         
         self.identifier = dictionary["identifier"] as! Int
         
@@ -96,23 +96,62 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
 extension Task {
     
     static var collectionName: String = "task"
-    
+	
+	
+	var keyValues:[String: Any] {
+		return [
+			"title" : title,
+			"description" : description,
+			"estimates" : estimates,
+			"priority" : priority,
+			"status" : status,
+			"workDone" : workDone,
+			"identifier" : identifier,
+			"userID" : userID,
+			"UserStoryID" : UserStoryID,
+			"comments": comments.map({ (comment) -> [String: Any] in
+				return comment.dictionary
+			}),
+			
+		]
+		
+	}
+	
+	
+	var dictionary: [String: Any] {
+		return [
+			"title" : title,
+			"description" : description,
+			"estimates" : Int(estimates/360),
+			"priority" : priority,
+			"status" : status,
+			"workDone" : workDone,
+			"identifier" : identifier,
+			"userID" : userID,
+			"UserStoryID" : UserStoryID,
+			"comments": comments.map({ (comment) -> [String: Any] in
+				return comment.dictionary
+			}),
+			
+		]
+		
+
+	}
+
+	
     static var ignoredProperties: [String] {
-        
+		
         return ["user",  "comments"]
-        
+		
     }
-    
+	
     var user: User? {
         get {
-            if let userID = userID {
                 return try! DatabaseManager().getObjectWithID(User.self, objectID: userID)
-            }
-            return nil
         }
         
         set {
-            userID = newValue?._objectID
+            userID = (newValue?._objectID)!
             status = .InProgress
         }
     }
@@ -153,7 +192,7 @@ extension Task {
     
     
     func isAssigned(newUser: User) -> Bool {
-        if let userID = userID where newUser._objectID == userID {
+        if  newUser._objectID == userID {
             return true
         } else {
             return false

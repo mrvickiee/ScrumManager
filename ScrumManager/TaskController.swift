@@ -13,6 +13,10 @@ class TaskController: AuthController {
     let modelName = "task"
     
     let pageTitle: String = "Tasks"
+	
+	var sprintID : String?
+	
+	var storyID : String?
     
     func  controllerActions() -> [String: ControllerAction]  {
         
@@ -169,21 +173,36 @@ class TaskController: AuthController {
             let newTask = Task(title: title,description: desc, rawPriority: Int(priority)!)
             
             newTask.estimates = Double(estimate)!
+			newTask.estimates *= 360
             
             // Save Article
             do {
-                let databaseManager = try! DatabaseManager()
-                
-                newTask._objectID = databaseManager.generateUniqueIdentifier()
+				
+				let db = try! DatabaseManager()
+
+                newTask._objectID = db.generateUniqueIdentifier()
                 // Set Identifier
-                let taskCount = databaseManager.countForFetchRequest(Task)
+                let taskCount = db.countForFetchRequest(Task)
                 guard taskCount > -1 else {
                     throw CreateUserError.DatabaseError
                 }
-                
                 newTask.identifier = taskCount
-                try databaseManager.insertObject(newTask)
-               // response.redirectTo("/tasks")
+				
+				let targetStory = db.getObjectWithID(UserStory.self, objectID: storyID!)
+				
+				let targetSprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier" : Int(sprintID!)]).first
+				
+				
+				targetSprint!.addTask(newTask)
+				targetStory?.addTask(newTask)
+			
+				
+				
+                try db.insertObject(newTask)
+					db.updateObject(targetSprint!)
+					db.updateObject(targetStory!)
+				
+				response.redirectTo("/sprints/\(sprintID!)")
             } catch {
                 
             }
@@ -194,7 +213,14 @@ class TaskController: AuthController {
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
-        /*
+		guard let tmpSprintID = request.param("sprintID"), tmpStoryID = request.param("storyID") else{
+			return [:]
+	}
+		sprintID = tmpSprintID
+		storyID = tmpStoryID
+	
+		
+		/*
          let beforeValues = beforeAction(request, response: response)
          
          guard var values = beforeValues else {

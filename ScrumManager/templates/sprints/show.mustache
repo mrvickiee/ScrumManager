@@ -34,7 +34,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
         </dl>
 
     </div>
-
+{{/sprint}}
 
 	<div class="large-6 columns">
 		<h3>Sprint Burndown Chart</h3>
@@ -104,7 +104,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 			<td>{{priority}}</td>
 			<td>{{estimate}}</td>
 			<td>{{status}}</td>
-			<td><a href=""class="warning button">Add task</a></td>
+<td><a href="/tasks/new?sprintID={{identifier}}&storyID={{objectID}}"class="warning button">Add task</a></td>
 		</tr>
 	{{/userStory}}
 	</tbody>
@@ -125,6 +125,19 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 			<td>Belong to</td>
 		</tr>
 	</thead>
+	<tbody>
+{{#tasks}}
+		<tr>
+			<td>{{title}}</td>
+			<td>{{Estimates}}</td>
+			<td>{{priority}}</td>
+			<td>{{status}}</td>
+			<td>None</td>
+			<td>None</td>
+
+		</tr>
+{{/tasks}}
+	</tbody>
 
 
 </table>
@@ -181,6 +194,6 @@ info:false
 </script>
 
 
-{{/sprint}}
+
 
 

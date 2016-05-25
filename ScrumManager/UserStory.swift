@@ -36,6 +36,8 @@ final class UserStory: Object,DBManagedObject, Commentable {
 	
 	var status: systemWideStatus = .Incomplete
 	
+	var taskIDs : [String] = []
+	
     
 	init(title: String, story: String, priority: UserStoryPriority, component: String, type:storyType) {
         self.title = title
@@ -65,13 +67,14 @@ final class UserStory: Object,DBManagedObject, Commentable {
 		
 		let component = dictionary["component"] as? String ?? ""
 		
-        let status = systemWideStatus(rawValue: statusRaw)!
+		let task = dictionary["taskIDs"] as? [String] ?? []
+		
+		let status = systemWideStatus(rawValue: statusRaw)!
 		
         let priority = UserStoryPriority(rawValue: priorityRaw)!
 		
 		let type = storyType(rawValue: typeRaw)!
-
-        
+		
         self.init(title: title, story: story, priority: priority, component: component,type: type)
 		
 		
@@ -83,7 +86,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         
         self.estimatedDuration = Double(timeEstimate)
         
-  
+		self.taskIDs = task
         
         // Load Comments
         
@@ -136,6 +139,7 @@ extension UserStory {
             "component" : component,
             "estimate" : estimatedDuration,
             "type": type,
+            "taskIDs" : taskIDs,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -156,6 +160,7 @@ extension UserStory {
             "epic" : epicLink,
             "type" : type,
             "component":  component,
+            "taskIDs" : taskIDs,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -168,6 +173,17 @@ extension UserStory {
         return ["comments"]
     }
  */
+
+	func addTask(task:Task){
+		if let objectID = task._objectID{
+			taskIDs.append(objectID)
+		}
+		
+		try! DatabaseManager().updateObject(self,updateValues: ["taskIDs":taskIDs])
+		
+
+	}
+
 }
 
 extension UserStory: Routable {

@@ -99,12 +99,17 @@ import PerfectLib
 			
 		}
 		
+		let taskJSON = sprint.tasks.map { (task) -> [String:Any] in
+			return task.dictionary
+		}
+		
 		
         // Generate Burndown chart
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         values["burndownChart"] = burndownChart.dictionary
 		values["userStory"] =  storyJSON
+		values["tasks"] = taskJSON
 			
         
         //response.requestCompletedCallback()
