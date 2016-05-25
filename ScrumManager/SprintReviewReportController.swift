@@ -1,10 +1,11 @@
-//
-//  SprintReviewReportController.swift
-//  ScrumManager
-//
-//  Created by Fagan Ooi on 17/05/2016.
-//  Copyright © 2016 Benjamin Johnson. All rights reserved.
-//
+////
+////  SprintReviewReportController.swift
+////  ScrumManager
+////
+////  Created by Fagan Ooi on 17/05/2016.
+////  Copyright © 2016 Benjamin Johnson. All rights reserved.
+
+
 
 import Foundation
 import PerfectLib
@@ -19,9 +20,9 @@ class SprintReviewReportController: AuthController {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
-         modelActions["edit"] = ControllerAction() {(request, resp,identifier) in self.edit(request, response: resp, identifier: identifier)}
+         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
-         modelActions["delete"] = ControllerAction() {(request, resp,identifier) in self.delete(request, response: resp, identifier: identifier)}
+         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -39,24 +40,26 @@ class SprintReviewReportController: AuthController {
             return [:]
         }
 
-        guard sprint.reviewReport?.tasks.count > 0 else{
-            let reviewReport = SprintReviewReport()
-            reviewReport.createdAt = NSDate()
+        guard sprint.reviewReport?.createdAt != nil else{
+            
+            sprint.reviewReport?.createdAt = NSDate()
             
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs
             for eachID in userStoryIdentifier{
-                reviewReport.userStoriesCompleted.append(["userstory":eachID])
+                sprint.reviewReport?.userStoriesCompleted.append(["userstory":eachID])
             }
             
+
             // Load Tasks
             for task in sprint.tasks{
-                reviewReport.tasks.append(["task": task.title, "status": task.status])
+                sprint.reviewReport?.tasks.append(["task": task.title, "status": task.status.description, "icon":
+                    TaskStatusIcon(rawValue: task.status.rawValue)?.description])
             }
+            db.updateObject(sprint)
             
-            db.updateObject(sprint.self, updateValues: reviewReport.dictionary)
             var values: MustacheEvaluationContext.MapType = [:]
-            values["reviewReport"] = reviewReport.dictionary
+            values["reviewReport"] = sprint.reviewReport?.dictionary
             
             // Set Current username
             let user = currentUser(request, response: response)
@@ -69,7 +72,6 @@ class SprintReviewReportController: AuthController {
         values["reviewReport"] = sprint.reviewReport?.dictionary
         // Set Current username
         let user = currentUser(request, response: response)
-        values["user"] = user?.name
 
         // Set comment list be post by others
         var commentList : [[String:Any]] = []
@@ -95,10 +97,9 @@ class SprintReviewReportController: AuthController {
     }
     
     
-    func edit(request: WebRequest, response: WebResponse, identifier: String) {
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Sprint identifier, 1: New comment, 2: index of old comment
         let informationGet = identifier.componentsSeparatedByString("_")
-        print(informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
         
         let id = Int(informationGet[0])!
         
@@ -137,11 +138,6 @@ class SprintReviewReportController: AuthController {
             // Post comment
             let newComment = Comment(comment: comment, user: user)
             reviewReport.comments.append(newComment)
-            
-            for eachComment in (sprint.reviewReport?.comments)!{
-                print(eachComment.comment)
-            }
-
             // Update the database
             db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")
@@ -158,7 +154,7 @@ class SprintReviewReportController: AuthController {
         return [:]
     }
     
-    func delete(request: WebRequest, response: WebResponse, identifier: String) {
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Sprint identifier, 1: Comment position
         let informationGet = identifier.componentsSeparatedByString("_")
         

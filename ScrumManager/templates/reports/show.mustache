@@ -5,16 +5,16 @@ This is the mustache template file for the tap tracker example.
 }}
 
 
-<div class="callout large primary">
     <div class="row column text-center">
         <h1>Sprint Review Report</h1>
     </div>
-</div>
 {{#reviewReport}}
 <div class="small-12 medium-12 large-12 columns">
     <strong>Created At: {{createdAt}}</strong>
 </div>
-
+<div class="small-12 medium-12 large-12 columns">
+<p class="title"><span>User Story</span></p>
+<div>
 <div class="row medium-8 large-7 columns">
     <div class="small-12 medium-12 large-12 columns">
         <strong>User Stories Completed</strong>
@@ -30,6 +30,7 @@ This is the mustache template file for the tap tracker example.
 </div>
 
 
+<p class="title"><span>Task</span></p>
 <div class="row medium-8 large-7 columns">
     <div class="small-9 medium-9 large-9 columns"><strong>Task(s)</strong></div>
     <div class="small-3 medium-3 large-3 columns"><strong>Status</strong></div>
@@ -37,7 +38,7 @@ This is the mustache template file for the tap tracker example.
 {{#tasks}}
 <div class="row medium-8 large-7 columns">
     <div class="small-9 medium-9 large-9 columns">{{task}}</div>
-    <div class="small-3 medium-3 large-3 columns">{{status }}</div>
+<div class="small-3 medium-3 large-3 columns"><i class="{{icon}}"></i>{{status }}</div>
 </div>
 
 {{/tasks}}
@@ -46,6 +47,8 @@ This is the mustache template file for the tap tracker example.
 {{#commentList}}
 {{#comment}}
 {{#user}}
+
+
 <div class="row medium-8 large-7 columns">
     <div class="large-12 columns">
         <div>
@@ -54,20 +57,24 @@ This is the mustache template file for the tap tracker example.
         <div class="profile-pic-med avatar">{{initials}}</div>
         <div class="message large-10 columns">
             <strong>{{name}}</strong>
-
-            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}')" style="display:{{visibility}}">Edit</a>
-
-
-            <a method="post" href="{{identifier}}_{{commentIndicator}}/delete" style="display:{{visibility}}">
-                <i class="icon-trash"></i>
-            </a>
             <br>
             <div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
                 {{comment}}
             </div>
-            <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')">
+            <a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
+
+            <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
             Post
             </a>
+
+            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+            <a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+            Delete
+            </a>
+
+
             <br>
         </div>
         <br>

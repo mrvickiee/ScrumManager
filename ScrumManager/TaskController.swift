@@ -13,6 +13,10 @@ class TaskController: AuthController {
     let modelName = "task"
     
     let pageTitle: String = "Tasks"
+	
+	var sprintID : String?
+	
+	var storyID : String?
     
     func  controllerActions() -> [String: ControllerAction]  {
         
@@ -20,6 +24,10 @@ class TaskController: AuthController {
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
         modelActions["assign"] = ControllerAction() {(request, resp,identifier) in self.assignUser(request, response: resp, identifier: identifier)}
+        
+        modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
         
         return modelActions
     }
@@ -71,6 +79,25 @@ class TaskController: AuthController {
         }
 
         values["task"] = taskDictionary
+        
+        // Set Current username
+        let current_user = currentUser(request, response: response)
+        
+        // Set comment list be post by others
+        var commentList : [[String:Any]] = []
+        var num = 0
+        for comment in task.comments{
+            if current_user!.email == comment.user?.email{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else if current_user!.role != .ScrumMaster && current_user!.role != .Admin{
+                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }
+            num += 1
+        }
+        values["commentList"] = commentList
+        values["identifier"] = identifier
         
         return values
         
@@ -156,7 +183,6 @@ class TaskController: AuthController {
             userStory.addComment(newComment)
             
             response.redirectTo(userStory)
-            
         }
         response.requestCompletedCallback()
         
@@ -171,21 +197,36 @@ class TaskController: AuthController {
             let newTask = Task(title: title,description: desc, rawPriority: Int(priority)!)
             
             newTask.estimates = Double(estimate)!
+			newTask.estimates *= 360
             
             // Save Article
             do {
-                let databaseManager = try! DatabaseManager()
-                
-                newTask._objectID = databaseManager.generateUniqueIdentifier()
+				
+				let db = try! DatabaseManager()
+
+                newTask._objectID = db.generateUniqueIdentifier()
                 // Set Identifier
-                let taskCount = databaseManager.countForFetchRequest(Task)
+                let taskCount = db.countForFetchRequest(Task)
                 guard taskCount > -1 else {
                     throw CreateUserError.DatabaseError
                 }
-                
                 newTask.identifier = taskCount
-                try databaseManager.insertObject(newTask)
-               // response.redirectTo("/tasks")
+				
+				let targetStory = db.getObjectWithID(UserStory.self, objectID: storyID!)
+				
+				let targetSprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier" : Int(sprintID!)]).first
+				
+				
+				targetSprint!.addTask(newTask)
+				targetStory?.addTask(newTask)
+			
+				
+				
+                try db.insertObject(newTask)
+					db.updateObject(targetSprint!)
+					db.updateObject(targetStory!)
+				
+				response.redirectTo("/sprints/\(sprintID!)")
             } catch {
                 
             }
@@ -196,7 +237,14 @@ class TaskController: AuthController {
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
-        /*
+		guard let tmpSprintID = request.param("sprintID"), tmpStoryID = request.param("storyID") else{
+			return [:]
+	}
+		sprintID = tmpSprintID
+		storyID = tmpStoryID
+	
+		
+		/*
          let beforeValues = beforeAction(request, response: response)
          
          guard var values = beforeValues else {
@@ -216,6 +264,53 @@ class TaskController: AuthController {
         }
         response.requestCompletedCallback()
     }
+    
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Tasks identifier, 1: New comment, 2: index of old comment
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let newComment = informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        let indexOfOldComment = Int(informationGet[2])
+        
+        let db = try! DatabaseManager()
+        
+        guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": id]).first else{
+            return
+        }
+
+        task.comments[indexOfOldComment!].comment = newComment
+        
+        db.updateObject(task)
+        
+        response.redirectTo("/tasks/\(id)")
+        
+    }
+    
+    
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: Tasks identifier, 1: Comment position
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let deleteIndex = Int(informationGet[1])
+        
+        let db = try! DatabaseManager()
+        
+        guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        task.comments.removeAtIndex(deleteIndex!)
+        
+        db.updateObject(task)
+        
+        response.redirectTo("/tasks/\(id)")
+    }
+
     
     
 }

@@ -28,7 +28,7 @@ This is the mustache template file for the tap tracker example.
 <body>
 
     <div class="expanded row large-collapse">
-        <div class="large-3 columns">
+        <div class="large-2 columns">
 <div class="top-bar" style="top-margin:0px;">
 <div class="top-bar-left">
 <ul class="dropdown menu" data-dropdown-menu>
@@ -68,7 +68,7 @@ This is the mustache template file for the tap tracker example.
 
 
         </div>
-        <div class="large-9 columns">
+        <div class="large-10 columns">
 
 <div class="top-bar" style="top-margin:0px;">
 <div class="top-bar-left">
@@ -131,21 +131,33 @@ $("#endDate").datepicker();
 });
 
         </script>
-        <script>
-            function editComment(a, b){
-                document.getElementById(a).setAttribute("contenteditable", "true");
-                document.getElementById(a).style.backgroundColor = "rgba(0,0,0,.2)";
-                document.getElementById(a).style.marginLeft = "4px";
-                document.getElementById(b).style.display = "block";
-            }
 
-            function postEditComment(commentColumn, saveButton, sprintID, commentIndicator){
-                var editComment = document.getElementById(commentColumn).innerHTML;
-                var path = sprintID+"_"+editComment+"_"+commentIndicator+"/edit";
-                document.getElementById(saveButton).href = path;
+<script>
+function editComment(commentIndicator, saveButton, cancelButton){
+document.getElementById(commentIndicator).setAttribute("contenteditable", "true");
+document.getElementById(commentIndicator).style.backgroundColor = "rgba(0,0,0,.1)";
+document.getElementById(commentIndicator).style.marginLeft = "3px";
+document.getElementById(cancelButton).style.marginLeft = "3px";
+document.getElementById(cancelButton).style.display = "inline-flex";
+document.getElementById(saveButton).style.display = "inline-flex";
+}
 
-            }
-        </script>
+function postEditComment(commentColumn, saveButton, sprintID, commentIndicator){
+var editComment = document.getElementById(commentColumn).innerHTML;
+var path = sprintID+"_"+editComment+"_"+commentIndicator+"/updatecomment";
+document.getElementById(saveButton).href = path;
+
+}
+
+function cancelEditComment(commentIndicator, saveButton, cancelButton){
+document.getElementById(commentIndicator).setAttribute("contenteditable", "false");
+document.getElementById(commentIndicator).style.backgroundColor = "white";
+document.getElementById(commentIndicator).style.marginLeft = "-3px";
+document.getElementById(cancelButton).style.marginLeft = "-3px";
+document.getElementById(cancelButton).style.display = "none";
+document.getElementById(saveButton).style.display = "none";
+}
+</script>
     </body>
     </html>
 

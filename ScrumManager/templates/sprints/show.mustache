@@ -3,7 +3,18 @@
 This is the mustache template file for the tap tracker example.
 
 }}
+<style>
+td.details-control {
+background: url('http://i.imgur.com/SD7Dz.png') no-repeat center center;
+cursor: pointer;
+}
 
+
+tr.shown td.details-control {
+background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
+}
+
+</style>
 
 {{#sprint}}
 <div class="row">
@@ -73,31 +84,104 @@ This is the mustache template file for the tap tracker example.
 
 </div>
 
-<div class="row">
+<div class="row " style="top-margin:2%">
+<div  class = "large-6 columns">
 <h3> Sprint backlog</h3>
-
-
+<table id="sprintBacklog">
+	<thead>
+		<tr>
+			<td>Title</td>
+			<td>Priority</td>
+			<td>Estimates</td>
+			<td>Status</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+	{{#userStory}}
+		<tr>
+			<td>{{title}}</td>
+			<td>{{priority}}</td>
+			<td>{{estimate}}</td>
+			<td>{{status}}</td>
+<td><a href="/tasks/new?sprintID={{identifier}}&storyID={{objectID}}"class="warning button">Add task</a></td>
+		</tr>
+	{{/userStory}}
+	</tbody>
+</table>
 
 </div>
 
+<div class="large-6 columns">
+<h3> Task List </h3>
+<table id="taskList" class ="large-6 columns" style="width:100%">
+	<thead>
+		<tr>
+			<td>Title</td>
+			<td>Estimate (In hour)</td>
+			<td>Priority</td>
+			<td>Status</td>
+			<td>Assignee</td>
+			<td>Belong to</td>
+		</tr>
+	</thead>
+	<tbody>
+{{#tasks}}
+		<tr>
+<td><a href="{{urlPath}}">{{title}}</a></td>
+			<td>{{estimates}}</td>
+			<td>{{priority}}</td>
+			<td>{{status}}</td>
+			<td>None</td>
+			<td>None</td>
+
+		</tr>
+{{/tasks}}
+	</tbody>
+
+
+</table>
+</div>
+</div>
+
+<h3>Comments</h3>
+{{#commentList}}
+{{#comment}}
+{{#user}}
 
 <div class="row">
 	<div class="large-12 columns">
 
-	<h3>Comments</h3>
-
-	{{#comments}}
-	{{#user}}
 	<div class="profile-pic-med avatar">{{initials}}</div>
 
-	<div class="message">
-	<p><strong>{{name}}</strong></p>
-	{{/user}}
+    <div class="message large-11 columns">
+        <strong>{{name}}</strong>
+        <br>
+        <div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
+        {{comment}}
+        </div>
+            <a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
 
-	<p>{{comment}}</p>
-	</div>
+            <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
+            Post
+            </a>
 
-	{{/comments}}
+            <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+            <a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+            Delete
+            </a>
+
+
+        <br>
+    </div>
+
+
+
+    {{/user}}
+    {{/comment}}
+    {{/commentList}}
 	<div class="row">
 	<div class="large-12 columns">
 
@@ -111,12 +195,25 @@ This is the mustache template file for the tap tracker example.
 	</div>
 	</div>
 
-{{/sprint}}
 </div>
 
 
 
+<script>
+$("#sprintBacklog").DataTable({
+paging:false,
+searching:true,
+autowidth:false,
+info:false
+}
 
+);
+
+
+
+</script>
+
+{{/sprint}}
 
 
 

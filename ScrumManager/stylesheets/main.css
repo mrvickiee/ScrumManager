@@ -138,7 +138,7 @@ body {
     box-shadow: 0 0 2px rgba(0,0,0, .8);
     width:100%;
     text-align: center;
-    color: blue;
+/*    color: blue;*/
 }
 
 .edit-profile-img-upload-button{
@@ -175,7 +175,6 @@ body {
     min-width: 40%;
     margin-left: -15px;
     padding: 3%;
-    /*display:block;*/
 }
 
 .userEditButton{
@@ -186,13 +185,50 @@ body {
     padding: 3%;
 }
 
-.show-profile-image{
-    width:40px;
-    height:40px;
-    border-radius: 100%;
+.orangeButton{
+    background-color: orange;
+    height: 5px;
+    line-height:5px;
 }
+
+.redButton{
+    background-color: red;
+    height: 5px;
+    line-height:5px;
+}
+
+.blueButton{
+    height: 5px;
+    line-height:5px;
+}
+
+.title{
+    width:80%;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    line-height:1px;
+    margin:10px 0 20px;
+}
+.title span{
+    background-color: white;
+    margin-left: 10px;
+    color:gray;
+    font-weight: bold;
+}
+
 /* Side bar menu height according to the screen*/
 @media screen and (max-width: 1024px) { /* Specific to this particular image */
     .user-management-side-menu {
         height: 100%;
     }
+	
+	
+	
+td.details-control {
+		background: url('http://i.imgur.com/SD7Dz.png') no-repeat center center;
+		cursor: pointer;
+}
+
+
+tr.shown td.details-control {
+		background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
+}

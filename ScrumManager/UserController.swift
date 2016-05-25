@@ -36,7 +36,7 @@ class UserController: AuthController {
         var userList = [[String:Any]]()
         var visibility = "none"
         let existingUser = currentUser(request, response: response)!
-        if existingUser.role == .ScrumMaster || existingUser.role == .Admin {
+        if existingUser.role == .Admin {
             visibility = "run-in"
             for user in tempUserList{
                 userList.append(user.dictionary)
@@ -106,7 +106,8 @@ class UserController: AuthController {
             email = request.param("email"),
             password = request.param("password"),
             password2 = request.param("password2"),
-            expertises = request.param("expertises"){
+            expertises = request.param("expertises"),
+            roleGet = request.param("role"){
             guard let user = User.userWithUsername(identifier) else {
                 response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
                 response.requestCompletedCallback()
@@ -133,6 +134,9 @@ class UserController: AuthController {
             let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
             
             var query : [String: Any] = [:]
+            let roleInt = Int(roleGet)!
+            
+            query["role"] = roleInt
             if user.email != email {
                 query["email"] =  email
             }
@@ -192,7 +196,7 @@ class UserController: AuthController {
         
     
         var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
-        if user.role != .ScrumMaster && user.role != .Admin {
+        if user.role != .Admin {
             values["visibility"] = "none"
         }else{
             values["visibility"] = "run-in"

@@ -32,6 +32,8 @@ public func PerfectServerModuleInit() {
     Routing.Routes["GET", "/"] = { _ in return DashboardController() }
    
     // Add access to stylesheets
+	Routing.Routes["GET", "/resources/*"] = {_  in StaticFileHandler() }
+	Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
     Routing.Routes["GET", "/stylesheets/*"] = {_  in StaticFileHandler() }
     Routing.Routes["GET", "/fonts/*"] = {_  in StaticFileHandler() }
     Routing.Routes["GET", "/stylesheets/*/*"] = {_  in StaticFileHandler() }
@@ -40,9 +42,8 @@ public func PerfectServerModuleInit() {
     Routing.Routes["/logout"] = { _ in LogoutHandler() }
     
    // Routing.Routes["/test"] = { _ in TestHandler() }
-    
-    
-    Routing.Routes["GET", "/resources/*/*"] = {_  in StaticFileHandler() }
+	
+
     
     print("\(Routing.Routes.description)")
         
