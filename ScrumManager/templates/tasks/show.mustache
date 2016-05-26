@@ -13,52 +13,65 @@ This is the mustache template file for the tap tracker example.
 
 
 <dl>
-<dt>Description</dt>
-<dl>{{description}}</dl>
-<dt>Priority</dt>
-<dl>{{priority}}</dl>
-<dt>Status</dt>
-<dl>{{status}}</dl>
-<dt>Estimated Duration</dt>
-<dl>{{estimates}}</dl>
-<dt>Work Done</dt>
-<dl>{{workDone}}</dl>
+	<dt>Description</dt>
+	<dl>{{description}}</dl>
+	<dt>Priority</dt>
+	<dl>{{priority}}</dl>
+	<dt>Status</dt>
+	<dl>{{status}}</dl>
+	<dt>Estimated Duration</dt>
+	<dl>{{estimates}}</dl>
+	<dt>Work Done</dt>
+	<dl>{{workDone}}</dl>
+	<dt>Assignee</dt>
+	<dl>{{assigneeName}}</dl>
 </dl>
 
-<a href="{{urlPath}}/assign">{{assignAction}}</a>
+{{#isAssigned}}
+	<div class="row large-12 columns">
+		<form>
+			<label> Work done (in hours)
+				<input type="text"></input>
 
-<h5>Assigned Team members</h5>
-{{#teamMembers}}
-<a href="{{urlPath}}">{{name}}</a>
-{{/teamMembers}}
-<div class="row">
-<div class="large-12 columns">
-
-<h3>Comments</h3>
-{{#commentList}}
-{{#comment}}
-<div class="large-12 columns">
-
-<span class="profile-pic-med avatar">{{initials}}</span>
-
-<div class="message large-10 columns">
-<strong>{{name}}</strong>
-<br>
-<div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
-{{comment}}
-</div>
-<a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
-
-<a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
-Post
-</a>
-
-<a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+			</label>
 
 
-<a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
-Delete
-</a>
+		</form>
+
+
+
+	</div>
+{{/isAssigned}}
+
+
+	<div class="row">
+	<div class="large-12 columns">
+
+	<h3>Comments</h3>
+	{{#commentList}}
+	{{#comment}}
+	<div class="large-12 columns">
+
+	<span class="profile-pic-med avatar">{{initials}}</span>
+
+	<div class="message large-10 columns">
+	<strong>{{name}}</strong>
+	<br>
+	<div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
+	{{comment}}
+	</div>
+	<a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
+
+	<a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
+	Post
+	</a>
+
+	<a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+	<a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+	Delete
+	</a>
 
 
 <br>

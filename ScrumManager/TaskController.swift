@@ -59,7 +59,9 @@ class TaskController: AuthController {
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
+		
+		let curUser = currentUser(request, response: response)
+		
         // Query User Story
         let id = Int(identifier)!
         
@@ -69,16 +71,21 @@ class TaskController: AuthController {
         
         var values: MustacheEvaluationContext.MapType = [:]
         var taskDictionary = task.dictionary
-        
-        
-        if task.isAssigned(user) {
-            values["assignAction"] = "Unassign from task"
-        } else {
-            values["assignAction"] = "Accept task"
-        }
-        if let user = task.user {
-            taskDictionary["teamMembers"] = [user.dictionary]
-        }
+		
+		if let user = task.user {
+		taskDictionary["assigneeName"] = user.name
+			
+		if(user.email == curUser?.email){
+			taskDictionary["isAssigned"] = true
+		}else{
+			taskDictionary["isAssigned"] = false
+		}
+		}else{
+			taskDictionary["assigneeName"] = "None"
+			taskDictionary["isAssigned"] = false
+		}
+		
+		
 
         values["task"] = taskDictionary
         
