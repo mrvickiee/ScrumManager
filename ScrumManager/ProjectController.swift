@@ -17,10 +17,36 @@ class ProjectController: AuthController {
     var modelPluralName: String = "projects"
     
     func controllerActions() -> [String : ControllerAction] {
-        return ["set": ControllerAction() {(request, resp,identifier) in self.switchProjects(request, response: resp, identifier: identifier)}]
+        var modelActions:[String: ControllerAction] = [:]
+        
+        modelActions["finish"] = ControllerAction() {(request, resp,identifier) in self.finishSprint(request, response: resp, identifier: identifier)}
+        
+        
+        modelActions["set"] = ControllerAction() {(request, resp,identifier) in self.switchProjects(request, response: resp, identifier: identifier)}
+        
+        return modelActions
+        
         
 
     }
+    
+    func finishSprint(request: WebRequest, response: WebResponse, identifier: String) {
+        let id = Int(identifier)!
+        let db = try! DatabaseManager()
+        
+        guard let project = db.executeFetchRequest(Project.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        project.endDate = NSDate()
+        
+        db.updateObject(project)
+        
+        response.redirectTo("/projects")
+        response.requestCompletedCallback()
+        
+    }
+
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType{
         let databaseManager = try! DatabaseManager()
@@ -68,9 +94,7 @@ class ProjectController: AuthController {
         return values
     }
     
-    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
-        return []
-    }
+    
     
     func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action] {
         
@@ -78,20 +102,24 @@ class ProjectController: AuthController {
         let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
         let editURL = "/\(modelPluralName)/\(identifier)/edit"
         
+        
+        let finishURL = "/\(modelPluralName)/\(identifier)/finish"
+        
         let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
         let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+        let finishAction = Action(url: finishURL, icon: "", name: "Finish Project", isDestructive: true)
 
         guard let user = currentUser(request, response: response) else {
             return []
         }
         
         if user.role == .Admin {
-            return [editAction, deleteAction]
+            return [editAction, deleteAction, finishAction]
         } else if user.role == .ScrumMaster {
             
             if let project = DatabaseManager.sharedManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first where project.scrumMasterID! == user._objectID!   {
                 
-                return [editAction, deleteAction]
+                return [editAction, deleteAction, finishAction]
             }
         }
         

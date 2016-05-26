@@ -373,25 +373,71 @@ import PerfectLib
             response.requestCompletedCallback()
         }
     }
+    
+    func finishSprint(request: WebRequest, response: WebResponse, identifier: String) {
+        let id = Int(identifier)!
+        let db = try! DatabaseManager()
+        
+        guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        sprint.status = systemWideStatus.Completed
+        
+        db.updateObject(sprint)
+        
+        response.redirectTo("/sprints")
+        response.requestCompletedCallback()
+    
+    }
 
-
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action] {
+        
+        
+        let finishURL = "/\(modelPluralName)/\(identifier)/finish"
+        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+        
+        let finishAction = Action(url: finishURL, icon: "", name: "Finish Sprint", isDestructive: false)
+        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+        
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
+        
+        if user.role == .Admin {
+            return [editAction, finishAction]
+        } else if user.role == .ScrumMaster {
+            
+            if let project = DatabaseManager.sharedManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first where project.scrumMasterID! == user._objectID!   {
+                
+                return [editAction, finishAction]
+            }
+        }
+        
+        
+        return []
+    }
     
     func controllerActions() -> [String: ControllerAction] {
         
         var modelActions:[String: ControllerAction] = [:]
-    
+        
         modelActions["comments"] = ControllerAction() {(request, response, identifier) in self.newComment(request, response:response, identifier:identifier)}
-		
-		modelActions["obtain"] = ControllerAction() {(request,response, identifier) in self.obtainTasks(request, response: response, identifier: identifier)}
+        
+        modelActions["obtain"] = ControllerAction() {(request,response, identifier) in self.obtainTasks(request, response: response, identifier: identifier)}
         
         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
         
         modelActions["editsprintdetails"] = ControllerAction() {(request, resp,identifier) in self.editSprintDetails(request, response: resp, identifier: identifier)}
-		
+        
+        modelActions["finish"] = ControllerAction() {(request, resp,identifier) in self.finishSprint(request, response: resp, identifier: identifier)}
+        
         return modelActions
     }
+
+
     
     
  }
