@@ -246,6 +246,10 @@ extension Task {
         
     }
     
+	
+	func updateWorkDone(hourDone:Double){
+		workDone += (hourDone*360)
+	}
 }
 
 extension Task: Routable {
