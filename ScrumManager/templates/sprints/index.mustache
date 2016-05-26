@@ -9,17 +9,39 @@ This is the mustache template file for the tap tracker example.
     {{#sprints}}
         <article class="blog-post">
             <a href="{{urlPath}}"><h3>{{title}}</h3></a>
-            <p>{{body}}</p>
-<table>
+    <p>Description: {{body}}</p>
+        </article>
+
+<table id="sprintTaskList" style="width:100%">
+<thead>
+<tr>
+<td>Task</td>
+<td>Body</td>
+</tr>
+</thead>
 <tbody>
 {{#tasks}}
 <tr>
+<td><a href="{{urlPath}}"><h3>{{title}}</h3></a></td>
 <td>{{body}}</td>
+
 </tr>
 {{/tasks}}
-
 </tbody>
+
+
 </table>
-        </article>
     {{/sprints}}
 </div>
+
+<script>
+$("#sprintTaskList").DataTable({
+paging:false,
+searching:true,
+autowidth:false,
+info:false
+});
+
+
+</script>
+
