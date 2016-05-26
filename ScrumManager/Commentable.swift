@@ -47,4 +47,25 @@ extension Commentable where Self: DBManagedObject {
         
         return []
     }
+    
+    func loadCommentDetailsForMustahce(user:User)->[[String:Any]]{
+        
+        var commentList : [[String:Any]] = []
+        
+        var num = 0
+        for comment in comments{
+            if user.email == comment.user?.email{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else if user.role != .ScrumMaster && user.role != .Admin{
+                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }else{
+                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
+            }
+            num += 1
+        }
+        
+        return commentList
+
+        
+    }
 }

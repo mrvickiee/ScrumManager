@@ -82,22 +82,8 @@ class TaskController: AuthController {
 
         values["task"] = taskDictionary
         
-        // Set Current username
-        let current_user = currentUser(request, response: response)
+        let commentList = task.loadCommentDetailsForMustahce(currentUser(request, response: response)!)
         
-        // Set comment list be post by others
-        var commentList : [[String:Any]] = []
-        var num = 0
-        for comment in task.comments{
-            if current_user!.email == comment.user?.email{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
-            }else if current_user!.role != .ScrumMaster && current_user!.role != .Admin{
-                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
-            }else{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num, "initials": (comment.user?.initials)!, "name": (comment.user?.name)!])
-            }
-            num += 1
-        }
         values["commentList"] = commentList
         values["identifier"] = identifier
         
@@ -289,6 +275,7 @@ class TaskController: AuthController {
         db.updateObject(task)
         
         response.redirectTo("/tasks/\(id)")
+        response.requestCompletedCallback()
         
     }
     
@@ -312,6 +299,7 @@ class TaskController: AuthController {
         db.updateObject(task)
         
         response.redirectTo("/tasks/\(id)")
+        response.requestCompletedCallback()
     }
 
     

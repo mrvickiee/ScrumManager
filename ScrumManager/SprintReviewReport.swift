@@ -12,7 +12,7 @@ import PerfectLib
 
 
 
-final class SprintReviewReport: Object, DBManagedObject, BurndownReport {
+final class SprintReviewReport: Object, DBManagedObject, BurndownReport, Commentable {
     
     static var collectionName = "reviewReport"
     

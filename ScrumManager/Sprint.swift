@@ -149,8 +149,8 @@ extension Sprint {
 			}),
 			"urlPath": pathURL,
 			"identifier": identifier,
-			"duration": (duration/360)
-			//  "reviewReport": reviewReport?.dictionary
+			"duration": (duration/360),
+			"reviewReport": reviewReport.dictionary
 		]
 
     }
