@@ -22,7 +22,9 @@ class ProductBacklogController: AuthController {
     func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
-        
+		
+		modelActions["arrange"] = ControllerAction(){(request, resp, identifier) in self.arrange(request, response:resp)}
+		
         return modelActions
     }
     
@@ -30,12 +32,15 @@ class ProductBacklogController: AuthController {
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
-        
+		let curProject = currentProject(request, response: response)
+		
         let db = try! DatabaseManager()
-        let userStories = db.executeFetchRequest(UserStory)
+        var userStories = curProject!.userStories
+		userStories = userStories.sort({$0.rankingIndex < $1.rankingIndex})
+
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
-            let userStoryDict = userStory.dictionary
+			let userStoryDict = userStory.dictionary
             
             return userStoryDict
         }
@@ -53,7 +58,35 @@ class ProductBacklogController: AuthController {
        
         return userStory
     }
-    
+	
+	func arrange(request:WebRequest, response:WebResponse){
+		
+		let sequence  = request.param("sequence")
+		let sequenceArr = sequence!.componentsSeparatedByString("_")
+		
+		let db = try! DatabaseManager()
+		
+		let curProject = currentProject(request, response: response)
+		
+		var userStories = curProject?.userStories
+		
+		userStories = userStories!.sort({$0.rankingIndex < $1.rankingIndex})
+		
+		
+		for(var i = 1; i < sequenceArr.count ; i++ ){
+			userStories![i-1].rankingIndex = Int(sequenceArr[i])!
+			
+			db.updateObject(userStories![i-1])
+			
+		}
+		
+		
+		
+
+	
+		response.redirectTo("/userstories")
+	}
+	
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         // Query User Story
         let id = Int(identifier)!
@@ -139,8 +172,14 @@ class ProductBacklogController: AuthController {
 			let type = storyType(rawValue: Int(typeRaw)!)!
             // Valid Article
             let newUserStory = UserStory(title: title, story: body, priority: userStoryPriority, component: component, type: type)
-            
-            // Save Article
+			
+			let curProject = currentProject(request, response: response)	//calculate ranking index
+			
+			let amountOfStory = curProject?.userStories.count
+			
+			newUserStory.rankingIndex = amountOfStory!+1
+			
+			// Save Article
             do {
                 let databaseManager = try! DatabaseManager()
                 

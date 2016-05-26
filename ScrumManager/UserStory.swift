@@ -28,7 +28,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var estimatedDuration: NSTimeInterval = 0      //story points
 	
-	var rakingIndex:Int?
+	var rankingIndex:Int = 0
 	
 	var epicLink : String = "None"
 	
@@ -75,8 +75,12 @@ final class UserStory: Object,DBManagedObject, Commentable {
 		
 		let type = storyType(rawValue: typeRaw)!
 		
+		let rank = dictionary["rankingIndex"] as? Int ?? 0
+		
         self.init(title: title, story: story, priority: priority, component: component,type: type)
 		
+		
+		self.rankingIndex = rank
 		
 		self.status = status
         
@@ -144,7 +148,8 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "identifier": identifier
+            "identifier": identifier,
+            "rankingIndex" : rankingIndex
         ]
         
     }
@@ -165,7 +170,7 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "objectID": _objectID!
+            "rankingIndex" : rankingIndex
         ]
     }
     /*
@@ -183,6 +188,8 @@ extension UserStory {
 		
 
 	}
+	
+
 
 }
 

@@ -19,10 +19,11 @@ This is the mustache template file for the tap tracker example.
 				<th></th>
 			</tr>
 		</thead>
-{{#userStories}}
+
 		<tbody>
+			{{#userStories}}
 			<tr>
-				<td>1</td>
+				<td>{{rankingIndex}}</td>
 				<td>{{title}}</td>
 				<td>{{type}}</td>
 				<td>{{priority}}</td>
@@ -46,9 +47,30 @@ This is the mustache template file for the tap tracker example.
 
 
 <script>
-	$("#storyList").DataTable({
+
+var sequence = "";
+
+	var table =$("#storyList").DataTable({
 		paging:false,
 		searching:false,
-		info:false
+		info:false,
+		rowReorder:true
 	});
+
+	table.on('row-reorder',function(e, diff,edit){
+table.draw();
+		var data = table.rows().data();
+		data.each(function (value, index) {
+		alert('Data in index: ' + index + ' is: ' + value);
+		});
+
+
+	/*	for(var i=0, ien = diff.length ; i<ien ; i++){
+			var rowData = table.row(diff[i].node).data();
+			sequence  = sequence + "_" + rowData[0];
+		}*/
+
+		var URL  = "/userstories/0/arrange?sequence="  + sequence;
+		//window.location.href= URL;
+});
 </script>
