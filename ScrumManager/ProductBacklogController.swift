@@ -22,7 +22,12 @@ class ProductBacklogController: AuthController {
     func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
 		modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+		
 		modelActions["arrange"] = ControllerAction(){(request, resp, identifier) in self.arrange(request, response:resp)}
+		
+		modelActions["delete"] = ControllerAction(){(request, resp, identifier) in self.delete(request, response:resp, identifier: identifier)}
+		
+		
 		
 		
         return modelActions
@@ -41,11 +46,8 @@ class ProductBacklogController: AuthController {
             return []
         }
         
-        
-        
     }
-    
-    
+	
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
@@ -61,8 +63,7 @@ class ProductBacklogController: AuthController {
             
             return userStoryDict
         }
-        
-
+		
         let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
     }
@@ -98,15 +99,6 @@ class ProductBacklogController: AuthController {
 				}
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		for(var i = 0; i < tmpUserStories.count ; i++ ){
 			
@@ -235,13 +227,15 @@ class ProductBacklogController: AuthController {
         return [:]
     }
     
-    func delete(identifier: String, request: WebRequest, response: WebResponse) {
+    func delete( request: WebRequest, response: WebResponse,identifier: String) {
         
         let id = Int(identifier)!
         let db = try! DatabaseManager()
         if let userStory: UserStory = getUserStoryWithIdentifier(id) {
             try! db.deleteObject(userStory)
         }
+		
+		
         
         response.redirectTo("/userstories")
         response.requestCompletedCallback()

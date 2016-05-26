@@ -132,7 +132,8 @@ extension Sprint {
             "urlPath": pathURL,
             "identifier": identifier,
             "duration": duration,
-            "reviewReport": reviewReport.dictionary
+            "reviewReport": reviewReport.dictionary,
+            
         ]
         
     }
@@ -141,7 +142,7 @@ extension Sprint {
 		return [
 			"title": title,
 			"userStoryIDs" : userStoryIDs,
-			"dateCreated" : DateFormatterCache.shared.mediumFormat.stringFromDate(dateCreated),
+			"dateCreated" : FormatterCache.shared.mediumFormat.stringFromDate(dateCreated),
 			"status" : status,
 			"taskIDs" : taskIDs,
 			"comments": comments.map({ (comment) -> [String: Any] in

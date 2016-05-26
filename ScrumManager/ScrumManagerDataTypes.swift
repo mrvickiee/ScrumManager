@@ -60,7 +60,7 @@ enum TaskStatus: Int,CustomStringConvertible, CustomJSONConvertible {
         switch(self) {
         case .Unassigned: return "Unassigned"
         case .Todo: return "Todo"
-        case .InProgress: return "InProgress"
+        case .InProgress: return "In Progress"
         case .Testing: return "Testing"
         case .Completed: return "Completed"
         }

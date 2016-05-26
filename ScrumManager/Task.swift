@@ -82,7 +82,10 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         self.workDone = dictionary["workDone"] as? Double ?? 0
         
         self.estimates = (dictionary["estimates"] as? Double) ?? 0
-        
+		
+		self.UserStoryID = dictionary["UserStoryID"] as? String ?? ""
+
+		
         self._objectID = id
         
         // Load Comments 
@@ -107,7 +110,7 @@ extension Task {
 			"status" : status,
 			"workDone" : workDone,
 			"identifier" : identifier,
-			"userID" : userID,
+			"userID" : userID ?? "null",
 			"UserStoryID" : UserStoryID,
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
@@ -123,7 +126,7 @@ extension Task {
 		return [
 			"title" : title,
 			"description" : description,
-			"estimates" : Int(estimates/360),
+			"estimates" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(estimates)!,
 			"priority" : priority,
 			"status" : status,
 			"workDone" : workDone,
@@ -162,9 +165,14 @@ extension Task {
             status = .InProgress
         }
     }
-    
-    
-    
+	
+	var userStory: UserStory? {
+		return try! DatabaseManager().getObjectWithID(UserStory.self, objectID: UserStoryID)
+	}
+
+	
+	
+	
     func assignUser(newUser: User) {
         if isAssigned(newUser) {
             return

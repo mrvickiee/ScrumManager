@@ -161,7 +161,7 @@ extension UserStory {
             "story": story,
             "priority" : priority,
             "status" : status,
-            "estimate" : Int(estimatedDuration/360),
+            "estimate" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(estimatedDuration)!,
             "epic" : epicLink,
             "type" : type,
             "component":  component,
@@ -170,7 +170,8 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "rankingIndex" : rankingIndex
+            "rankingIndex" : rankingIndex,
+            "objectID" : _objectID!
         ]
     }
     /*
