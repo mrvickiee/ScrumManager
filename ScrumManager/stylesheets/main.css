@@ -215,6 +215,25 @@ body {
     font-weight: bold;
 }
 
+.scrollMembers{
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+    height: 200px;
+    background-color:#fafafa;
+    border: 1px solid #cacaca;
+    color: #959595;
+   
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgb(0,0,0);
+}
+
 /* Side bar menu height according to the screen*/
 @media screen and (max-width: 1024px) { /* Specific to this particular image */
     .user-management-side-menu {

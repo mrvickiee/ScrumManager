@@ -17,7 +17,9 @@ import PerfectLib
     let pageTitle: String = "Sprints"
     
     var projectID : String = ""
-
+    
+    var newURL: String = ""
+    
     var userRolesWithModifiyPermission: [UserRole] = [.ScrumMaster, .Admin]
     
     //create new sprint
@@ -190,6 +192,10 @@ import PerfectLib
         }
         
         let values : MustacheEvaluationContext.MapType = ["sprints":sprintJSONs]
+        
+        newURL = "/sprints/new?projectID=\(project._objectID!)"
+
+        
         return values
         
     }

@@ -19,12 +19,13 @@ This is the mustache template file for the tap tracker example.
             </label>
 
             <label>Select User Stories
-                <select name="userStories" multiple>
-                    {{#userStories}}
-                        <option value="{{objectID}}">{{title}}</option>
-                    {{/userStories}}
-                </select>
+            <div class="scrollMembers">
+                {{#userStories}}
+                <input type="checkbox" value="{{objectID}}" name="userStories">  {{title}}<br>
+                {{/userStories}}
+            </div>
             </label>
+            <br>
             <input type="submit" value="Submit">
 
         </div>
