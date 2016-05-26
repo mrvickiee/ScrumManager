@@ -39,9 +39,27 @@ class SprintReviewReportController: AuthController {
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return [:]
         }
-
-        /*
+        
+        if sprint.reviewReport.tasks.count <= 0 {
+            // Load User Stories Completed
+            let userStoryIdentifier = sprint.userStoryIDs
+            for eachID in userStoryIdentifier{
+                
+                let userstory = db.getObjectWithID(UserStory.self, objectID: eachID)
+                let name = (userstory?.title)!
+                sprint.reviewReport.userStoriesCompleted.append(["userstory":name])
+            }
             
+            
+            // Load Tasks
+            for task in sprint.tasks{
+                sprint.reviewReport.tasks.append(["task": task.title, "status": task.status.description, "icon":
+                    TaskStatusIcon(rawValue: task.status.rawValue)?.description])
+            }
+            db.updateObject(sprint)
+        }
+        /*
+         
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs
             for eachID in userStoryIdentifier{
