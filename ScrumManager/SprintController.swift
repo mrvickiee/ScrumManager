@@ -133,7 +133,14 @@ import PerfectLib
         values["identifier"] = identifier
 			
         
-        //response.requestCompletedCallback()
+             let currentLoginUser = currentUser(request, response: response)
+        
+        if modelPluralName == "sprints" && currentLoginUser?.role == .Admin{
+            let editURL = "/\(modelPluralName)/\(identifier)/edit"
+            let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+            values["actions"] = editAction
+        }
+        
         return values
         
     }
@@ -315,6 +322,22 @@ import PerfectLib
         response.redirectTo("/sprints/\(id)")
         response.requestCompletedCallback()
     }
+    
+    func editSprintDetails(request: WebRequest, response: WebResponse, identifier: String) {
+        if let title = request.param("title"),rawDuration = request.param("duration"), duration = Double(rawDuration){
+            let id = Int(identifier)!
+            let db = try! DatabaseManager()
+            guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
+                return
+            }
+            sprint.title = title
+            sprint.duration = duration*360
+            db.updateObject(sprint)
+            response.redirectTo("/sprints/\(identifier)")
+            response.requestCompletedCallback()
+        }
+    }
+
 
     
     func controllerActions() -> [String: ControllerAction] {
@@ -328,8 +351,11 @@ import PerfectLib
         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["editsprintdetails"] = ControllerAction() {(request, resp,identifier) in self.editSprintDetails(request, response: resp, identifier: identifier)}
 		
         return modelActions
     }
+    
     
  }
