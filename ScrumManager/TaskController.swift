@@ -28,7 +28,10 @@ class TaskController: AuthController {
         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
-        
+		
+		modelActions["updatetask"] = ControllerAction() {(request, resp,identifier) in self.updateTask(request, response: resp, identifer: identifier)}
+	
+		
         return modelActions
     }
     
@@ -274,7 +277,38 @@ class TaskController: AuthController {
         }
         response.requestCompletedCallback()
     }
-    
+	
+	func updateTask(request: WebRequest, response: WebResponse, identifer:String){
+		
+		if let progress = request.param("progress"), workDone = request.param("workDone"){
+		 let db = try! DatabaseManager()
+		let updateTask = getTaskWithID(Int(identifer)!)
+		
+			let taskStatus = TaskStatus(rawValue: Int(progress)!)
+			
+			updateTask?.status = taskStatus!
+			updateTask?.updateWorkDone(Double(workDone)!)
+			
+			db.updateObject(updateTask!)
+			
+			response.redirectTo(updateTask!)
+			response.requestCompletedCallback()
+		}else{
+			response.requestCompletedCallback()
+		}
+		
+		
+	}
+	
+	func getTaskWithID(identifier: Int) -> Task? {
+		let db = try! DatabaseManager()
+		guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": identifier]).first else {
+			return nil
+		}
+		
+		return task
+	}
+	
     func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Tasks identifier, 1: New comment, 2: index of old comment
         let informationGet = identifier.componentsSeparatedByString("_")

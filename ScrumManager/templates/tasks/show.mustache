@@ -4,13 +4,13 @@ This is the mustache template file for the tap tracker example.
 
 }}
 
-<div class="row medium-8 large-7 columns">
-
 {{#task}}
-<article class="blog-post">
-
+<div class="row">
 <h3>{{title}}</h3>
 
+</div>
+<div class="row">
+<div class="large-6 columns">
 
 <dl>
 	<dt>Description</dt>
@@ -19,32 +19,43 @@ This is the mustache template file for the tap tracker example.
 	<dl>{{priority}}</dl>
 	<dt>Status</dt>
 	<dl>{{status}}</dl>
-	<dt>Estimated Duration</dt>
-	<dl>{{estimates}}</dl>
-	<dt>Work Done</dt>
-	<dl>{{workDone}}</dl>
-	<dt>Assignee</dt>
-	<dl>{{assigneeName}}</dl>
 </dl>
+</div>
 
+<div class large-6 columns">
+<dl>
+<dt>Estimated Duration</dt>
+<dl>{{estimates}}</dl>
+<dt>Work Done</dt>
+<dl>{{workDone}}</dl>
+<dt>Assignee</dt>
+<dl>{{assigneeName}}</dl>
+</dl>
+</div>
+</div>
 {{#isAssigned}}
-	<div class="row large-12 columns">
-		<form>
-			<label> Work done (in hours)
-				<input type="text"></input>
-
-			</label>
-
-
+	<div class="row large-6 columns">
+		<form action="{{urlPath}}/updatetask" method="post">
+			<fieldset>
+				<legend>Update task progress</legend>
+					<label> Work done (in hours)
+						<input name="workDone" type="text"></input>
+					</label>
+					<label> Progress status
+						<select name="progress">
+							<option value="1">In Progress</option>
+							<option value="2">Testing </option>
+							<option value="3">Completed</option>
+						</select>
+					</label>
+				<input type="submit" value="Submit"></input>
+			</fieldset>
 		</form>
-
-
-
 	</div>
 {{/isAssigned}}
 
 
-	<div class="row">
+<div class="row" style="margin-top:2%">
 	<div class="large-12 columns">
 
 	<h3>Comments</h3>
