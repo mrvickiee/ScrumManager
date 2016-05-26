@@ -192,12 +192,26 @@ extension Project {
         return NSDate().dateByAddingTimeInterval(projectDuration)
     }
     
-    func addUserStory(userStory: UserStory) {
+    func addUserStory(userStory: UserStory) throws {
+        
+        let databaseManager = DatabaseManager.sharedManager
+        userStory._objectID = databaseManager.generateUniqueIdentifier()
+        // Set Identifier
+        let userStoryCount = databaseManager.countForFetchRequest(UserStory)
+        guard userStoryCount > -1 else {
+            throw CreateUserError.DatabaseError
+        }
+        
+        userStory.identifier = userStoryCount
+        try databaseManager.insertObject(userStory)
+
         if let objectID = userStory._objectID {
             userStoryIDs.append(objectID)
         }
         
-        try! DatabaseManager().updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self)
+
     }
     
     func addTeamMember(teamMember: User) {

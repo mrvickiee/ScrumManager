@@ -86,16 +86,16 @@ enum TaskStatusIcon: Int, CustomJSONConvertible {
     }
 }
 
-enum storyType: Int,CustomJSONConvertible, CustomStringConvertible{
-	case bug
-	case new
-	case improvement
+enum StoryType: Int,CustomJSONConvertible, CustomStringConvertible{
+	case Bug
+	case New
+	case Improvement
 	
 	var description: String {
 		switch(self) {
-		case .bug: return "Bug"
-		case .new: return "New functionalities"
-		case .improvement: return "Improvement"
+		case .Bug: return "Bug"
+		case .New: return "New functionalities"
+		case .Improvement: return "Improvement"
 		}
 	}
 }

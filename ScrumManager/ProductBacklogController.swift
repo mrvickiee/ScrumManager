@@ -140,27 +140,15 @@ class ProductBacklogController: AuthController {
 		if let title = request.param("title"), body = request.param("story"), priority = request.param("storyPriority"), component = request.param("component"), typeRaw = request.param("type") {
 		
             let userStoryPriority = UserStoryPriority(rawValue: Int(priority)!)!
-			let type = storyType(rawValue: Int(typeRaw)!)!
+			let type = StoryType(rawValue: Int(typeRaw)!)!
             // Valid Article
             let newUserStory = UserStory(title: title, story: body, priority: userStoryPriority, component: component, type: type)
             
             // Save Article
             do {
-                let databaseManager = try! DatabaseManager()
-                
-                newUserStory._objectID = databaseManager.generateUniqueIdentifier()
-                // Set Identifier
-                let userStoryCount = databaseManager.countForFetchRequest(UserStory)
-                guard userStoryCount > -1 else {
-                    throw CreateUserError.DatabaseError
-                }
-                
-                newUserStory.identifier = userStoryCount
-                try databaseManager.insertObject(newUserStory)
-                
+
                 if let project = currentProject(request, response: response) {
-                    project.addUserStory(newUserStory)
-                    databaseManager.updateObject(project)
+                    try project.addUserStory(newUserStory)
                 }
                 
                 response.redirectTo("/userstories")

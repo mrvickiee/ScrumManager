@@ -229,7 +229,8 @@ class UserController: AuthController {
             
             do {
                 
-                _ = try User.create(name, email: email, password: password, role: Int(role)!)
+                let userRole = UserRole(rawValue: Int(role)!)!
+                _ = try User.create(name, email: email, password: password, role: userRole)
                 
             } catch {
                 print(error)
