@@ -117,7 +117,9 @@ class ProjectController: AuthController {
             projects = user.projects
             
         }
-
+        
+        let set: Bool = request.param("set") != nil
+        
         let projectsJSON = projects.map { (project) -> [String: Any] in
             var projectDictionary =  project.dictionary
             projectDictionary["scrumMaster"] = project.scrumMaster?.dictionary ?? [:]
@@ -127,6 +129,13 @@ class ProjectController: AuthController {
                 projectDictionary["date"] = "N/A"
             }
             
+            if set {
+                projectDictionary["actionURL"] = project.pathURL + "/set"
+            } else {
+                projectDictionary["actionURL"] = project.pathURL
+            }
+            
+        
             return projectDictionary
         }
         
