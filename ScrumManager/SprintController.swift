@@ -79,7 +79,10 @@ import PerfectLib
 		if let projectIdentifier = request.param("projectID"){
 		projectID = projectIdentifier
         let db = try! DatabaseManager()
-        let userStories = db.executeFetchRequest(UserStory)
+		let targetProject = db.getObjectWithID(Project.self, objectID: projectID)
+			
+        let userStories = targetProject!.userStories
+			
         var counter = 0
         let userStoriesJSON = userStories.map { (userStory) -> [String: Any] in
             var userStoryDict = userStory.dictionary
