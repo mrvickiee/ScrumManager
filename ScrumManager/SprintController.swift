@@ -288,6 +288,7 @@ import PerfectLib
         db.updateObject(sprint)
         
         response.redirectTo("/sprints/\(id)")
+        response.requestCompletedCallback()
         
     }
 
@@ -305,12 +306,13 @@ import PerfectLib
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return
         }
-        
+
         sprint.comments.removeAtIndex(deleteIndex!)
         
         db.updateObject(sprint)
         
         response.redirectTo("/sprints/\(id)")
+        response.requestCompletedCallback()
     }
 
     

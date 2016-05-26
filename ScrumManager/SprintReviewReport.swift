@@ -82,11 +82,14 @@ extension SprintReviewReport : Routable {
         
         let dateFormater = NSDateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-
+        var dateString = ""
+        if createdAt != nil {
+            dateString = dateFormater.stringFromDate(createdAt!)
+        }
         return [
             "userStoriesCompleted": userStoriesCompleted,
             "tasks": tasks,
-            "createdAt": dateFormater.stringFromDate(createdAt!),
+            "createdAt": dateString,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),

@@ -21,7 +21,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var title: String
 
-	var reviewReport: SprintReviewReport?
+	var reviewReport: SprintReviewReport = SprintReviewReport()
 	
 	var dateCreated = NSDate()
     
@@ -128,7 +128,7 @@ extension Sprint {
             "urlPath": pathURL,
             "identifier": identifier,
             "duration": duration,
-            "reviewReport": reviewReport?.dictionary
+            "reviewReport": reviewReport.dictionary
         ]
         
     }

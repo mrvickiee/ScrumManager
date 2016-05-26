@@ -40,26 +40,28 @@ class SprintReviewReportController: AuthController {
             return [:]
         }
 
-        guard sprint.reviewReport?.createdAt != nil else{
+        guard sprint.reviewReport.createdAt != nil else{
             
-            sprint.reviewReport?.createdAt = NSDate()
+            sprint.reviewReport.createdAt = NSDate()
             
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs
             for eachID in userStoryIdentifier{
-                sprint.reviewReport?.userStoriesCompleted.append(["userstory":eachID])
+                
+                let userstory = db.getObjectWithID(UserStory.self, objectID: eachID)
+                sprint.reviewReport.userStoriesCompleted.append(["userstory":userstory!.title])
             }
             
 
             // Load Tasks
             for task in sprint.tasks{
-                sprint.reviewReport?.tasks.append(["task": task.title, "status": task.status.description, "icon":
+                sprint.reviewReport.tasks.append(["task": task.title, "status": task.status.description, "icon":
                     TaskStatusIcon(rawValue: task.status.rawValue)?.description])
             }
             db.updateObject(sprint)
             
             var values: MustacheEvaluationContext.MapType = [:]
-            values["reviewReport"] = sprint.reviewReport?.dictionary
+            values["reviewReport"] = sprint.reviewReport.dictionary
             
             // Set Current username
             let user = currentUser(request, response: response)
@@ -69,14 +71,14 @@ class SprintReviewReportController: AuthController {
         }
         
         var values: MustacheEvaluationContext.MapType = [:]
-        values["reviewReport"] = sprint.reviewReport?.dictionary
+        values["reviewReport"] = sprint.reviewReport.dictionary
         // Set Current username
         let user = currentUser(request, response: response)
 
         // Set comment list be post by others
         var commentList : [[String:Any]] = []
         var num = 0
-        for comment in sprint.reviewReport!.comments{
+        for comment in sprint.reviewReport.comments{
             if user!.email == comment.user?.email{
                 commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num])
             }else if user!.role != .ScrumMaster && user!.role != .Admin{
@@ -113,7 +115,7 @@ class SprintReviewReportController: AuthController {
             return
         }
         
-        sprint.reviewReport?.comments[indexOfOldComment!].comment = newComment
+        sprint.reviewReport.comments[indexOfOldComment!].comment = newComment
         
         db.updateObject(sprint)
         
@@ -129,15 +131,12 @@ class SprintReviewReportController: AuthController {
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return
         }
-        
-        guard let reviewReport = sprint.reviewReport else{
-            return
-        }
-        
+
+
         if let comment = request.param("comment"), user = currentUser(request, response: response) {
             // Post comment
             let newComment = Comment(comment: comment, user: user)
-            reviewReport.comments.append(newComment)
+            sprint.reviewReport.comments.append(newComment)
             // Update the database
             db.updateObject(sprint)
             response.redirectTo("/reports/\(identifier)")
@@ -168,7 +167,7 @@ class SprintReviewReportController: AuthController {
             return
         }
         
-        sprint.reviewReport?.comments.removeAtIndex(deleteIndex!)
+        sprint.reviewReport.comments.removeAtIndex(deleteIndex!)
         
         db.updateObject(sprint)
         
