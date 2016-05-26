@@ -21,7 +21,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
     
     var title: String
 
-	var reviewReport: SprintReviewReport = SprintReviewReport()
+	var reviewReport: SprintReviewReport = SprintReviewReport(date: NSDate())
 	
 	var dateCreated = NSDate()
     

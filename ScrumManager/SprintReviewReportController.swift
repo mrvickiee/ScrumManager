@@ -40,9 +40,7 @@ class SprintReviewReportController: AuthController {
             return [:]
         }
 
-        guard sprint.reviewReport.createdAt != nil else{
-            
-       
+        /*
             
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs
@@ -68,8 +66,8 @@ class SprintReviewReportController: AuthController {
             values["user"] = user?.name
 
             return values
-        }
         
+        */
         var values: MustacheEvaluationContext.MapType = [:]
         values["reviewReport"] = sprint.reviewReport.dictionary
         // Set Current username
