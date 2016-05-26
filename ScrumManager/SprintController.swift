@@ -122,8 +122,14 @@ import PerfectLib
             }
             num += 1
         }
+        
+        let currentProjectUserBelong = currentProject(request, response: response)
+        let totalNum = currentProjectUserBelong!.sprints.count
+        for index in 0..<totalNum{
+            values["count"] = index+1
+        }
+        
         values["commentList"] = commentList
-
         
         let chosenUserStory = sprint.userStories
 		
