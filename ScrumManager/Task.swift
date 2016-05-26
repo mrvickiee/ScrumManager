@@ -28,7 +28,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var identifier: Int = 0
     
-    var userID: String? // User who is assigned to task
+    var userID: String?  // User who is assigned to task
         
     var UserStoryID: String = "" // belong to which UserStoryID
 
@@ -79,9 +79,13 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        self.workDone = dictionary["workDone"] as? Double ?? 0
+        let workDoneInt = dictionary["workDone"] as? Int ?? 0
+		
+		self.workDone = NSTimeInterval(workDoneInt)
         
-        self.estimates = (dictionary["estimates"] as? Double) ?? 0
+        let estimateInt = (dictionary["estimates"] as? Int) ?? 0
+		
+		self.estimates = NSTimeInterval(estimateInt)
 		
 		self.UserStoryID = dictionary["UserStoryID"] as? String ?? ""
 
@@ -110,7 +114,7 @@ extension Task {
 			"status" : status,
 			"workDone" : workDone,
 			"identifier" : identifier,
-			"userID" : userID ?? "null",
+			"userID" : userID ?? "",
 			"UserStoryID" : UserStoryID,
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
@@ -126,10 +130,10 @@ extension Task {
 		return [
 			"title" : title,
 			"description" : description,
-			"estimates" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(estimates)!,
+			"estimates" : estimates/360,
 			"priority" : priority,
 			"status" : status,
-			"workDone" : workDone,
+			"workDone" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(workDone)!,
 			"identifier" : identifier,
 			"userID" : userID ?? "",
 			"UserStoryID" : UserStoryID,
@@ -137,10 +141,7 @@ extension Task {
 				return comment.dictionary
 			}),
 			"urlPath": pathURL
-			
 		]
-		
-
 	}
 
 	
@@ -214,6 +215,10 @@ extension Task {
         }
       
     }
+	
+	func updateWorkDone(hourDone:Double){
+		workDone += (hourDone*360)
+	}
 }
 
 extension Task: Routable {

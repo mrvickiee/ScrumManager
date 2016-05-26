@@ -28,7 +28,10 @@ class TaskController: AuthController {
         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
-        
+		
+		modelActions["updatetask"] = ControllerAction() {(request, resp,identifier) in self.updateTask(request, response: resp, identifer: identifier)}
+	
+		
         return modelActions
     }
     
@@ -59,7 +62,9 @@ class TaskController: AuthController {
     }
     
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
-        
+		
+		let curUser = currentUser(request, response: response)
+		
         // Query User Story
         let id = Int(identifier)!
         
@@ -69,16 +74,21 @@ class TaskController: AuthController {
         
         var values: MustacheEvaluationContext.MapType = [:]
         var taskDictionary = task.dictionary
-        
-        
-        if task.isAssigned(user) {
-            values["assignAction"] = "Unassign from task"
-        } else {
-            values["assignAction"] = "Accept task"
-        }
-        if let user = task.user {
-            taskDictionary["teamMembers"] = [user.dictionary]
-        }
+		
+		if let user = task.user {
+		taskDictionary["assigneeName"] = user.name
+			
+		if(user.email == curUser?.email){
+			taskDictionary["isAssigned"] = true
+		}else{
+			taskDictionary["isAssigned"] = false
+		}
+		}else{
+			taskDictionary["assigneeName"] = "None"
+			taskDictionary["isAssigned"] = false
+		}
+		
+		
 
         values["task"] = taskDictionary
         
@@ -253,7 +263,38 @@ class TaskController: AuthController {
         }
         response.requestCompletedCallback()
     }
-    
+	
+	func updateTask(request: WebRequest, response: WebResponse, identifer:String){
+		
+		if let progress = request.param("progress"), workDone = request.param("workDone"){
+		 let db = try! DatabaseManager()
+		let updateTask = getTaskWithID(Int(identifer)!)
+		
+			let taskStatus = TaskStatus(rawValue: Int(progress)!)
+			
+			updateTask?.status = taskStatus!
+			updateTask?.updateWorkDone(Double(workDone)!)
+			
+			db.updateObject(updateTask!)
+			
+			response.redirectTo(updateTask!)
+			response.requestCompletedCallback()
+		}else{
+			response.requestCompletedCallback()
+		}
+		
+		
+	}
+	
+	func getTaskWithID(identifier: Int) -> Task? {
+		let db = try! DatabaseManager()
+		guard let task = db.executeFetchRequest(Task.self, predicate: ["identifier": identifier]).first else {
+			return nil
+		}
+		
+		return task
+	}
+	
     func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
         // 0: Tasks identifier, 1: New comment, 2: index of old comment
         let informationGet = identifier.componentsSeparatedByString("_")
