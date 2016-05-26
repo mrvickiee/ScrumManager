@@ -54,7 +54,16 @@ struct TaskProgress: CustomDictionaryConvertible, DictionarySerializable {
     }
 }
 
-
+struct Activity {
+    
+    let userID: String
+    
+    let createdAt: String
+    
+    let taskID: String
+    
+    
+}
 
 
 final class ScrumDailyReport: Object, DBManagedObject, Commentable {
@@ -69,9 +78,13 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable {
     
     var dailyWorkDuration: NSTimeInterval = 0
     
-    init(date: NSDate) {
+    let projectID: String
+    
+    init(date: NSDate, projectID: String) {
         
         self.createdAt = date
+        
+        self.projectID = projectID
         
     }
   
@@ -100,7 +113,7 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable {
         
         for (var i = numberOfDays; i > 0; i -= 1) {
             let date = currentDate.dateByAddingTimeInterval(NSTimeInterval(-(60 * 60 * 24 * i)))
-            let report = ScrumDailyReport(date: date)
+            let report = ScrumDailyReport(date: date, projectID: "TESTPROJECT")
             
             // Generate random work duration
             report.dailyWorkDuration = 60 * 60 * Double(Int.randomNumber(4,min: 1))
@@ -112,15 +125,15 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable {
     }
     
     
-    static func currentReport() -> ScrumDailyReport {
+    static func currentReport(project: Project) -> ScrumDailyReport {
         
         // Query database
         let db = try! DatabaseManager()
         
-        if let report = db.executeFetchRequest(ScrumDailyReport.self, predicate: [:]).last where report.createdAt.isSameDay(NSDate())  {
+        if let report = db.executeFetchRequest(ScrumDailyReport.self, predicate: ["projectID": project._objectID!]).last where report.createdAt.isSameDay(NSDate())  {
             return report
         } else {
-            return ScrumDailyReport(date: NSDate())
+            return ScrumDailyReport(date: NSDate(), projectID: project._objectID!)
         }
     }
     
@@ -128,9 +141,11 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable {
         
         let dateEpoch = dictionary["createdAt"] as! Int
         
+        let projectID = dictionary["projectID"] as! String
+        
         let date = NSDate(timeIntervalSince1970: Double(dateEpoch))
         
-        self.init(date: date)
+        self.init(date: date, projectID: projectID)
         
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {

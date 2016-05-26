@@ -16,6 +16,59 @@
 <span style="font-size: small">{{email}}</span>
 </a>
 </div>
+<div class="small-4 large-4 columns text-center user-list-delete-button"">
+<a method="post" href="/users/{{username}}/edit" style="display:{{visibility}}">
+Edit
+</a>
+<a method="post" href="/users/{{username}}/activate" style="display:{{isActive}}">
+Activate
+</a>
+<a method="post" href="/users/{{username}}/deactivate" style="display:{{isUnActive}}">
+Deactivate
+</a>
+<a method="post" href="/users/{{username}}/delete" style="display:{{visibility}}">
+<i class="icon-trash"></i>
+</a>
+
+<div class = "large-11 columns">
+    <table class="large-12 columns" id="userListTable" >
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th style="display:{{visibility}}">Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            {{#userList}}
+            <tr>
+            <td>
+                <a href="/users/{{username}}">{{name}}</a>
+            </td>
+            <td>
+                <a href="/users/{{username}}">{{email}}</a>
+            </td>
+            <td class="text-center"  style="display:{{visibility}}">
+                <a method="post" href="/users/{{username}}/edit" class="orangeButton button">
+                Edit
+                </a>
+                <a method="post" href="/users/{{username}}/activate" style="display:{{isActive}}" class="blueButton button">
+                Activate
+                </a>
+                <a method="post" href="/users/{{username}}/deactivate" style="display:{{isUnActive}}" class="blueButton button">
+                Deactivate
+                </a>
+                <a method="post" href="/users/{{username}}/delete" class="redButton button">
+                Delete
+                </a>
+            </td>
+            </tr>
+            {{/userList}}
+        </tbody>
+    </table>
+</div>
 <script>
 $("#userListTable").DataTable({
     paging:false,

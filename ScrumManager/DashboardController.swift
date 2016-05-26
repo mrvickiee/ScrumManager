@@ -35,16 +35,11 @@ class DashboardController: AuthController {
             return [:]
         }
         
+        var dictionary: [String: Any] = [:]
         
         let databaseManager = try! DatabaseManager()
-        let userTasks = databaseManager.getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
-            return task.dictionary
-        })
-        
-        let sprintTasks = databaseManager.executeFetchRequest(Task.self).map { (task) -> [String: Any] in
-            return task.dictionary
-        }
-        
+     
+        let project = currentProject(request, response: response)
         
         // Get Projects
         if user.role == .Admin {
@@ -57,8 +52,81 @@ class DashboardController: AuthController {
         // Generate Burndown chart 
         let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
+        var projectDictionary: [String: Any] = [:]
+        let userRole = UserRole.TeamMember
+        
+        switch userRole {
+        case .TeamMember:
+            
+            let userTasks = databaseManager.getObjectsWithIDs(Task.self, objectIDs: user.assignedTaskIDs).map({ (task) -> [String: Any] in
+                return task.dictionary
+            })
+            
+            projectDictionary["memberTasks"] =  ["tasks": userTasks] as [String: Any]
+            
+            let sprintTasks = databaseManager.executeFetchRequest(Task.self).map { (task) -> [String: Any] in
+                return task.dictionary
+            }
+            projectDictionary["sprintBacklog"] = ["tasks": sprintTasks]
+            projectDictionary["sprintBurndown"] = burndownChart.dictionary
+
+            projectDictionary["report"] = project!.currentReport.dictionary
+            
+        case .ProductOwner:
+            
+            projectDictionary["releaseBurndown"] = burndownChart.dictionary
+            let userStories = project!.userStories.map({ (userStory) -> [String: Any] in
+                return userStory.dictionary
+            })
+            
+            projectDictionary["productBacklog"] = ["userStories": userStories] as [String: Any]
+            projectDictionary["details"] = project!.dictionary
+            
+        case .ScrumMaster:
+            
+            projectDictionary["releaseBurndown"] = burndownChart.dictionary
+            projectDictionary["sprintBurndown"] = burndownChart.dictionary
+            projectDictionary["report"] = project!.currentReport.dictionary
+
+            projectDictionary["teamMembers"] = project!.teamMembers.map({ (user) -> [String: Any] in
+                var userDictionary = user.dictionary
+                userDictionary["tasks"] = user.tasks.map({ (task) -> [String: Any] in
+                    return task.dictionary
+                })
+                
+                return userDictionary
+            })
+            
+            
+
+        case .Admin:
+            
+            // Get all projects
+            let projects = databaseManager.executeFetchRequest(Project.self).map({ (project) -> [String: Any] in
+                return project.dictionary
+            })
+            
+            dictionary["projects"] = ["project": projects] as [String: Any]
+          //  projectDictionary["details"] = project!.dictionary
+
+            
+            
+            
+            
+            
+            
+        default:
+            break
+        }
+        
+        if user.role == .TeamMember {
+           
+        }
+        
+        
+        
         if let _ = session?.projectID {
-            let dictionary = ["project": ["tasks": userTasks, "burndownChart": burndownChart.dictionary, "sprintTasks": sprintTasks] as [String: Any]] as [String: Any]
+            dictionary["project"] = projectDictionary
             return dictionary
         }
         else {

@@ -22,6 +22,7 @@
 		A34D08481CE548C500C83136 /* ScrumManagerDataTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A34D08471CE548C400C83136 /* ScrumManagerDataTypes.swift */; };
 		A35D487E1CDC32D6004CDC0C /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35D487D1CDC32D6004CDC0C /* JSON.swift */; };
 		A35D48801CDC33C7004CDC0C /* CustomJSONConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35D487F1CDC33C7004CDC0C /* CustomJSONConvertible.swift */; };
+		A3666CBC1CF688380097389F /* GenerateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3666CBB1CF688380097389F /* GenerateController.swift */; };
 		A36F4DE41CE5988600DDFC85 /* Burndown.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36F4DE31CE5988600DDFC85 /* Burndown.swift */; };
 		A36F4DE61CE9997900DDFC85 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
 		A36F4DE71CE9999D00DDFC85 /* fonts in CopyFiles */ = {isa = PBXBuildFile; fileRef = A36F4DE51CE9997900DDFC85 /* fonts */; };
@@ -96,6 +97,7 @@
 		A35D31831CDAFD42008D8DB1 /* Jay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Jay.framework; path = ../Jay.framework; sourceTree = "<group>"; };
 		A35D487D1CDC32D6004CDC0C /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		A35D487F1CDC33C7004CDC0C /* CustomJSONConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomJSONConvertible.swift; sourceTree = "<group>"; };
+		A3666CBB1CF688380097389F /* GenerateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateController.swift; sourceTree = "<group>"; };
 		A36F4DE31CE5988600DDFC85 /* Burndown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Burndown.swift; sourceTree = "<group>"; };
 		A36F4DE51CE9997900DDFC85 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Estimate.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				A36F4DE81CEA7AEC00DDFC85 /* Estimate.swift */,
 				A36F4DEA1CEA8A2D00DDFC85 /* ReleaseBacklogController.swift */,
 				09D331771CEB0C0800B9233A /* SprintReviewReportController.swift */,
+				A3666CBB1CF688380097389F /* GenerateController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				A3FB67E41CC06DE500CB3A7A /* ManagedObject.swift in Sources */,
 				A32486741CD97E6000EA06E9 /* ModelController.swift in Sources */,
 				A324866E1CD94AC800EA06E9 /* Task.swift in Sources */,
+				A3666CBC1CF688380097389F /* GenerateController.swift in Sources */,
 				A3FB67E21CC06D8A00CB3A7A /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -57,20 +57,33 @@ enum TaskStatus: Int,CustomStringConvertible, CustomJSONConvertible {
     case Completed
     
     var description: String {
-        switch self {
-        case .Unassigned:
-            return "Unassigned"
-        case .Todo:
-            return "Todo"
-        case .InProgress:
-            return "In progress"
-        case .Testing:
-            return "Testing"
-        case .Completed:
-            return "Completed"
+        switch(self) {
+        case .Unassigned: return "Unassigned"
+        case .Todo: return "Todo"
+        case .InProgress: return "InProgress"
+        case .Testing: return "Testing"
+        case .Completed: return "Completed"
         }
     }
     
+}
+
+enum TaskStatusIcon: Int, CustomJSONConvertible {
+    case Unassigned
+    case Todo
+    case InProgress
+    case Testing
+    case Completed
+    
+    var description: String {
+        switch(self) {
+        case .Unassigned: return "icon-unassigned"
+        case .Todo: return "icon-todo"
+        case .InProgress: return "icon-inprogress"
+        case .Testing: return "icon-debug"
+        case .Completed: return "icon-completed"
+        }
+    }
 }
 
 enum storyType: Int,CustomJSONConvertible, CustomStringConvertible{

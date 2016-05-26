@@ -182,6 +182,12 @@ extension Project {
         return duration
     }
     
+    var currentReport: ScrumDailyReport {
+        
+        return ScrumDailyReport.currentReport(self)
+        
+    }
+    
     var expectedCompletitionDate: NSDate {
         return NSDate().dateByAddingTimeInterval(projectDuration)
     }
