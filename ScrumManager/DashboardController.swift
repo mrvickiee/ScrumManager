@@ -96,7 +96,7 @@ class DashboardController: AuthController {
             if let sprintBurndownChart = sprintBurndownChart {
                 projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
             }
-
+                        
             projectDictionary["report"] = project?.currentReport.dictionary ?? [:]
             
         case .ProductOwner:

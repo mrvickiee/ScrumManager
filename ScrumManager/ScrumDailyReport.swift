@@ -82,8 +82,13 @@ struct TaskActivity: CustomDictionaryConvertible, DictionarySerializable {
     }
     
     init(dictionary: [String: Any]) {
+        let date: Double
         
-        let date = Double(dictionary["createdAt"] as! Int)
+        if let intDate = dictionary["createdAt"] as? Int {
+            date = Double(intDate)
+        } else  {
+            date = dictionary["createdAt"] as! Double
+        }
         
         createdAt = NSDate(timeIntervalSinceReferenceDate: date)
         
@@ -105,15 +110,26 @@ struct TaskActivity: CustomDictionaryConvertible, DictionarySerializable {
             "createdAt": createdAt,
             "taskID": taskID,
             "duration": duration,
-            "status": status?.rawValue ?? -1
+            "status": status?.rawValue ?? -1,
         ]
+    }
+    
+    var time: String {
+        return FormatterCache.shared.componentsFormatter.stringFromTimeInterval(duration)!
     }
     
     var viewDictionary: [String : Any] {
         
         var dict = dictionary
+        let currentTask = task
+        if let status = status {
+            dict["message"] = "Updated the status of \(currentTask.title) to \(status)"
+        } else {
+            dict["message"] = "Has done \(time) on \(currentTask.title)"
+        }
+        
         dict["user"] = user.dictionary
-        dict["task"] = task.dictionary
+        //dict["task"] = task.dictionary
         
         return dict
     }
@@ -155,18 +171,21 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
     func updateTask(task: Task, newDuration: NSTimeInterval, newStatus: TaskStatus, user: User) {
         
         dailyWorkDuration += newDuration
-        
+        var foundExisiting = false
         for (index, taskProgress) in taskProgresses.enumerate() {
             if taskProgress.taskID == task._objectID! {
                 let newTaskProgress = TaskProgress(workDuration: taskProgress.workDuration + newDuration, status: task.status, taskID: task._objectID!)
                 
                 taskProgresses[index] = newTaskProgress
-                return
+                foundExisiting = true
+                break
             }
         }
-        
-         let newTaskProgress = TaskProgress(workDuration: newDuration, status: task.status, taskID: task._objectID!)
-         taskProgresses.append(newTaskProgress)
+        if !foundExisiting {
+            let newTaskProgress = TaskProgress(workDuration: newDuration, status: task.status, taskID: task._objectID!)
+            taskProgresses.append(newTaskProgress)
+        }
+      
         
         // Create Task Activity 
         let activity = TaskActivity(user: user, task: task, duration: newDuration, status: newStatus)
@@ -209,19 +228,32 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
         if let report = db.executeFetchRequest(ScrumDailyReport.self, predicate: ["projectID": project._objectID!]).last where report.createdAt.isSameDay(NSDate())  {
             return report
         } else {
-            return ScrumDailyReport(date: NSDate(), projectID: project._objectID!)
+            let newReport =  ScrumDailyReport(date: NSDate(), projectID: project._objectID!)
+            try! DatabaseManager.sharedManager.insertObject(newReport)
+            
+            return newReport
         }
     }
     
     convenience init(dictionary: [String : Any]) {
         
-        let dateEpoch = dictionary["createdAt"] as! Int
+        let dateEpoch = dictionary["createdAt"] as! Double
         
         let projectID = dictionary["projectID"] as! String
         
         let date = NSDate(timeIntervalSince1970: Double(dateEpoch))
         
+        let duration = Double(dictionary["duration"] as! Int)
+        
+        
+        let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
+
+        
         self.init(date: date, projectID: projectID)
+        
+        self._objectID = id
+        
+        dailyWorkDuration = duration
         
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
@@ -273,7 +305,9 @@ extension ScrumDailyReport {
             }),
             "taskActivity": taskActivity.map({ (activity) -> [String: Any] in
                 return activity.dictionary
-            })
+            }),
+            "projectID": projectID,
+            "duration": dailyWorkDuration
             
         ]
         
@@ -288,7 +322,7 @@ extension ScrumDailyReport {
         }),
         
         "taskActivity": taskActivity.reverse().map({ (taskActivity) -> [String: Any] in
-            return taskActivity.dictionary
+            return taskActivity.viewDictionary
         })
     ]
     }

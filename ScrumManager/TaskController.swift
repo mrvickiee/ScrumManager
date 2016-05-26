@@ -284,6 +284,8 @@ class TaskController: AuthController {
 			
 			response.redirectTo(updateTask!)
 			response.requestCompletedCallback()
+            return
+            
 		}
 		
         response.requestCompletedCallback()
