@@ -21,9 +21,10 @@ import PerfectLib
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
-        if let title = request.param("title") , rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
-
-            let sprint = Sprint(title: title, duration: duration)
+        if let title = request.param("title"), rawDuration = request.param("duration"), userStoryIDs = request.params("userStories"), duration = Double(rawDuration) {
+            print("new is called")
+                        
+            let sprint = Sprint(title: title, duration: (duration*360))
             print("\(sprint)")
             print("\(request.param("title"))")
             print("\(projectID)")

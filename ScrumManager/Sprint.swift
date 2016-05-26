@@ -42,7 +42,7 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        let duration = Double(dictionary["duration"] as? Int ?? 0)
+        let duration = (dictionary["duration"] as? Double) ?? 0
         
         let identifier = dictionary["identifier"] as! Int
 		
@@ -133,16 +133,27 @@ extension Sprint {
     }
     
     var dictionary: [String: Any] {
-        var dict = keyValues
- 
-		
-        return dict
+		return [
+			"title": title,
+			"userStoryIDs" : userStoryIDs,
+			"dateCreated" : dateCreated,
+			"status" : status,
+			"taskIDs" : taskIDs,
+			"comments": comments.map({ (comment) -> [String: Any] in
+				return comment.dictionary
+			}),
+			"urlPath": pathURL,
+			"identifier": identifier,
+			"duration": (duration/360)
+			//  "reviewReport": reviewReport?.dictionary
+		]
+
     }
-    
+	
     var totalAmountOfWork: NSTimeInterval {
-        
+		
         var amountOfWork: NSTimeInterval = 0
-        
+		
         for userStory in userStories {
             amountOfWork += userStory.estimatedDuration ?? 0
         }

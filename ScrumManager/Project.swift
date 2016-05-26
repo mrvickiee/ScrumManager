@@ -66,6 +66,8 @@ final class Project: Object, DBManagedObject {
         let userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
         
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
+		
+
         
         self.init(name: name, projectDescription: projectDesc ?? "")
         
@@ -78,6 +80,8 @@ final class Project: Object, DBManagedObject {
         self.productOwnerID = productOwnerIdentifier
         
         self.sprintIDs = sprintIDs
+		
+		self.userStoryIDs = userStoryIDs
         
         self.userStoryIDs = userStoryIDs
         
