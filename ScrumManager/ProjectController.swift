@@ -124,7 +124,7 @@ class ProjectController: AuthController {
             var projectDictionary =  project.dictionary
             projectDictionary["scrumMaster"] = project.scrumMaster?.dictionary ?? [:]
             if let endDate = project.endDate {
-                projectDictionary["date"] = DateFormatterCache.shared.mediumFormat.stringFromDate(endDate)
+                projectDictionary["date"] = FormatterCache.shared.mediumFormat.stringFromDate(endDate)
             } else {
                 projectDictionary["date"] = "N/A"
             }

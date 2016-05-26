@@ -123,7 +123,7 @@ extension Task {
 		return [
 			"title" : title,
 			"description" : description,
-			"estimates" : Int(estimates/360),
+			"estimates" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(estimates)!,
 			"priority" : priority,
 			"status" : status,
 			"workDone" : workDone,
