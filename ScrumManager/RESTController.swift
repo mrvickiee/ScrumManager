@@ -15,7 +15,7 @@ protocol RESTController: RequestHandler {
     var modelName: String { get }
     
     var modelPluralName: String { get }
-    
+        
     func show(identifier: String, request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
@@ -41,6 +41,7 @@ protocol RESTController: RequestHandler {
 
 extension RESTController {
     
+  
     
     func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
     {

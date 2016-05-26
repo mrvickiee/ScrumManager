@@ -28,6 +28,23 @@ class ProductBacklogController: AuthController {
         return modelActions
     }
     
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
+        
+        switch user.role {
+        case .Admin, .ProductOwner, .ScrumMaster:
+            return [addAction]
+        default:
+            return []
+        }
+        
+        
+        
+    }
+    
     
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         

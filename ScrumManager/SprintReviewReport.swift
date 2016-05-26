@@ -10,7 +10,9 @@ import Foundation
 import MongoDB
 import PerfectLib
 
-final class SprintReviewReport: Object, DBManagedObject{
+
+
+final class SprintReviewReport: Object, DBManagedObject, BurndownReport {
     
     static var collectionName = "reviewReport"
     
@@ -18,14 +20,20 @@ final class SprintReviewReport: Object, DBManagedObject{
     
     var tasks: [[String: Any]] = []
     
-    var createdAt: NSDate?
+    let createdAt: NSDate
     
     var comments: [Comment] = []
     
+    var dailyWorkDuration: NSTimeInterval = 0
+    
+    init(date: NSDate) {
+        self.createdAt = date
+    }
+    
+    
     convenience init(dictionary: [String : Any]) {
         
-        
-        self.init()
+        self.init(date: NSDate())
 
         // Load Comments
         if let commentsArray = (dictionary["comments"] as? JSONArrayType)?.array {
@@ -56,11 +64,9 @@ final class SprintReviewReport: Object, DBManagedObject{
             
         }
         
-        let date = dictionary["createdAt"] as! String
-        let dateFormater = NSDateFormatter()
-        dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-
-        self.createdAt = dateFormater.dateFromString(date)
+       // let dateEpoch = dictionary["createdAt"] as! Int
+        
+        
     }
     
     convenience init(bson: BSON) {
@@ -73,23 +79,37 @@ final class SprintReviewReport: Object, DBManagedObject{
         
     }
     
+    static func generateTestReports(numberOfDays: Int) -> [SprintReviewReport] {
+        
+        let  currentDate = NSDate()
+        var reports: [SprintReviewReport] = []
+        
+        for (var i = numberOfDays; i > 0; i -= 1) {
+            let date = currentDate.dateByAddingTimeInterval(NSTimeInterval(-(60 * 60 * 24 * i)))
+            let report = SprintReviewReport(date: date)
+            // Generate random work duration
+            report.dailyWorkDuration = 60 * 60 * Double(Int.randomNumber(3,min: 1))
+            reports.append(report)
+            
+        }
+        
+        return reports
+    }
+    
     
 }
+
+
 
 extension SprintReviewReport : Routable {
     
     var dictionary: [String: Any] {
         
-        let dateFormater = NSDateFormatter()
-        dateFormater.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        var dateString = ""
-        if createdAt != nil {
-            dateString = dateFormater.stringFromDate(createdAt!)
-        }
+    
         return [
             "userStoriesCompleted": userStoriesCompleted,
             "tasks": tasks,
-            "createdAt": dateString,
+            "createdAt": DateFormatterCache.shared.mediumFormat.stringFromDate(createdAt),
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),
@@ -100,7 +120,7 @@ extension SprintReviewReport : Routable {
         return [
             "userStoriesCompleted": userStoriesCompleted,
             "tasks": tasks,
-            "createdAt": NSDateFormatter().stringFromDate(createdAt!),
+            "createdAt": createdAt,
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),

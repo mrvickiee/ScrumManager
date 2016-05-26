@@ -66,7 +66,7 @@ struct Activity {
 }
 
 
-final class ScrumDailyReport: Object, DBManagedObject, Commentable {
+final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownReport {
 
     static var collectionName = "dailyReport"
 

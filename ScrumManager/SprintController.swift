@@ -18,6 +18,7 @@ import PerfectLib
     
     var projectID : String = ""
 
+    var userRolesWithModifiyPermission: [UserRole] = [.ScrumMaster, .Admin]
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
@@ -55,6 +56,19 @@ import PerfectLib
             }
         }
         response.requestCompletedCallback()
+    }
+    
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
+        
+        switch user.role {
+        case .Admin,.ScrumMaster:
+            return [addAction]
+        default:
+            return []
+        }
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
@@ -123,9 +137,11 @@ import PerfectLib
 			return task.dictionary
 		}
 		
-		
+        let workDurations = sprint.burndownReports.map { (report) -> NSTimeInterval in
+            return report.dailyWorkDuration
+        }
         // Generate Burndown chart
-        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        let burndownChart = BurndownChart(workDurations: workDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         values["burndownChart"] = burndownChart.dictionary
 		values["userStory"] =  storyJSON

@@ -72,6 +72,33 @@ class ProjectController: AuthController {
         return []
     }
     
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action] {
+        
+        
+        let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
+        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+        
+        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
+        
+        if user.role == .Admin {
+            return [editAction, deleteAction]
+        } else if user.role == .ScrumMaster {
+            
+            if let project = DatabaseManager.sharedManager.executeFetchRequest(Project.self, predicate: ["identifier": Int(identifier)!]).first where project.scrumMasterID! == user._objectID!   {
+                
+                return [editAction, deleteAction]
+            }
+        }
+        
+     
+        return []
+    }
+    
     func list(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType {
 		
 		//let encode = JSON().encode(<#T##a: JSONDictionaryType##JSONDictionaryType#>)
