@@ -36,7 +36,7 @@ protocol RESTController: RequestHandler {
     
     func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
     
-    func availableActionsForControllerObjects() -> [Action]
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action]
 }
 
 extension RESTController {
@@ -47,7 +47,7 @@ extension RESTController {
         return []
     }
     
-    func availableActionsForControllerObjects() -> [Action] {
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
         return []
     }
     

@@ -106,7 +106,8 @@ class UserController: AuthController {
             email = request.param("email"),
             password = request.param("password"),
             password2 = request.param("password2"),
-            expertises = request.param("expertises"){
+            expertises = request.param("expertises"),
+            roleGet = request.param("role"){
             guard let user = User.userWithUsername(identifier) else {
                 response.setStatus(404, message: "The file \(request.requestURI()) was not found.")
                 response.requestCompletedCallback()
@@ -133,6 +134,9 @@ class UserController: AuthController {
             let resultExpertises = expertisesTemp.componentsSeparatedByString(",")
             
             var query : [String: Any] = [:]
+            let roleInt = Int(roleGet)!
+            
+            query["role"] = roleInt
             if user.email != email {
                 query["email"] =  email
             }
@@ -246,6 +250,12 @@ class UserController: AuthController {
     // When create page is load
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {
+        if let user = currentUser(request, response: response)  {
+            if user.role != .Admin {
+                response.redirectTo("/login")
+            }
+        }
+        
         var values: [String: Any] = [:]
         values["userRoles"] = UserRole.allUserRoles.map({ (userRole) -> [String: Any] in
             return userRole.userDictionary

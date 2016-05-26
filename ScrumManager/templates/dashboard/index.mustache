@@ -1,9 +1,10 @@
 <div style="margin-top:2%">
-<div class = "row">
+<div class ="row">
 {{#project}}
+
+{{#releaseBurndown}}
 <div class="large-6 columns">
-{{#burndownChart}}
-<h3>Burndown Chart</h3>
+<h3>Release Burndown</h3>
 
 <canvas id="canvas" height="300" width="300"></canvas>
 <script>
@@ -37,8 +38,50 @@ beginAtZero:true
 }
 });
 </script>
-{{/burndownChart}}
 </div>
+{{/releaseBurndown}}
+
+{{#sprintBurndown}}
+<div class="large-6 columns">
+<h3>Sprint Burndown</h3>
+
+<canvas id="canvas" height="300" width="300"></canvas>
+<script>
+var ctx = document.getElementById("canvas");
+var myChart = new Chart(ctx, {
+type: 'bar',
+data: {
+labels: {{{labels}}},
+datasets: [{
+type: 'bar',
+label: '# of Hours',
+data: {{workRemaining}},
+backgroundColor: "#2199e8"
+},
+{
+type: 'line',
+label: 'Expected Hours remaining',
+data: {{projectedWorkRemaining}},
+fill: false
+}
+]
+},
+options: {
+scales: {
+yAxes: [{
+ticks: {
+beginAtZero:true
+}
+}]
+}
+}
+});
+</script>
+</div>
+{{/sprintBurndown}}
+
+
+{{#memberTasks}}
 <div class="large-6 columns">
 <h3>Assigned Tasks</h3>
 
@@ -47,8 +90,90 @@ beginAtZero:true
 {{/tasks}}
 
 </div>
+{{/memberTasks}}
+
+{{#sprintBacklog}}
+<div class="row">
+<div class="large-12 columns">
+<h3>Sprint Backlog</h3>
+{{#tasks}}
+<a href="{{urlPath}}"><h4>{{title}}</h4></a>
+{{/tasks}}
+</div>
+</div>
+{{/sprintBacklog}}
+
+{{#details}}
+<h3>Details</h3>
+<dl>
+<dt>Project</dt>
+<dl>{{name}}</dl>
+<dt>Description</dt>
+<dl>{{projectDescription}}</dl>
+<dt>End Date</dt>
+<dl>{{formattedDate}}</dl>
+<dt>Scrum Master</dt>
+<dl>{{scrumMasterName}}</dl>
+<dt>Product Owner</dt>
+<dl>{{productOwnerName}}</dl>
+</dl>
+{{/details}}
+
+{{#productBacklog}}
+<h3>Product Backlog</h3>
+{{#userStories}}
+<a href="{{urlPath}}"><h4>{{title}}</h4></a>
+
+{{/userStories}}
+{{/productBacklog}}
+</div>
+</div>
+{{#team}}
+<div class="row">
+<div class="large-12 columns">
+
+<table class="large-12 columns" id="userListTable" >
+<thead>
+<tr>
+<th>Name</th>
+<th>Tasks</th>
+</tr>
+
+</thead>
+
+<tbody>
+{{#teamMembers}}
+<tr>
+<td>
+<a href="/users/{{username}}">{{name}}</a>
+</td>
+<td>
+{{#tasks}}
+<a href="{{urlPath}}">{{title}}</a>
+{{/tasks}}
+</td>
+</tr>
+{{/teamMembers}}
+</tbody>
+</table>
+
+</div>
+</div>
+{{/team}}
+
 {{/project}}
-{{^project}}
-<h1>No projects </h1>
+
+
+
+
+{{#projects}}
+<div class="row">
+<div class="large-12 columns">
+<h3>Projects</h3>
+{{#project}}
+<a href="{{urlPath}}"><h4>{{name}}</h4></a>
 {{/project}}
 </div>
+</div>
+{{/projects}}
+

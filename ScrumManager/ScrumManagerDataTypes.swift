@@ -48,7 +48,8 @@ enum UserStoryPriority: Int, CustomStringConvertible, CustomJSONConvertible {
         }
     }
 }
-enum TaskStatus: Int, CustomJSONConvertible {
+
+enum TaskStatus: Int,CustomStringConvertible, CustomJSONConvertible {
     case Unassigned
     case Todo
     case InProgress
@@ -64,6 +65,7 @@ enum TaskStatus: Int, CustomJSONConvertible {
         case .Completed: return "Completed"
         }
     }
+    
 }
 
 enum TaskStatusIcon: Int, CustomJSONConvertible {

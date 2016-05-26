@@ -63,6 +63,8 @@ final class Project: Object, DBManagedObject {
         
         let productOwnerIdentifier:String = (dictionary["productOwnerID"] as? String!)!
         
+        let userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
+        
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
 		
 		let userStoryIDs =  (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
@@ -81,6 +83,8 @@ final class Project: Object, DBManagedObject {
         self.sprintIDs = sprintIDs
 		
 		self.userStoryIDs = userStoryIDs
+        
+        self.userStoryIDs = userStoryIDs
         
         if let startDateEpoch = dictionary["startDate"] as? Int {
             startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
@@ -181,6 +185,12 @@ extension Project {
         }
         
         return duration
+    }
+    
+    var currentReport: ScrumDailyReport {
+        
+        return ScrumDailyReport.currentReport(self)
+        
     }
     
     var expectedCompletitionDate: NSDate {

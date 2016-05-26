@@ -16,7 +16,7 @@ class ProductBacklogController: AuthController {
     let modelPluralName: String = "userstories"
     
     let pageTitle: String = "Product Backlog"
-    
+        
     //var actions: [String: (WebRequest,WebResponse) -> ()] = ["comments": {(request, resp) in self.newComment(request, response: resp)}]
     
     func controllerActions() -> [String: ControllerAction] {
@@ -192,6 +192,12 @@ class ProductBacklogController: AuthController {
                 
                 newUserStory.identifier = userStoryCount
                 try databaseManager.insertObject(newUserStory)
+                
+                if let project = currentProject(request, response: response) {
+                    project.addUserStory(newUserStory)
+                    databaseManager.updateObject(project)
+                }
+                
                 response.redirectTo("/userstories")
             } catch {
                 

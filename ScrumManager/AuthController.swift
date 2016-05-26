@@ -50,7 +50,7 @@ extension AuthController {
         
         let currentSession = response.getSession("user")
         
-        let userID = currentSession["user_id"] as! String
+        let userID = currentSession["user_id"] as? String
         
         let projectName = currentSession["projectName"] as? String
         
@@ -58,7 +58,7 @@ extension AuthController {
         
         let projectPathURL = currentSession["projectPathURL"] as? String
         
-        return ScrumManagerSession(userID: userID, projectID: projectID, projectName: projectName, projectPathURL: projectPathURL)
+        return ScrumManagerSession(userID: userID ?? "Anoymous", projectID: projectID, projectName: projectName, projectPathURL: projectPathURL)
     }
     
     func currentUser(request: WebRequest, response: WebResponse) -> User? {
@@ -101,8 +101,20 @@ extension AuthController {
         }
     }
     
-    func availableActionsForControllerObjects() -> [Action] {
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        
         return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
+    }
+    
+    func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
+    {
+    let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
+        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+        
+        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+        
+        return [editAction, deleteAction]
     }
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -155,7 +167,8 @@ extension AuthController {
                     // Call Show
                     values.update(try! create(request, response: response))
                     response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
-                
+                    response.requestCompletedCallback()
+                    return
                 default:
                     
                     if let action = request.urlVariables["action"]{
@@ -170,6 +183,7 @@ extension AuthController {
                                 
                             } else {
                                 controllerAction.action?(request, response, identifier)
+                                return 
                             }
                             
                         } else if action == "destroy" {
@@ -199,12 +213,8 @@ extension AuthController {
                         //let values = try! show(identifier, request: request, response: response)
                         values.update(try! show(identifier, request: request, response: response))
                         values["url"] = "/\(modelPluralName)/\(identifier)"
-                        let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
-                        let editURL = "/\(modelPluralName)/\(identifier)/edit"
                         
-                        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
-                        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
-                        values["actions"] = [editAction.dictionary, deleteAction.dictionary]
+                        values["actions"] = availableActionsForObjectWithIdentifier(identifier, request: request, response: response)
                         
                        // values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
@@ -220,6 +230,7 @@ extension AuthController {
             if requestMethod == .POST {
                 
                 new(request, response: response)
+                return
                 
             } else {
                 print("Listing models")
@@ -235,7 +246,7 @@ extension AuthController {
                 values.update(try! list(request, response: response))
               //[Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false).dictionary]
                 
-                values["actions"] = availableActionsForControllerObjects().map({ (action) -> [String: Any] in
+                values["actions"] = availableActionsForControllerObjects(request, response: response).map({ (action) -> [String: Any] in
                     return action.dictionary
                 })
  
