@@ -213,6 +213,11 @@ class ProjectController: AuthController {
                 return
             }
             
+            guard let productOwner = database.getObjectWithID(User.self, objectID: productOwnerID) else {
+                response.requestCompletedCallback()
+                return
+            }
+            
             //convert string to nsDate
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd-yyyy"
@@ -222,11 +227,11 @@ class ProjectController: AuthController {
             let project = Project(name: projectTitle, projectDescription: projectDesc)      //create new project object
             project._objectID = database.generateUniqueIdentifier()
 
-            project.scrumMaster = scrumMaster
+            project.setScrumManager(scrumMaster)
             project.identifier = projectCount
             project.startDate = NSDate()
             project.endDate = dateFormatter.dateFromString(endDate)
-            project.productOwnerID = productOwnerID
+            project.setProductOwner(productOwner)
             project.teamMemberIDs = members
             
             do {

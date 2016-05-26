@@ -226,6 +226,8 @@ public class JSON {
 			return encodeInt(i)
 		case let d as Double:
 			return encodeDouble(d)
+        case let t as NSTimeInterval:
+            return encodeDouble(t)
 		case let s as String:
 			return encodeString(s)
 		case let ja as JSONArrayType:

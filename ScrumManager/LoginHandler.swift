@@ -24,6 +24,21 @@ class LogoutHandler: RequestHandler {
     
 }
 
+enum LoginError:Int,  ErrorType, CustomStringConvertible {
+    
+    case InvalidEmailPassword
+    case EmailPasswordAbsent
+    
+    var description: String {
+        switch self {
+        case .InvalidEmailPassword:
+            return "Invalid Login"
+        case .EmailPasswordAbsent:
+            return "Email and password must be provided"
+        }
+    }
+    
+}
 
 class LoginHandler: RequestHandler {
     
@@ -31,14 +46,21 @@ class LoginHandler: RequestHandler {
     
     func handleRequest(request: WebRequest, response: WebResponse) {
         
+        
+        
         if request.requestMethod() == "GET" {
 //            let templateURL = request.documentRoot + "/templates/template.mustache"
             let indexURL = request.documentRoot + "/templates/login.mustache"
-            let values = [:] as [String: Any]
-            let content = parseMustacheFromURL(indexURL, withValues: values)
-            let templateContent = ["content": content] as [String: Any]
+            var values = [:] as [String: Any]
             
-            response.appendBodyString(parseMustacheFromURL(indexURL, withValues: templateContent))
+            if let errorParam = request.param("error"), errorCode = Int(errorParam), error = LoginError(rawValue: errorCode)
+            {
+                let errorCallout = Callout(type: .Alert, message: error.description)
+                values["callout"] = errorCallout.dictionary
+            }
+
+           
+            response.appendBodyString(parseMustacheFromURL(indexURL, withValues: values))
             response.requestCompletedCallback()
             
         } else {
@@ -49,7 +71,7 @@ class LoginHandler: RequestHandler {
                 // Get User with Email
                 guard let user = User.userWithEmail(email) else {
                     
-                    response.redirectTo(request.requestURI())
+                    response.redirectTo(request.requestURI() + "?error=\(LoginError.InvalidEmailPassword.rawValue)")
                     return response.requestCompletedCallback()
                 }
                 
@@ -71,6 +93,8 @@ class LoginHandler: RequestHandler {
                     
                     response.redirectTo("/")
                 }
+            } else {
+                response.redirectTo(request.requestURI() + "?error=\(LoginError.EmailPasswordAbsent.rawValue)")
             }
             
             response.requestCompletedCallback()

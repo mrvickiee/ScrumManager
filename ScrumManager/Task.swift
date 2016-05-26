@@ -104,7 +104,6 @@ extension Task {
     
     static var collectionName: String = "task"
 	
-	
 	var keyValues:[String: Any] {
 		return [
 			"title" : title,
@@ -215,9 +214,24 @@ extension Task {
         }
       
     }
+        
+    
+    func simulateTaskProgress(startDate: NSDate = NSDate()) {
+        
+        
+        
+        let estimatedDuration = estimates
+        
+        // Work out how many progress updates
+        let updates = (estimatedDuration / (60 * 60)) + 1
+        
+        
+        
+    }
+    
 	
-	func updateWorkDone(hourDone:Double){
-		workDone += (hourDone*360)
+	func updateWorkDone(duration:NSTimeInterval){
+		workDone += duration
 	}
 }
 
@@ -230,6 +244,8 @@ extension Task: Routable {
     var destoryURL: String { return "/tasks/\(identifier)/destory" }
 
 }
+
+
 
 
 

@@ -58,7 +58,7 @@ class DashboardController: AuthController {
   
         
         var projectDictionary: [String: Any] = [:]
-        let userRole = UserRole.TeamMember
+        let userRole = user.role
         
         let sprintBurndownChart: BurndownChart?
         if let sprint = project?.activeSprint {
@@ -96,7 +96,7 @@ class DashboardController: AuthController {
             if let sprintBurndownChart = sprintBurndownChart {
                 projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
             }
-
+                        
             projectDictionary["report"] = project?.currentReport.dictionary ?? [:]
             
         case .ProductOwner:
@@ -119,15 +119,15 @@ class DashboardController: AuthController {
             }
             
             projectDictionary["report"] = project!.currentReport.dictionary
-
-            projectDictionary["teamMembers"] = project!.teamMembers.map({ (user) -> [String: Any] in
+            
+            projectDictionary["team"] = ["teamMembers":project!.teamMembers.map({ (user) -> [String: Any] in
                 var userDictionary = user.dictionary
                 userDictionary["tasks"] = user.tasks.map({ (task) -> [String: Any] in
                     return task.dictionary
                 })
                 
                 return userDictionary
-            })
+            })] as [String: Any]
             
             
 
@@ -141,10 +141,6 @@ class DashboardController: AuthController {
             dictionary["projects"] = ["project": projects] as [String: Any]
           //  projectDictionary["details"] = project!.dictionary
  
-        }
-        
-        if user.role == .TeamMember {
-           
         }
         
         

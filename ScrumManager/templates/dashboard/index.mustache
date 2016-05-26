@@ -45,9 +45,9 @@ beginAtZero:true
 <div class="large-6 columns">
 <h3>Sprint Burndown</h3>
 
-<canvas id="canvas" height="300" width="300"></canvas>
+<canvas id="sprintBurndown" height="300" width="300"></canvas>
 <script>
-var ctx = document.getElementById("canvas");
+var ctx = document.getElementById("sprintBurndown");
 var myChart = new Chart(ctx, {
 type: 'bar',
 data: {
@@ -130,10 +130,24 @@ beginAtZero:true
 {{/productBacklog}}
 </div>
 </div>
+{{#report}}
+<div class="row">
+<div class="large-12 columns">
+<h3>Scrum Report</h3>
+<p>Work Achieved today: {{duration}}</p>
+{{#taskActivity}}
+{{#user}}<a href="{{urlPath}}">{{name}}</a>{{/user}}
+<p>{{message}}</p>
+{{/taskActivity}}
+
+</div>
+</div>
+{{/report}}
+
 {{#team}}
 <div class="row">
 <div class="large-12 columns">
-
+<h3>Team Members</h3>
 <table class="large-12 columns" id="userListTable" >
 <thead>
 <tr>
@@ -150,9 +164,15 @@ beginAtZero:true
 <a href="/users/{{username}}">{{name}}</a>
 </td>
 <td>
+<ul>
 {{#tasks}}
+<li>
+
 <a href="{{urlPath}}">{{title}}</a>
+</li>
+
 {{/tasks}}
+</ul>
 </td>
 </tr>
 {{/teamMembers}}

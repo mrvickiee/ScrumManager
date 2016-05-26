@@ -234,7 +234,16 @@ extension Project {
         
         // Update Team member
         teamMember.addProject(self)
-        
+    }
+    
+    func setScrumManager(user: User) {
+        scrumMaster = user
+        user.addProject(self)
+    }
+    
+    func setProductOwner(user: User) {
+        productOwner = user
+        user.addProject(self)
     }
     
     func addSprint(sprint: Sprint) {
@@ -253,6 +262,13 @@ extension Project {
 	
     var activeSprint: Sprint? {
         return sprints.first
+    }
+    
+    func updateTaskProgress(task: Task, status: TaskStatus, duration: NSTimeInterval, user: User) {
+        
+        // Update Report 
+        currentReport.updateTask(task, newDuration: duration, newStatus: status, user: user)
+        
     }
     
 	
