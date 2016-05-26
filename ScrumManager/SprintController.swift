@@ -110,20 +110,10 @@ import PerfectLib
         values["sprint"] = sprint.dictionary
         // For deletion and editing 
         let user = currentUser(request, response: response)
-        var commentList : [[String:Any]] = []
-        var num = 0
-        for comment in sprint.comments{
-            if user!.email == comment.user?.email{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num])
-            }else if user!.role != .ScrumMaster && user!.role != .Admin{
-                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num])
-            }else{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num])
-            }
-            num += 1
-        }
+        
+        let commentList : [[String:Any]] = sprint.loadCommentDetailsForMustahce(user!)
+        
         values["commentList"] = commentList
-
         
         let chosenUserStory = sprint.userStories
 		
