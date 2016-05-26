@@ -91,8 +91,7 @@ struct TestController {
         databaseManager.updateObject(mainFunctionalitySprint)
         
     }
-    
-    
+        
     func createProjects() {
         
         if let tvmApp = getProject(TestProject.TVMApp) {

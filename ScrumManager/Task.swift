@@ -97,7 +97,6 @@ extension Task {
     
     static var collectionName: String = "task"
 	
-	
 	var keyValues:[String: Any] {
 		return [
 			"title" : title,
@@ -206,6 +205,38 @@ extension Task {
         }
       
     }
+    
+    func updateTaskProgress(project: Project,date: NSDate = NSDate(), duration: NSTimeInterval) {
+        
+        let currentReport = project.currentReport
+        currentReport.updateTask(self, newDuration: duration)
+        DatabaseManager.sharedManager.updateObject(currentReport)
+        
+        // Update Sprint Review Report
+        if let sprintReviewReport = project.activeSprint?.reviewReport {
+            
+            // Append Work duration for day
+            
+            
+        }
+        
+        
+        
+    }
+    
+    func simulateTaskProgress(startDate: NSDate = NSDate()) {
+        
+        
+        
+        let estimatedDuration = estimates
+        
+        // Work out how many progress updates
+        let updates = (estimatedDuration / (60 * 60)) + 1
+        
+        
+        
+    }
+    
 }
 
 extension Task: Routable {
@@ -217,6 +248,8 @@ extension Task: Routable {
     var destoryURL: String { return "/tasks/\(identifier)/destory" }
 
 }
+
+
 
 
 

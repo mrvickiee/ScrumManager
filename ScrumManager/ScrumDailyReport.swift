@@ -54,7 +54,7 @@ struct TaskProgress: CustomDictionaryConvertible, DictionarySerializable {
     }
 }
 
-struct Activity {
+struct TaskActivity {
     
     let userID: String
     
@@ -62,6 +62,7 @@ struct Activity {
     
     let taskID: String
     
+    var duration: NSTimeInterval
     
 }
 
@@ -174,9 +175,6 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
         self.init(dictionary: dictionary)
         
     }
-    
-  
-    
 }
 
 extension ScrumDailyReport {
@@ -192,5 +190,15 @@ extension ScrumDailyReport {
             })
         ]
         
+    }
+    
+    var dictionary: [String: Any] {
+        return  [
+        "createdAt": FormatterCache.shared.mediumFormat.stringFromDate(createdAt),
+        "duration": FormatterCache.shared.componentsFormatter.stringFromTimeInterval(dailyWorkDuration)!,
+        "taskProgresses": taskProgresses.map({ (progress) -> [String: Any] in
+            return progress.dictionary
+        })
+    ]
     }
 }
