@@ -82,7 +82,10 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         self.workDone = dictionary["workDone"] as? Double ?? 0
         
         self.estimates = (dictionary["estimates"] as? Double) ?? 0
-        
+		
+		self.UserStoryID = dictionary["UserStoryID"] as? String ?? ""
+
+		
         self._objectID = id
         
         // Load Comments 
@@ -162,9 +165,14 @@ extension Task {
             status = .InProgress
         }
     }
-    
-    
-    
+	
+	var userStory: UserStory? {
+		return try! DatabaseManager().getObjectWithID(UserStory.self, objectID: UserStoryID)
+	}
+
+	
+	
+	
     func assignUser(newUser: User) {
         if isAssigned(newUser) {
             return

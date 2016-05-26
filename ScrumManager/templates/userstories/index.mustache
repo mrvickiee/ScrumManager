@@ -25,14 +25,14 @@ This is the mustache template file for the tap tracker example.
 			{{#userStories}}
 			<tr>
 				<td>{{rankingIndex}}</td>
-				<td>{{title}}</td>
+				<td><a href="{{urlPath}}">{{title}}</a></td>
 				<td>{{type}}</td>
 				<td>{{priority}}</td>
 				<td>{{estimate}} hours</td>
 				<td>{{component}}</td>
 				<td>{{status}}</td>
 				<td><a href="{{urlPath}}/edit"class="warning button">Edit</a>
-					<a href=""class="alert button">Delete</a>
+					<a href="{{urlPath}}/delete"class="alert button">Delete</a>
 				</td>
 				<td style="display:none">{{rankingIndex}}</td>
 			</tr>

@@ -134,8 +134,32 @@ import PerfectLib
 		}
 		
 		let taskJSON = sprint.tasks.map { (task) -> [String:Any] in
-			return task.dictionary
+			var dic =  task.dictionary
+			
+			if let story = task.userStory{
+				dic["storyName"] = story.title
+				
+			}else{
+				dic["storyName"] = "None"
+			}
+			
+			
+			
+			if let user = task.user{
+				dic["user"] = user.name
+				dic["buttonAM"] = "Unassign"
+			}else{
+				dic["user"] = "None"
+				dic["buttonAM"] = "Assign"
+			}
+		
+			
+			
+			return dic
+		
 		}
+		
+		
 		
         let workDurations = sprint.burndownReports.map { (report) -> NSTimeInterval in
             return report.dailyWorkDuration
