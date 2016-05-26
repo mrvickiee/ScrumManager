@@ -56,7 +56,7 @@ Post
 <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
 
 
-<a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+<a method="post" onclick="confirmationDeletionOrDeactivate('{{identifier}}_{{commentIndicator}}/deletecomment', 'deleteButton{{commentIndicator}}', 'comment', 'true')" style="display:{{visibility}}" class="redButton button" id="deleteButton{{commentIndicator}}">
 Delete
 </a>
 
