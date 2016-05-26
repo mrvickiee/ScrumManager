@@ -63,7 +63,7 @@ class DatabaseManager {
     }
     
     func updateObject(object: DBManagedObject) {
-        updateObject(object, updateValues: object.dictionary)
+        updateObject(object, updateValues: object.keyValues)
     }
     
     func update(objectCollection: DBManagedObject.Type, predicate: [String: Any], update: [String: Any]) {

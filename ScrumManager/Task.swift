@@ -214,24 +214,7 @@ extension Task {
         }
       
     }
-    
-    func updateTaskProgress(project: Project,date: NSDate = NSDate(), duration: NSTimeInterval) {
         
-        let currentReport = project.currentReport
-        currentReport.updateTask(self, newDuration: duration)
-        DatabaseManager.sharedManager.updateObject(currentReport)
-        
-        // Update Sprint Review Report
-        if let sprintReviewReport = project.activeSprint?.reviewReport {
-            
-            // Append Work duration for day
-            
-            
-        }
-        
-        
-        
-    }
     
     func simulateTaskProgress(startDate: NSDate = NSDate()) {
         
@@ -247,8 +230,8 @@ extension Task {
     }
     
 	
-	func updateWorkDone(hourDone:Double){
-		workDone += (hourDone*360)
+	func updateWorkDone(duration:NSTimeInterval){
+		workDone += duration
 	}
 }
 

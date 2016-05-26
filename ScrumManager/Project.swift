@@ -264,6 +264,13 @@ extension Project {
         return sprints.first
     }
     
+    func updateTaskProgress(task: Task, status: TaskStatus, duration: NSTimeInterval, user: User) {
+        
+        // Update Report 
+        currentReport.updateTask(task, newDuration: duration, newStatus: status, user: user)
+        
+    }
+    
 	
 }
 

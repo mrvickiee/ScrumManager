@@ -54,16 +54,77 @@ struct TaskProgress: CustomDictionaryConvertible, DictionarySerializable {
     }
 }
 
-struct TaskActivity {
+struct TaskActivity: CustomDictionaryConvertible, DictionarySerializable {
     
     let userID: String
     
-    let createdAt: String
+    let createdAt: NSDate
     
     let taskID: String
     
     var duration: NSTimeInterval
     
+    var status: TaskStatus?
+    
+    init(user: User, task: Task, duration: NSTimeInterval, status: TaskStatus) {
+        
+        userID = user._objectID!
+        
+        taskID = task._objectID!
+        
+        self.duration = duration
+        
+        if task.status != status {
+            self.status = status
+        }
+        
+        createdAt = NSDate()
+    }
+    
+    init(dictionary: [String: Any]) {
+        
+        let date = Double(dictionary["createdAt"] as! Int)
+        
+        createdAt = NSDate(timeIntervalSinceReferenceDate: date)
+        
+        let taskStatus = dictionary["status"] as! Int
+        
+        status = TaskStatus(rawValue: taskStatus)
+        
+        duration = Double(dictionary["duration"] as! Int)
+        
+        userID = dictionary["userID"] as! String
+        
+        taskID = dictionary["taskID"] as! String
+        
+    }
+    
+    var dictionary: [String : Any] {
+        return [
+            "userID": userID,
+            "createdAt": createdAt,
+            "taskID": taskID,
+            "duration": duration,
+            "status": status?.rawValue ?? -1
+        ]
+    }
+    
+    var viewDictionary: [String : Any] {
+        
+        var dict = dictionary
+        dict["user"] = user.dictionary
+        dict["task"] = task.dictionary
+        
+        return dict
+    }
+    
+    var user: User {
+       return DatabaseManager.sharedManager.getObjectWithID(User.self, objectID: userID)!
+    }
+    
+    var task: Task {
+        return DatabaseManager.sharedManager.getObjectWithID(Task.self, objectID: taskID)!
+    }
 }
 
 
@@ -81,6 +142,8 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
     
     let projectID: String
     
+    var taskActivity: [TaskActivity] = []
+    
     init(date: NSDate, projectID: String) {
         
         self.createdAt = date
@@ -89,7 +152,7 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
         
     }
   
-    func updateTask(task: Task, newDuration: NSTimeInterval) {
+    func updateTask(task: Task, newDuration: NSTimeInterval, newStatus: TaskStatus, user: User) {
         
         dailyWorkDuration += newDuration
         
@@ -104,6 +167,18 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
         
          let newTaskProgress = TaskProgress(workDuration: newDuration, status: task.status, taskID: task._objectID!)
          taskProgresses.append(newTaskProgress)
+        
+        // Create Task Activity 
+        let activity = TaskActivity(user: user, task: task, duration: newDuration, status: newStatus)
+        taskActivity.append(activity)
+        
+        // Update Task itself
+        task.status = newStatus
+        task.updateWorkDone(newDuration)
+        
+        DatabaseManager.sharedManager.updateObject(task)
+        DatabaseManager.sharedManager.updateObject(self)
+        
         
     }
     
@@ -164,6 +239,14 @@ final class ScrumDailyReport: Object, DBManagedObject, Commentable, BurndownRepo
             }
         }
         
+        // Load Task Activity
+        if let taskProgressesArray = (dictionary["taskActivity"] as? JSONArrayType)?.array {
+            for taskProgress in taskProgressesArray{
+                let dict = (taskProgress as? JSONDictionaryType)?.dictionary
+                self.taskActivity.append(TaskActivity(dictionary: dict!))
+            }
+        }
+        
     }
     
     convenience init(bson: BSON) {
@@ -187,7 +270,11 @@ extension ScrumDailyReport {
             }),
             "taskProgresses": taskProgresses.map({ (progress) -> [String: Any] in
                 return progress.dictionary
+            }),
+            "taskActivity": taskActivity.map({ (activity) -> [String: Any] in
+                return activity.dictionary
             })
+            
         ]
         
     }
@@ -198,6 +285,10 @@ extension ScrumDailyReport {
         "duration": FormatterCache.shared.componentsFormatter.stringFromTimeInterval(dailyWorkDuration)!,
         "taskProgresses": taskProgresses.map({ (progress) -> [String: Any] in
             return progress.dictionary
+        }),
+        
+        "taskActivity": taskActivity.reverse().map({ (taskActivity) -> [String: Any] in
+            return taskActivity.dictionary
         })
     ]
     }

@@ -267,23 +267,27 @@ class TaskController: AuthController {
 	func updateTask(request: WebRequest, response: WebResponse, identifer:String){
 		
 		if let progress = request.param("progress"), workDone = request.param("workDone"){
-		 let db = try! DatabaseManager()
-		let updateTask = getTaskWithID(Int(identifer)!)
+            
+		 let updateTask = getTaskWithID(Int(identifer)!)
 		
-			let taskStatus = TaskStatus(rawValue: Int(progress)!)
-			
-			updateTask?.status = taskStatus!
-			updateTask?.updateWorkDone(Double(workDone)!)
-			
-			db.updateObject(updateTask!)
+			let taskStatus = TaskStatus(rawValue: Int(progress)!)!
+            let duration = Double(workDone)! * 60 * 60
+            
+            guard let user = currentUser(request, response: response), project = currentProject(request, response: response) else {
+                response.requestCompletedCallback()
+                return
+            }
+            if let task = updateTask {
+                project.updateTaskProgress(task, status: taskStatus, duration: duration, user: user)
+            }
+            
 			
 			response.redirectTo(updateTask!)
 			response.requestCompletedCallback()
-		}else{
-			response.requestCompletedCallback()
 		}
 		
-		
+        response.requestCompletedCallback()
+
 	}
 	
 	func getTaskWithID(identifier: Int) -> Task? {

@@ -135,6 +135,11 @@ beginAtZero:true
 <div class="large-12 columns">
 <h3>Scrum Report</h3>
 <p>Work Achieved today: {{duration}}</p>
+{{#taskActivity}}
+{{#user}}<a href="{{urlPath}}">{{name}}</a>{{/user}}
+<p>has updated {{#task}}{{name}}{{/name}}
+{{/taskActivity}}
+
 </div>
 </div>
 {{/report}}
