@@ -21,9 +21,9 @@ class ProductBacklogController: AuthController {
     
     func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
-        modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
-		
+		modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
 		modelActions["arrange"] = ControllerAction(){(request, resp, identifier) in self.arrange(request, response:resp)}
+		
 		
         return modelActions
     }
@@ -206,6 +206,8 @@ class ProductBacklogController: AuthController {
         
         response.requestCompletedCallback()
     }
+	
+	
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
     {

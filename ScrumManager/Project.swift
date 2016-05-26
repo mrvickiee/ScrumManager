@@ -67,7 +67,6 @@ final class Project: Object, DBManagedObject {
         
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
 		
-		let userStoryIDs =  (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
 
         
         self.init(name: name, projectDescription: projectDesc ?? "")

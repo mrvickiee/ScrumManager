@@ -188,9 +188,6 @@ extension UserStory {
 		
 
 	}
-	
-
-
 }
 
 extension UserStory: Routable {

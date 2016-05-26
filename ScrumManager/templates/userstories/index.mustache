@@ -14,7 +14,7 @@ This is the mustache template file for the tap tracker example.
 				<th>Type</th>
 				<th>Priority</th>
 				<th>Estimation</th>
-				<th>Epic Link</th>
+				<th>Component</th>
 				<th>Status</th>
 				<th></th>
 			</tr>
@@ -28,9 +28,9 @@ This is the mustache template file for the tap tracker example.
 				<td>{{type}}</td>
 				<td>{{priority}}</td>
 				<td>{{estimate}} hours</td>
-				<td>{{epicLink}}</td>
+				<td>{{component}}</td>
 				<td>{{status}}</td>
-				<td><a href=""class="warning button">Estimate</a>
+				<td><a href="{{urlPath}}/edit"class="warning button">Edit</a>
 					<a href=""class="alert button">Delete</a>
 				</td>
 			</tr>
@@ -54,21 +54,21 @@ var sequence = "";
 		paging:false,
 		searching:false,
 		info:false,
-		rowReorder:true
+rowReorder:false
+}
+
 	});
 
 	table.on('row-reorder',function(e, diff,edit){
-table.draw();
-		var data = table.rows().data();
-		data.each(function (value, index) {
-		alert('Data in index: ' + index + ' is: ' + value);
-		});
-
-
-	/*	for(var i=0, ien = diff.length ; i<ien ; i++){
+		for(var i=0, ien = diff.length ; i<ien ; i++){
 			var rowData = table.row(diff[i].node).data();
 			sequence  = sequence + "_" + rowData[0];
-		}*/
+		}
+
+var data = table.rows().data();
+data.each(function (value, index) {
+alert('Data in index: ' + index + ' is: ' + value);
+});
 
 		var URL  = "/userstories/0/arrange?sequence="  + sequence;
 		//window.location.href= URL;
