@@ -78,7 +78,7 @@ body {
 /* User Management*/
 .profile-top-bar{
     min-height: 20vh;
-    background-image: url('/resources/background.jpg');
+    background-color:  #00004d;
 }
 
 .profile-top-bar-img{
