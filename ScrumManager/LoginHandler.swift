@@ -32,13 +32,13 @@ class LoginHandler: RequestHandler {
     func handleRequest(request: WebRequest, response: WebResponse) {
         
         if request.requestMethod() == "GET" {
-//            let templateURL = request.documentRoot + "/templates/template.mustache"
+            let templateURL = request.documentRoot + "/templates/template.mustache"
             let indexURL = request.documentRoot + "/templates/login.mustache"
             let values = [:] as [String: Any]
             let content = parseMustacheFromURL(indexURL, withValues: values)
             let templateContent = ["content": content] as [String: Any]
             
-            response.appendBodyString(parseMustacheFromURL(indexURL, withValues: templateContent))
+            response.appendBodyString(parseMustacheFromURL(templateURL, withValues: templateContent))
             response.requestCompletedCallback()
             
         } else {
