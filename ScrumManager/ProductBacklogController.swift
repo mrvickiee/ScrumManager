@@ -72,19 +72,35 @@ class ProductBacklogController: AuthController {
 		
 		userStories = userStories!.sort({$0.rankingIndex < $1.rankingIndex})
 		
+		var tmpUserStories : [UserStory] = []
 		
-		for(var i = 1; i < sequenceArr.count ; i++ ){
-			userStories![i-1].rankingIndex = Int(sequenceArr[i])!
-			
-			db.updateObject(userStories![i-1])
-			
+		for(var i = 1; i < sequenceArr.count; i++){
+			for(var j = 0; j < userStories!.count; j++){
+				if(userStories![j].rankingIndex == Int(sequenceArr[i])){
+					tmpUserStories.append(userStories![j])
+				}
+			}
 		}
 		
 		
 		
-
-	
+		
+		
+		
+		
+		
+		
+		
+		for(var i = 0; i < tmpUserStories.count ; i++ ){
+			
+			tmpUserStories[i].rankingIndex = i+1
+			
+			db.updateObject(tmpUserStories[i])
+			
+		}
+		
 		response.redirectTo("/userstories")
+		response.requestCompletedCallback()
 	}
 	
     func show(identifier: String, request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
