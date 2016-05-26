@@ -84,11 +84,13 @@ beginAtZero:true
 {{#memberTasks}}
 <div class="large-6 columns">
 <h3>Assigned Tasks</h3>
+<ul>
 
 {{#tasks}}
-<a href="{{urlPath}}"><h4>{{title}}</h4></a>
-{{/tasks}}
 
+<li><a href="{{urlPath}}">{{title}}</a></li>
+{{/tasks}}
+</ul>
 </div>
 {{/memberTasks}}
 
@@ -97,7 +99,7 @@ beginAtZero:true
 <div class="large-12 columns">
 <h3>Sprint Backlog</h3>
 {{#tasks}}
-<a href="{{urlPath}}"><h4>{{title}}</h4></a>
+<a href="{{urlPath}}">{{title}}</a>
 {{/tasks}}
 </div>
 </div>

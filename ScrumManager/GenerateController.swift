@@ -97,7 +97,6 @@ struct TestController {
         
         if let tvmApp = getProject(TestProject.TVMApp) {
             
-            createSprints(tvmApp)
             
         } else {
             
@@ -106,15 +105,19 @@ struct TestController {
             tvmAppProject.productOwner = getUser(.PaulJackson)
             tvmAppProject.scrumMaster = getUser(.AmyVincent)
             
+            try! databaseManager.insertObject(tvmAppProject)
+            
             // Add team members
             tvmAppProject.addTeamMember(getUser(.JasonSmith))
             tvmAppProject.addTeamMember(getUser(.JoelSmith))
             tvmAppProject.addTeamMember(getUser(.BenjaminRogers))
             
-            try! databaseManager.insertObject(tvmAppProject)
             
             createUserStories(tvmAppProject)
+            createSprints(tvmAppProject)
+
         }
+        
     }
     
     func createUserStories(project: Project) -> [UserStory] {

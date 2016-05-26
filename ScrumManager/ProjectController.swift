@@ -119,7 +119,15 @@ class ProjectController: AuthController {
         }
 
         let projectsJSON = projects.map { (project) -> [String: Any] in
-            return project.dictionary
+            var projectDictionary =  project.dictionary
+            projectDictionary["scrumMaster"] = project.scrumMaster?.dictionary ?? [:]
+            if let endDate = project.endDate {
+                projectDictionary["date"] = DateFormatterCache.shared.mediumFormat.stringFromDate(endDate)
+            } else {
+                projectDictionary["date"] = "N/A"
+            }
+            
+            return projectDictionary
         }
         
         return ["projects": projectsJSON]

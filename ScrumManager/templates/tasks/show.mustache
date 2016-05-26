@@ -11,29 +11,25 @@ This is the mustache template file for the tap tracker example.
 
 <h3>{{title}}</h3>
 
-<h4>Description</h4>
-<h5 class="subheader">{{description}}</h5>
 
-<h4>Priority</h4>
-<h5 class="subheader">{{priority}}</h5>
-
-
-<h4>Status</h4>
-<h5 class="subheader">{{status}}</h5>
-
-
-<h4>Estimates In Hour</h4>
-<h5 class="subheader">{{estimates}}</h5>
-
-
-<h4>Work Done</h4>
-<h5 class="subheader">{{workDone}}</h5>
+<dl>
+<dt>Description</dt>
+<dl>{{description}}</dl>
+<dt>Priority</dt>
+<dl>{{priority}}</dl>
+<dt>Status</dt>
+<dl>{{status}}</dl>
+<dt>Estimates In Hour</dt>
+<dl>{{estimates}}</dl>
+<dt>Work Done</dt>
+<dl>{{workDone}}</dl>
+</dl>
 
 <a href="{{urlPath}}/assign">{{assignAction}}</a>
 
 <h5>Assigned Team members</h5>
 {{#teamMembers}}
-<a href="{{pathURL}}">{{name}}</a>
+<a href="{{urlPath}}">{{name}}</a>
 {{/teamMembers}}
 <div class="row">
 <div class="large-12 columns">

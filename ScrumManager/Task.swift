@@ -107,7 +107,7 @@ extension Task {
 			"status" : status,
 			"workDone" : workDone,
 			"identifier" : identifier,
-			"userID" : userID,
+			"userID" : userID ?? "null",
 			"UserStoryID" : UserStoryID,
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
