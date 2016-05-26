@@ -101,8 +101,8 @@ struct TestController {
             
             let tvmAppProject = Project(name: "TV Movie App", projectDescription: "iOS app that allows users to favorite their favourite TV Shows and Movies")
             
-            tvmAppProject.productOwner = getUser(.PaulJackson)
-            tvmAppProject.scrumMaster = getUser(.AmyVincent)
+            tvmAppProject.setProductOwner(getUser(.PaulJackson))
+            tvmAppProject.setScrumManager(getUser(.AmyVincent))
             
             try! databaseManager.insertObject(tvmAppProject)
             

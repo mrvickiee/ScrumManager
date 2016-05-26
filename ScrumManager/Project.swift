@@ -234,7 +234,16 @@ extension Project {
         
         // Update Team member
         teamMember.addProject(self)
-        
+    }
+    
+    func setScrumManager(user: User) {
+        scrumMaster = user
+        user.addProject(self)
+    }
+    
+    func setProductOwner(user: User) {
+        productOwner = user
+        user.addProject(self)
     }
     
     func addSprint(sprint: Sprint) {
