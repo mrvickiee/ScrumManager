@@ -84,9 +84,16 @@ struct TestController {
 
         addDetailViewControllerTask.assignUser(getUser(.JoelSmith))
         
+        let implementAPITask = Task(title: "Implement TVDB API", description: "Create class to access TVDB API with NSURLSession", priority: UserStoryPriority.High)
+        try! databaseManager.insertTask(implementAPITask)
+        
+        implementAPITask.assignUser(getUser(.JasonSmith))
+
+        
         // Add tasks to sprint
         mainFunctionalitySprint.addTask(addDetailViewControllerTask)
         mainFunctionalitySprint.addTask(addSearchControllerTask)
+        mainFunctionalitySprint.addTask(implementAPITask)
         
         databaseManager.updateObject(mainFunctionalitySprint)
         
@@ -100,6 +107,7 @@ struct TestController {
         } else {
             
             let tvmAppProject = Project(name: "TV Movie App", projectDescription: "iOS app that allows users to favorite their favourite TV Shows and Movies")
+            tvmAppProject._objectID = DatabaseManager.sharedManager.generateUniqueIdentifier()
             
             tvmAppProject.setProductOwner(getUser(.PaulJackson))
             tvmAppProject.setScrumManager(getUser(.AmyVincent))
