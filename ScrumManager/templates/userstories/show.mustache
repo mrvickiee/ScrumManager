@@ -55,18 +55,37 @@ This is the mustache template file for the tap tracker example.
 
 
 <h4>Comments</h4>
-<div class="row large-12 columns">
-{{#comments}}
+{{#commentList}}
+{{#comment}}
 {{#user}}
-<div class="profile-pic-med avatar">{{initials}}</div>
-<div class="message">
-<p><strong>{{name}}</strong></p>
-{{/user}}
+<div class="large-12 columns">
+    <div class="profile-pic-med avatar">{{initials}}</div>
+    <div class="message large-10 columns">
+        <strong>{{name}}</strong>
+        <br>
+        <div id="{{commentIndicator}}{{initials}}" class="row large-10 columns">
+        {{comment}}
+        </div>
+        <a id="cancelButton{{commentIndicator}}" onclick="cancelEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}','cancelButton{{commentIndicator}}')" style="display:none" class="blueButton button">Cancel</a>
 
-<p>{{comment}}</p>
+        <a style="display:none" id="saveButton{{commentIndicator}}" onclick="postEditComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', '{{identifier}}', '{{commentIndicator}}')" class="blueButton button">
+        Post
+        </a>
+
+        <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
+
+
+        <a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+        Delete
+        </a>
+
+        <br>
+    </div>
+    <br>
 </div>
-
-{{/comments}}
+{{/user}}
+{{/comment}}
+{{/commentList}}
 
 <form action="{{url}}/comments" method="post">
 <div class="row">
@@ -78,7 +97,6 @@ This is the mustache template file for the tap tracker example.
 </div>
 <input type="submit" value="Post">
 </form>
-</div>
 
 {{/userStory}}
 
