@@ -45,11 +45,11 @@ public func PerfectServerModuleInit() {
 	
     print("\(Routing.Routes.description)")
     
-    /*
+    
     let testController = TestController(databaseManager: DatabaseManager.sharedManager, users: [])
     
-    //testController.createTestUsers()
+    testController.createTestUsers()
     testController.createProjects()
-  */
+  
     
 }

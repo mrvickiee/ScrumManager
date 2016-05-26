@@ -110,7 +110,7 @@ extension Task {
 			"status" : status,
 			"workDone" : workDone,
 			"identifier" : identifier,
-			"userID" : userID,
+			"userID" : userID ?? "null",
 			"UserStoryID" : UserStoryID,
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
@@ -126,7 +126,7 @@ extension Task {
 		return [
 			"title" : title,
 			"description" : description,
-			"estimates" : Int(estimates/360),
+			"estimates" : FormatterCache.shared.componentsFormatter.stringFromTimeInterval(estimates)!,
 			"priority" : priority,
 			"status" : status,
 			"workDone" : workDone,

@@ -109,7 +109,7 @@ extension SprintReviewReport : Routable {
         return [
             "userStoriesCompleted": userStoriesCompleted,
             "tasks": tasks,
-            "createdAt": DateFormatterCache.shared.mediumFormat.stringFromDate(createdAt),
+            "createdAt": FormatterCache.shared.mediumFormat.stringFromDate(createdAt),
             "comments": comments.map({ (comment) -> [String: Any] in
                 return comment.dictionary
             }),

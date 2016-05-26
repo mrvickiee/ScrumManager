@@ -11,10 +11,12 @@
     <tbody>
 {{#projects}}
         <tr>
-<td><a href="{{urlPath}}/set">{{name}}</a></td>
+<td><a href="{{actionURL}}">{{name}}</a></td>
 <td>{{projectDescription}}</td>
-        <td>Content Goes Here</td>
-        <td>Content Goes Here</td>
+<td>{{date}}</td>
+<td>{{#scrumMaster}}
+<a href="{{urlPath}}">{{name}}</a>
+{{/scrumMaster}}</td>
         </tr>
 {{/projects}}
     </tbody>

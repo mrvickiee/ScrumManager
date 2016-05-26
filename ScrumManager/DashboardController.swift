@@ -59,10 +59,20 @@ class DashboardController: AuthController {
         
         var projectDictionary: [String: Any] = [:]
         let userRole = UserRole.TeamMember
-        let sampleSprintWorkDurations = project!.activeSprint!.burndownReports.map { (report) -> NSTimeInterval in
-            return report.dailyWorkDuration
+        
+        let sprintBurndownChart: BurndownChart?
+        if let sprint = project?.activeSprint {
+            
+            let sampleSprintWorkDurations = project!.activeSprint!.burndownReports.map { (report) -> NSTimeInterval in
+                return report.dailyWorkDuration
+            }
+            sprintBurndownChart = BurndownChart(workDurations: sampleSprintWorkDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        } else {
+            sprintBurndownChart = nil
         }
-        let sprintBurndownChart = BurndownChart(workDurations: sampleSprintWorkDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        
+        
+      
         
         
         switch userRole {
@@ -82,7 +92,10 @@ class DashboardController: AuthController {
             
             projectDictionary["sprintBacklog"] = ["tasks": sprintTasks]
             
-            projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
+            // Add Sprint Burndown Chart
+            if let sprintBurndownChart = sprintBurndownChart {
+                projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
+            }
 
             projectDictionary["report"] = project?.currentReport.dictionary ?? [:]
             
@@ -99,7 +112,12 @@ class DashboardController: AuthController {
         case .ScrumMaster:
             
             projectDictionary["releaseBurndown"] = burndownChart.dictionary
-            projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
+            
+            // Add Sprint Burndown Chart
+            if let sprintBurndownChart = sprintBurndownChart {
+                projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
+            }
+            
             projectDictionary["report"] = project!.currentReport.dictionary
 
             projectDictionary["teamMembers"] = project!.teamMembers.map({ (user) -> [String: Any] in

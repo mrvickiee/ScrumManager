@@ -8,14 +8,21 @@
 
 import Foundation
 
-class DateFormatterCache {
+class FormatterCache {
     
-    static let shared = DateFormatterCache()
+    static let shared = FormatterCache()
     
     let mediumFormat: NSDateFormatter
+    
+    let componentsFormatter: NSDateComponentsFormatter
     
     private init() {
         mediumFormat = NSDateFormatter()
         mediumFormat.dateStyle = NSDateFormatterStyle.MediumStyle
+        
+        componentsFormatter = NSDateComponentsFormatter()
+        componentsFormatter .unitsStyle = .Full
+        componentsFormatter.allowedUnits = [NSCalendarUnit.Hour]
+        
     }
 }
