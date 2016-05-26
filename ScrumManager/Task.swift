@@ -28,7 +28,7 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
     
     var identifier: Int = 0
     
-    var userID: String = ""// User who is assigned to task
+    var userID: String? // User who is assigned to task
         
     var UserStoryID: String = "" // belong to which UserStoryID
 
@@ -54,10 +54,10 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         return nil
     }
     
-    init(title: String, description: String, rawPriority: Int ) {
+    init(title: String, description: String, priority: UserStoryPriority ) {
         self.title = title
         self.description = description
-        self.priority = UserStoryPriority(rawValue: rawPriority)!
+        self.priority = priority
     }
     
     convenience init(dictionary: [String: Any]) {
@@ -65,9 +65,9 @@ final class Task: Object, DBManagedObject, DictionarySerializable, CustomDiction
         let taskBody = dictionary["title"] as! String
         let taskDesc = dictionary["description"] as! String
         let rawPriority = dictionary["priority"] as! Int
-    
+        let priority = UserStoryPriority(rawValue: rawPriority)!
         
-        self.init(title: taskBody, description: taskDesc, rawPriority: rawPriority )
+        self.init(title: taskBody, description: taskDesc, priority: priority )
         
         self.userID = (dictionary["userID"] as? String) ?? ""
         
@@ -128,7 +128,7 @@ extension Task {
 			"status" : status,
 			"workDone" : workDone,
 			"identifier" : identifier,
-			"userID" : userID,
+			"userID" : userID ?? "",
 			"UserStoryID" : UserStoryID,
 			"comments": comments.map({ (comment) -> [String: Any] in
 				return comment.dictionary
@@ -150,15 +150,15 @@ extension Task {
     
     var user: User? {
         get {
-			if(userID != ""){
+			if let userID = userID {
                 return try! DatabaseManager().getObjectWithID(User.self, objectID: userID)
-			}else{
+			} else{
 				return nil
 			}
 		}
         
         set {
-            userID = (newValue?._objectID)!
+            userID = (newValue?._objectID)
             status = .InProgress
         }
     }

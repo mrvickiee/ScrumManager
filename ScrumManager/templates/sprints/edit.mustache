@@ -7,7 +7,7 @@
 
     {{#sprint}}
 
-<form action="{{url}}" method="post">
+<form action="{{url}}/editsprintdetails" method="post">
 
     <div class="row">
     <div class="large-12 columns">
@@ -19,16 +19,14 @@
 
     <div class="row">
     <div class="large-12 columns">
-        <label>Description
-            <textarea name="body">{{body}}</textarea>
-        </label>
-
         <label>Expected duration
-            <input type="text" name="duration" value="{{duration}}" />
+            <input type="number" name="duration" value="{{duration}}" step="0.1"/>
         </label>
 
     </div>
     </div>
+
+    <input type="submit" value="Submit">
 
 </form>
 {{/sprint}}

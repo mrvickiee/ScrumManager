@@ -12,7 +12,7 @@ import MongoDB
 
 final class UserStory: Object,DBManagedObject, Commentable {
 	
-	var type : storyType
+	var type : StoryType
     
     var title: String
     
@@ -39,7 +39,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
 	var taskIDs : [String] = []
 	
     
-	init(title: String, story: String, priority: UserStoryPriority, component: String, type:storyType) {
+	init(title: String, story: String, priority: UserStoryPriority, component: String, type:StoryType) {
         self.title = title
         self.story = story
         self.priority = priority
@@ -73,7 +73,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
 		
         let priority = UserStoryPriority(rawValue: priorityRaw)!
 		
-		let type = storyType(rawValue: typeRaw)!
+		let type = StoryType(rawValue: typeRaw)!
 		
 		let rank = dictionary["rankingIndex"] as? Int ?? 0
 		
@@ -120,7 +120,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         title = ""
         priority = .High
 		component = ""
-		type = .new
+		type = .New
         super.init()
 
         return nil

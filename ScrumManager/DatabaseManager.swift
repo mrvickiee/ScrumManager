@@ -19,7 +19,11 @@ class DatabaseManager {
     let mongo: MongoClient
     
     static let databaseName = "scrummanager"
+    
     static let mongoURI = "mongodb://localhost"
+    
+    static let sharedManager = try! DatabaseManager()
+    
 
     private var database: MongoDatabase {
         return mongo.getDatabase(DatabaseManager.databaseName)
@@ -98,6 +102,10 @@ class DatabaseManager {
     
     func getObjectWithID<Collection: DBManagedObject>(collection: Collection.Type, objectID: String) -> Collection? {
         
+        guard  objectID.length > 0 else  {
+            return nil
+        }
+        
         let identifierDictionary = ["$oid": objectID] as Dictionary<JSONKey, JSONValue>
         
         let query: [String: JSONValue] = ["_id": identifierDictionary]
@@ -161,8 +169,23 @@ class DatabaseManager {
     }
     
     func insertObject(object: DBManagedObject) throws {
+        if let obj = object as? Object where obj._objectID == nil {
+            obj._objectID = database.generateObjectID()
+        }
+        
 			try! database.insert(object)
-		
+    }
+    
+    func insertTask(task: Task) throws {
+        
+        // Set Identifier
+        let taskCount = self.countForFetchRequest(Task)
+        guard taskCount > -1 else {
+            throw CreateUserError.DatabaseError
+        }
+        task.identifier = taskCount
+
+        try insertObject(task)
     }
     
     func deleteObject(object: DBManagedObject) throws {

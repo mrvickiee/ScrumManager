@@ -30,6 +30,8 @@ final class Project: Object, DBManagedObject {
     
     var sprintIDs: [String] = []
     
+    var activeSprintID: String?
+    
     var scrumMasterID: String?
     
     var productOwnerID: String?
@@ -67,7 +69,7 @@ final class Project: Object, DBManagedObject {
         
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
 		
-
+        
         
         self.init(name: name, projectDescription: projectDesc ?? "")
         
@@ -84,6 +86,8 @@ final class Project: Object, DBManagedObject {
 		self.userStoryIDs = userStoryIDs
         
         self.userStoryIDs = userStoryIDs
+        
+        self.activeSprintID = dictionary["activeSprintID"] as? String
         
         if let startDateEpoch = dictionary["startDate"] as? Int {
             startDate = NSDate(timeIntervalSince1970: Double(startDateEpoch))
@@ -196,21 +200,41 @@ extension Project {
         return NSDate().dateByAddingTimeInterval(projectDuration)
     }
     
-    func addUserStory(userStory: UserStory) {
+    func addUserStory(userStory: UserStory) throws {
+        
+        let databaseManager = DatabaseManager.sharedManager
+        userStory._objectID = databaseManager.generateUniqueIdentifier()
+        // Set Identifier
+        let userStoryCount = databaseManager.countForFetchRequest(UserStory)
+        guard userStoryCount > -1 else {
+            throw CreateUserError.DatabaseError
+        }
+        
+        userStory.identifier = userStoryCount
+        try databaseManager.insertObject(userStory)
+
         if let objectID = userStory._objectID {
             userStoryIDs.append(objectID)
         }
         
-        try! DatabaseManager().updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self)
+
     }
     
     func addTeamMember(teamMember: User) {
+        
+        let db = DatabaseManager.sharedManager
         
         if let objectID = teamMember._objectID {
             teamMemberIDs.append(objectID)
         }
         
-        try! DatabaseManager().updateObject(self, updateValues: ["teamMemberIDs": teamMemberIDs])
+        try! db.updateObject(self, updateValues: ["teamMemberIDs": teamMemberIDs])
+        
+        // Update Team member
+        teamMember.addProject(self)
+        
     }
     
     func addSprint(sprint: Sprint) {
@@ -227,6 +251,10 @@ extension Project {
 		return dateFormatter.stringFromDate(endDate!)
 	}
 	
+    var activeSprint: Sprint? {
+        return sprints.first
+    }
+    
 	
 }
 

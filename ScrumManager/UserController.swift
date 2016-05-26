@@ -189,14 +189,16 @@ class UserController: AuthController {
         }
         
         // Check that the current user is editting owns profile
-        guard let cUser = currentUser(request, response: response) where cUser.username == user.username else {
-            response.requestCompletedCallback()
-            return [:]
+        let cUser = currentUser(request, response: response)
+        if cUser?.role != .Admin{
+            guard cUser!.username == user.username else {
+                    response.requestCompletedCallback()
+                    return [:]
+            }
         }
         
-    
         var values = ["user": user.dictionary] as  MustacheEvaluationContext.MapType
-        if user.role != .Admin {
+        if cUser!.role != .Admin {
             values["visibility"] = "none"
         }else{
             values["visibility"] = "run-in"
@@ -229,7 +231,8 @@ class UserController: AuthController {
             
             do {
                 
-                _ = try User.create(name, email: email, password: password, role: Int(role)!)
+                let userRole = UserRole(rawValue: Int(role)!)!
+                _ = try User.create(name, email: email, password: password, role: userRole)
                 
             } catch {
                 print(error)

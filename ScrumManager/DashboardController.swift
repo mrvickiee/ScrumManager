@@ -50,10 +50,20 @@ class DashboardController: AuthController {
         }
         
         // Generate Burndown chart 
-        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        let sampleWorkDurations = ScrumDailyReport.generateTestReports(15).map { (report) -> NSTimeInterval in
+            return report.dailyWorkDuration
+        }
+        let burndownChart = BurndownChart(workDurations: sampleWorkDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        
+  
         
         var projectDictionary: [String: Any] = [:]
         let userRole = UserRole.TeamMember
+        let sampleSprintWorkDurations = project!.activeSprint!.burndownReports.map { (report) -> NSTimeInterval in
+            return report.dailyWorkDuration
+        }
+        let sprintBurndownChart = BurndownChart(workDurations: sampleSprintWorkDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        
         
         switch userRole {
         case .TeamMember:
@@ -67,10 +77,14 @@ class DashboardController: AuthController {
             let sprintTasks = databaseManager.executeFetchRequest(Task.self).map { (task) -> [String: Any] in
                 return task.dictionary
             }
+            
+            
+            
             projectDictionary["sprintBacklog"] = ["tasks": sprintTasks]
-            projectDictionary["sprintBurndown"] = burndownChart.dictionary
+            
+            projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
 
-            projectDictionary["report"] = project!.currentReport.dictionary
+            projectDictionary["report"] = project?.currentReport.dictionary ?? [:]
             
         case .ProductOwner:
             
@@ -85,7 +99,7 @@ class DashboardController: AuthController {
         case .ScrumMaster:
             
             projectDictionary["releaseBurndown"] = burndownChart.dictionary
-            projectDictionary["sprintBurndown"] = burndownChart.dictionary
+            projectDictionary["sprintBurndown"] = sprintBurndownChart.dictionary
             projectDictionary["report"] = project!.currentReport.dictionary
 
             projectDictionary["teamMembers"] = project!.teamMembers.map({ (user) -> [String: Any] in
@@ -108,15 +122,7 @@ class DashboardController: AuthController {
             
             dictionary["projects"] = ["project": projects] as [String: Any]
           //  projectDictionary["details"] = project!.dictionary
-
-            
-            
-            
-            
-            
-            
-        default:
-            break
+ 
         }
         
         if user.role == .TeamMember {

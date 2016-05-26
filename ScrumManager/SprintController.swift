@@ -18,6 +18,7 @@ import PerfectLib
     
     var projectID : String = ""
 
+    var userRolesWithModifiyPermission: [UserRole] = [.ScrumMaster, .Admin]
     
     //create new sprint
     func new(request: WebRequest, response: WebResponse) {
@@ -55,6 +56,19 @@ import PerfectLib
             }
         }
         response.requestCompletedCallback()
+    }
+    
+    func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
+        
+        switch user.role {
+        case .Admin,.ScrumMaster:
+            return [addAction]
+        default:
+            return []
+        }
     }
     
     func create(request: WebRequest, response: WebResponse) throws ->  MustacheEvaluationContext.MapType
@@ -123,9 +137,11 @@ import PerfectLib
 			return task.dictionary
 		}
 		
-		
+        let workDurations = sprint.burndownReports.map { (report) -> NSTimeInterval in
+            return report.dailyWorkDuration
+        }
         // Generate Burndown chart
-        let burndownChart = BurndownChart(reports: ScrumDailyReport.generateTestReports(15), totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
+        let burndownChart = BurndownChart(workDurations: workDurations, totalWorkRemaining: NSTimeInterval(60 * 60 * 24 * 3), dueDate: NSDate().dateByAddingTimeInterval(NSTimeInterval(60 * 60 * 24 * 5)))
         
         values["burndownChart"] = burndownChart.dictionary
 		values["userStory"] =  storyJSON
@@ -133,7 +149,14 @@ import PerfectLib
         values["identifier"] = identifier
 			
         
-        //response.requestCompletedCallback()
+             let currentLoginUser = currentUser(request, response: response)
+        
+        if modelPluralName == "sprints" && currentLoginUser?.role == .Admin{
+            let editURL = "/\(modelPluralName)/\(identifier)/edit"
+            let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+            values["actions"] = editAction
+        }
+        
         return values
         
     }
@@ -289,6 +312,7 @@ import PerfectLib
         db.updateObject(sprint)
         
         response.redirectTo("/sprints/\(id)")
+        response.requestCompletedCallback()
         
     }
 
@@ -306,13 +330,30 @@ import PerfectLib
         guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
             return
         }
-        
+
         sprint.comments.removeAtIndex(deleteIndex!)
         
         db.updateObject(sprint)
         
         response.redirectTo("/sprints/\(id)")
+        response.requestCompletedCallback()
     }
+    
+    func editSprintDetails(request: WebRequest, response: WebResponse, identifier: String) {
+        if let title = request.param("title"),rawDuration = request.param("duration"), duration = Double(rawDuration){
+            let id = Int(identifier)!
+            let db = try! DatabaseManager()
+            guard let sprint = db.executeFetchRequest(Sprint.self, predicate: ["identifier": id]).first else {
+                return
+            }
+            sprint.title = title
+            sprint.duration = duration*360
+            db.updateObject(sprint)
+            response.redirectTo("/sprints/\(identifier)")
+            response.requestCompletedCallback()
+        }
+    }
+
 
     
     func controllerActions() -> [String: ControllerAction] {
@@ -326,8 +367,11 @@ import PerfectLib
         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
         modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["editsprintdetails"] = ControllerAction() {(request, resp,identifier) in self.editSprintDetails(request, response: resp, identifier: identifier)}
 		
         return modelActions
     }
+    
     
  }

@@ -26,7 +26,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
             <dt>Description</dt>
             <dl>{{title}}</dl>
             <dt>Date created</dt>
-            <dl>{{endDate}}</dl>
+            <dl>{{dateCreated}}</dl>
             <dt>Expected duration</dt>
 <dl>{{duration}}</dl>
             <dt>Expected completion date</dt>
@@ -208,7 +208,14 @@ info:false
 }
 
 );
+$("#taskList").DataTable({
+paging:false,
+searching:true,
+autowidth:false,
+info:false
+}
 
+);
 
 
 </script>

@@ -11,7 +11,7 @@
 
 
 <div class = "large-11 columns">
-    <table class="large-12 columns" id="userListTable" >
+    <table class="large-12 columns" id="usersListTable" >
         <thead>
             <tr>
                 <th>Name</th>
@@ -37,7 +37,7 @@
                 <a method="post" href="/users/{{username}}/activate" style="display:{{isActive}}" class="blueButton button">
                 Activate
                 </a>
-                <a method="post" href="/users/{{username}}/deactivate" style="display:{{isUnActive}}" class="blueButton button">
+                <a method="post" href="/users/{{username}}/deactivate" style="display:{{isUnActive}}" class="redButton button">
                 Deactivate
                 </a>
                 <a method="post" href="/users/{{username}}/delete" class="redButton button">
@@ -52,7 +52,7 @@
 
 <script>
 
-$("#userListTable").DataTable({
+$("#usersListTable").DataTable({
     paging:false,
     searching:true,
     autowidth:false,
