@@ -80,12 +80,14 @@ class TaskController: AuthController {
 			
 		if(user.email == curUser?.email){
 			taskDictionary["isAssigned"] = true
+			taskDictionary["buttonAM"] = "Unassign"
 		}else{
 			taskDictionary["isAssigned"] = false
 		}
 		}else{
 			taskDictionary["assigneeName"] = "None"
 			taskDictionary["isAssigned"] = false
+			taskDictionary["buttonAM"] = "Assign"
 		}
 		
 		
