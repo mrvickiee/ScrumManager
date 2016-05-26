@@ -8,25 +8,10 @@
 
 import Foundation
 
-struct Burndown {
+protocol BurndownReport {
     
-    let secondsInDay: NSTimeInterval = 60 * 60 * 24
-    
-    var rate: Float
-    
-    var workRemaining: Int
-    
-    var numberOfDaysTillCompletition: Double {
-       
-        return Double(ceil(Float(workRemaining) / rate))
-        
-    }
-    
-    var completitionDate: NSDate {
-        let currentDate = NSDate()
-        return currentDate.dateByAddingTimeInterval(numberOfDaysTillCompletition * secondsInDay)
-    }
-    
+    var dailyWorkDuration: NSTimeInterval { get }
+
 }
 
 struct BurndownChart: CustomDictionaryConvertible {
@@ -54,7 +39,7 @@ struct BurndownChart: CustomDictionaryConvertible {
     
     static let dateFormatter: NSDateFormatter = NSDateFormatter()
     
-    init(reports: [ScrumDailyReport], totalWorkRemaining: NSTimeInterval, dueDate: NSDate = NSDate()) {
+    init(workDurations: [NSTimeInterval], totalWorkRemaining: NSTimeInterval, dueDate: NSDate = NSDate()) {
         
         self.dueDate = dueDate
         
@@ -64,17 +49,17 @@ struct BurndownChart: CustomDictionaryConvertible {
         var index = 1
         
         
-        let totalWorkAchieved = reports.reduce(NSTimeInterval(0)) { (value, report) -> NSTimeInterval in
-            return value + report.dailyWorkDuration
+        let totalWorkAchieved = workDurations.reduce(NSTimeInterval(0)) { (value, report) -> NSTimeInterval in
+            return value + report
         }
         
-        let averageWorkAchieved = totalWorkAchieved / Double(reports.count)
+        let averageWorkAchieved = totalWorkAchieved / Double(workDurations.count)
         
         
-        for report in reports {
+        for report in workDurations {
             
             projectedWorkAchieved += averageWorkAchieved
-            workAchieved += report.dailyWorkDuration
+            workAchieved += report
             
             let workRemainingForDay = totalWorkRemaining - workAchieved
             let projectedWorkRemainingForDay = totalWorkRemaining - projectedWorkAchieved

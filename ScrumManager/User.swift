@@ -87,6 +87,7 @@ final class User: Object {
         
         let isActive = dictionary["isActive"] as? Bool ?? true
         
+        
         self.init(email: email, name: name, authKey: authKey, role: roleTypeRaw)
                 
         self._objectID = id
@@ -190,6 +191,8 @@ extension User {
     func addProject(project: Project) {
         
         projectIDs.append(project._objectID!)
+        
+        DatabaseManager.sharedManager.updateObject(self, updateValues: ["projectIDs": projectIDs])
     }
     
     var projects: [Project] {

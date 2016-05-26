@@ -114,6 +114,10 @@ extension Sprint {
         return try! DatabaseManager().getObjectsWithIDs(UserStory.self, objectIDs: userStoryIDs)
     }
     
+    var burndownReports: [SprintReviewReport] {
+        return SprintReviewReport.generateTestReports(4)
+    }
+    
     var keyValues:[String: Any] {
         
         return [
@@ -136,7 +140,7 @@ extension Sprint {
 		return [
 			"title": title,
 			"userStoryIDs" : userStoryIDs,
-			"dateCreated" : dateCreated,
+			"dateCreated" : DateFormatterCache.shared.mediumFormat.stringFromDate(dateCreated),
 			"status" : status,
 			"taskIDs" : taskIDs,
 			"comments": comments.map({ (comment) -> [String: Any] in

@@ -20,7 +20,7 @@ class SprintReviewReportController: AuthController {
         var modelActions:[String: ControllerAction] = [:]
         modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
         
-         modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
+      modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
         
          modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
         
@@ -42,7 +42,7 @@ class SprintReviewReportController: AuthController {
 
         guard sprint.reviewReport?.createdAt != nil else{
             
-            sprint.reviewReport?.createdAt = NSDate()
+       
             
             // Load User Stories Completed
             let userStoryIdentifier = sprint.userStoryIDs

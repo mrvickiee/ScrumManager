@@ -12,7 +12,9 @@ import PerfectLib
 protocol AuthController: RESTController, RoutableController {
     
  //   associatedtype DBManagedObject
-
+    var addAction: Action { get }
+    
+    var userRolesWithModifiyPermission: [UserRole] { get }
     
     func currentUser(request: WebRequest, response: WebResponse) -> User?
     
@@ -21,6 +23,7 @@ protocol AuthController: RESTController, RoutableController {
     var anonymousUserCanView: Bool { get }
     
     var pageTitle: String { get }
+    
     
 }
 
@@ -44,6 +47,14 @@ extension AuthController {
     
     var pageTitle: String {
         return "Scrum Manager"
+    }
+    
+    var addAction: Action {
+        return Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)
+    }
+    
+    var userRolesWithModifiyPermission: [UserRole] {
+        return []
     }
     
     func currentSession(request: WebRequest, response: WebResponse) -> ScrumManagerSession? {
@@ -108,13 +119,21 @@ extension AuthController {
     
     func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]
     {
-    let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
-        let editURL = "/\(modelPluralName)/\(identifier)/edit"
+        guard let user = currentUser(request, response: response) else {
+            return []
+        }
         
-        let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
-        let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
-        
-        return [editAction, deleteAction]
+        if userRolesWithModifiyPermission.contains(user.role) {
+            let destoryURL = "/\(modelPluralName)/\(identifier)/destroy"
+            let editURL = "/\(modelPluralName)/\(identifier)/edit"
+            
+            let editAction = Action(url: editURL, icon: "", name: "Edit", isDestructive: false)
+            let deleteAction = Action(url: destoryURL, icon: "icon-trash", name: "", isDestructive: true)
+            
+            return [editAction, deleteAction]
+        } else {
+            return []
+        }
     }
     
     func handleRequest(request: WebRequest, response: WebResponse) {
@@ -214,7 +233,9 @@ extension AuthController {
                         values.update(try! show(identifier, request: request, response: response))
                         values["url"] = "/\(modelPluralName)/\(identifier)"
                         
-                        values["actions"] = availableActionsForObjectWithIdentifier(identifier, request: request, response: response)
+                        values["actions"] = availableActionsForObjectWithIdentifier(identifier, request: request, response: response).map({ (action) -> [String: Any] in
+                            return action.dictionary
+                        })
                         
                        // values["actions"] = [Action(url: editURL, icon: "", name: "Edit").dictionary, Action(url: destoryURL, icon: "icon-trash", name: "").dictionary]
                         response.appendBodyString(loadPageWithTemplate(request, url: templateURL, withValues: values))
