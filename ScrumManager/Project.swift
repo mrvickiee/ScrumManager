@@ -66,6 +66,8 @@ final class Project: Object, DBManagedObject {
         let userStoryIDs = (dictionary["userStoryIDs"] as? JSONArrayType)?.stringArray ?? []
         
         let sprintIDs = (dictionary["sprintIDs"] as? JSONArrayType)?.stringArray ?? []
+		
+
         
         self.init(name: name, projectDescription: projectDesc ?? "")
         
@@ -78,6 +80,8 @@ final class Project: Object, DBManagedObject {
         self.productOwnerID = productOwnerIdentifier
         
         self.sprintIDs = sprintIDs
+		
+		self.userStoryIDs = userStoryIDs
         
         self.userStoryIDs = userStoryIDs
         
@@ -192,12 +196,26 @@ extension Project {
         return NSDate().dateByAddingTimeInterval(projectDuration)
     }
     
-    func addUserStory(userStory: UserStory) {
+    func addUserStory(userStory: UserStory) throws {
+        
+        let databaseManager = DatabaseManager.sharedManager
+        userStory._objectID = databaseManager.generateUniqueIdentifier()
+        // Set Identifier
+        let userStoryCount = databaseManager.countForFetchRequest(UserStory)
+        guard userStoryCount > -1 else {
+            throw CreateUserError.DatabaseError
+        }
+        
+        userStory.identifier = userStoryCount
+        try databaseManager.insertObject(userStory)
+
         if let objectID = userStory._objectID {
             userStoryIDs.append(objectID)
         }
         
-        try! DatabaseManager().updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self, updateValues: ["userStoryIDs": teamMemberIDs])
+        databaseManager.updateObject(self)
+
     }
     
     func addTeamMember(teamMember: User) {

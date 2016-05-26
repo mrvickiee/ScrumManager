@@ -194,7 +194,8 @@ class TaskController: AuthController {
         if let title = request.param("taskTitle"), desc = request.param("taskDescription"), estimate = request.param("taskEstimate"), priority = request.param("taskPriority"){
             
             // Valid Article
-            let newTask = Task(title: title,description: desc, rawPriority: Int(priority)!)
+            let taskPriority = UserStoryPriority(rawValue: Int(priority)!)!
+            let newTask = Task(title: title,description: desc, priority: taskPriority)
             
             newTask.estimates = Double(estimate)!
 			newTask.estimates *= 360

@@ -143,7 +143,7 @@ extension User: DBManagedObject {
         
     }
     
-    static func create(name: String, email: String, password: String, role: Int) throws -> User {
+    static func create(name: String, email: String, password: String, role: UserRole) throws -> User {
         
         // Check Email uniqueness
         guard User.userWithEmail(email) == nil else {
@@ -156,10 +156,10 @@ extension User: DBManagedObject {
         }
         
         let authKey = encodeRawPassword(email, password: password)
-        let user = User(email: email, name: name, authKey: authKey, role: role)
+        let user = User(email: email, name: name, authKey: authKey, role: role.rawValue)
         user.username = User.usernameFromName(name)
         do {
-            try DatabaseManager().insertObject(user)
+            try DatabaseManager.sharedManager.insertObject(user)
             return user
         } catch {
             print(error)

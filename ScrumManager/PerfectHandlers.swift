@@ -43,9 +43,13 @@ public func PerfectServerModuleInit() {
     
    // Routing.Routes["/test"] = { _ in TestHandler() }
 	
-
-    
     print("\(Routing.Routes.description)")
-        
+    
+    /*
+    let testController = TestController(databaseManager: DatabaseManager.sharedManager, users: [])
+    
+    //testController.createTestUsers()
+    testController.createProjects()
+  */
     
 }

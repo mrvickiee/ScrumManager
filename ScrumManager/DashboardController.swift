@@ -70,7 +70,7 @@ class DashboardController: AuthController {
             projectDictionary["sprintBacklog"] = ["tasks": sprintTasks]
             projectDictionary["sprintBurndown"] = burndownChart.dictionary
 
-            projectDictionary["report"] = project!.currentReport.dictionary
+            projectDictionary["report"] = project?.currentReport.dictionary ?? [:]
             
         case .ProductOwner:
             
@@ -108,15 +108,7 @@ class DashboardController: AuthController {
             
             dictionary["projects"] = ["project": projects] as [String: Any]
           //  projectDictionary["details"] = project!.dictionary
-
-            
-            
-            
-            
-            
-            
-        default:
-            break
+ 
         }
         
         if user.role == .TeamMember {

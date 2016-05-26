@@ -12,7 +12,7 @@ import MongoDB
 
 final class UserStory: Object,DBManagedObject, Commentable {
 	
-	var type : storyType
+	var type : StoryType
     
     var title: String
     
@@ -28,7 +28,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
     
     var estimatedDuration: NSTimeInterval = 0      //story points
 	
-	var rakingIndex:Int?
+	var rankingIndex:Int = 0
 	
 	var epicLink : String = "None"
 	
@@ -39,7 +39,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
 	var taskIDs : [String] = []
 	
     
-	init(title: String, story: String, priority: UserStoryPriority, component: String, type:storyType) {
+	init(title: String, story: String, priority: UserStoryPriority, component: String, type:StoryType) {
         self.title = title
         self.story = story
         self.priority = priority
@@ -73,10 +73,14 @@ final class UserStory: Object,DBManagedObject, Commentable {
 		
         let priority = UserStoryPriority(rawValue: priorityRaw)!
 		
-		let type = storyType(rawValue: typeRaw)!
+		let type = StoryType(rawValue: typeRaw)!
+		
+		let rank = dictionary["rankingIndex"] as? Int ?? 0
 		
         self.init(title: title, story: story, priority: priority, component: component,type: type)
 		
+		
+		self.rankingIndex = rank
 		
 		self.status = status
         
@@ -116,7 +120,7 @@ final class UserStory: Object,DBManagedObject, Commentable {
         title = ""
         priority = .High
 		component = ""
-		type = .new
+		type = .New
         super.init()
 
         return nil
@@ -144,7 +148,8 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "identifier": identifier
+            "identifier": identifier,
+            "rankingIndex" : rankingIndex
         ]
         
     }
@@ -165,7 +170,7 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "objectID": _objectID!
+            "rankingIndex" : rankingIndex
         ]
     }
     /*
@@ -183,7 +188,6 @@ extension UserStory {
 		
 
 	}
-
 }
 
 extension UserStory: Routable {
