@@ -74,18 +74,8 @@ class SprintReviewReportController: AuthController {
         let user = currentUser(request, response: response)
 
         // Set comment list be post by others
-        var commentList : [[String:Any]] = []
-        var num = 0
-        for comment in sprint.reviewReport.comments{
-            if user!.email == comment.user?.email{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in", "commentIndicator": num])
-            }else if user!.role != .ScrumMaster && user!.role != .Admin{
-                commentList.append(["comment":comment.dictionary, "visibility": "none", "commentIndicator": num])
-            }else{
-                commentList.append(["comment":comment.dictionary, "visibility": "run-in","commentIndicator": num])
-            }
-            num += 1
-        }
+        let commentList : [[String:Any]] = sprint.reviewReport.loadCommentDetailsForMustahce(user!)
+        
         values["commentList"] = commentList
         values["identifier"] = identifier
         return values

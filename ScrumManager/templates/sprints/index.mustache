@@ -6,32 +6,30 @@ This is the mustache template file for the tap tracker example.
 
 <div class="row medium-8 large-7 columns">
 
-    {{#sprints}}
-        <article class="blog-post">
-            <a href="{{urlPath}}"><h3>{{title}}</h3></a>
-    <p>Description: {{body}}</p>
-        </article>
+
 
 <table id="sprintTaskList" style="width:100%">
 <thead>
 <tr>
-<td>Task</td>
-<td>Body</td>
+<td>Sprint</td>
+<td>Title</td>
+<td>Expected Duration</td>
+<td>Status</td>
 </tr>
 </thead>
-<tbody>
-{{#tasks}}
+<tbody>{{#sprints}}
 <tr>
-<td><a href="{{urlPath}}"><h3>{{title}}</h3></a></td>
-<td>{{body}}</td>
 
-</tr>
-{{/tasks}}
+<td><a href="{{urlPath}}"><strong>Sprint {{index}}</strong></a></td>
+<td>{{title}}</td>
+<td>{{duration}}</td>
+<td>{{status}}</td>
+
+</tr>{{/sprints}}
 </tbody>
 
 
 </table>
-    {{/sprints}}
 </div>
 
 <script>

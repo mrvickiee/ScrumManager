@@ -325,7 +325,7 @@ class ProjectController: AuthController {
         var projectDict = project.dictionary
         projectDict["curScrumMaster"] = curScrumMaster.name
         
-        let value :[String:Any] = ["project":projectDict, "user":userDict]
+        let value :[String:Any] = ["project":projectDict, "users":userDict]
         
         return value
     }

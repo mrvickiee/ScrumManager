@@ -1,7 +1,7 @@
   {{#project}}
 <form action="{{url}}" method="post" enctype="multipart/form-data">
     <div class = "row">
-        <div class= "medium-6 columns">
+        <div class= "medium-6 columns large-centered medium-centered">
 
             <label>Project Title
             <input type="text" name="projectTitle" value="{{name}}"/>
@@ -19,29 +19,30 @@
 
             <label> Scrum master
             <select name="scrumMaster">
-            {{#user}}
+            {{#users}}
             <option value="{{objectID}}"> {{name}}</option>
-            {{/user}}
+            {{/users}}
 
             </select>
             </label>
 
             <label> Product Owner
             <select name="productOwner">
-            {{#user}}
+            {{#users}}
             <option value="{{objectID}}">{{name}}</option>
-            {{/user}}
+            {{/users}}
             </select>
             </label>
 
             <label> Team members
-            <select name="teamMembers" multiple>
-            {{#user}}
-            <option value="{{objectID}}">{{name}}</option>
-            {{/user}}
-            </select>
+            <div class="scrollMembers">
+            {{#users}}
+                <input type="checkbox" value="{{objectID}}" name="teamMembers">  {{name}}<br>
+            {{/users}}
+            </div>
             </label>
 {{/project}}
+            <br>
             <input type="submit" value="Edit">
         </div>
     </div>

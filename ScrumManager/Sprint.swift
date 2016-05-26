@@ -42,8 +42,10 @@ final class Sprint: Object, DBManagedObject, Commentable {
         
         let id = (dictionary["_id"] as? JSONDictionaryType)?["$oid"] as? String
         
-        let duration = (dictionary["duration"] as? Double) ?? 0
-        
+        let durationInt = (dictionary["duration"] as? Int) ?? 0
+		
+		let duration = NSTimeInterval(durationInt)
+		
         let identifier = dictionary["identifier"] as! Int
 		
 		let rawStatus = dictionary["status"] as? Int ?? 0
@@ -132,7 +134,8 @@ extension Sprint {
             "urlPath": pathURL,
             "identifier": identifier,
             "duration": duration,
-            "reviewReport": reviewReport.dictionary
+            "reviewReport": reviewReport.dictionary,
+            
         ]
         
     }
@@ -149,8 +152,9 @@ extension Sprint {
 			}),
 			"urlPath": pathURL,
 			"identifier": identifier,
-			"duration": (duration/360)
-			//  "reviewReport": reviewReport?.dictionary
+			"duration": FormatterCache.shared.componentsFormatter.stringFromTimeInterval(duration)!,
+			"reviewReport": reviewReport.dictionary,
+			"objectID":_objectID!
 		]
 
     }

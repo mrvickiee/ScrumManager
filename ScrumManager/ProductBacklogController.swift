@@ -22,7 +22,16 @@ class ProductBacklogController: AuthController {
     func controllerActions() -> [String: ControllerAction] {
         var modelActions:[String: ControllerAction] = [:]
 		modelActions["comments"] = ControllerAction() {(request, resp,identifier) in self.newComment(request, response: resp, identifier: identifier)}
+		
 		modelActions["arrange"] = ControllerAction(){(request, resp, identifier) in self.arrange(request, response:resp)}
+		
+		modelActions["delete"] = ControllerAction(){(request, resp, identifier) in self.delete(request, response:resp, identifier: identifier)}
+        
+        modelActions["updatecomment"] = ControllerAction() {(request, resp,identifier) in self.updateComment(request, response: resp, identifier: identifier)}
+        
+        modelActions["deletecomment"] = ControllerAction() {(request, resp,identifier) in self.deleteComment(request, response: resp, identifier: identifier)}
+		
+		
 		
 		
         return modelActions
@@ -41,11 +50,8 @@ class ProductBacklogController: AuthController {
             return []
         }
         
-        
-        
     }
-    
-    
+	
     func list(request: WebRequest, response: WebResponse) throws -> MustacheEvaluationContext.MapType {
         
         // Get Articles
@@ -61,8 +67,7 @@ class ProductBacklogController: AuthController {
             
             return userStoryDict
         }
-        
-
+		
         let values :MustacheEvaluationContext.MapType = ["userStories": userStoriesJSON]
         return values
     }
@@ -99,15 +104,6 @@ class ProductBacklogController: AuthController {
 			}
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		for(var i = 0; i < tmpUserStories.count ; i++ ){
 			
 			tmpUserStories[i].rankingIndex = i+1
@@ -132,6 +128,9 @@ class ProductBacklogController: AuthController {
         var values: MustacheEvaluationContext.MapType = [:]
         values["userStory"] = userStory.dictionary
         
+        let commentList = userStory.loadCommentDetailsForMustahce(currentUser(request, response: response)!)
+        values["commentList"] = commentList
+        values["identifier"] = identifier 
         return values
         
     }
@@ -235,17 +234,68 @@ class ProductBacklogController: AuthController {
         return [:]
     }
     
-    func delete(identifier: String, request: WebRequest, response: WebResponse) {
+    func delete( request: WebRequest, response: WebResponse,identifier: String) {
         
         let id = Int(identifier)!
         let db = try! DatabaseManager()
         if let userStory: UserStory = getUserStoryWithIdentifier(id) {
             try! db.deleteObject(userStory)
         }
+		
+		
         
         response.redirectTo("/userstories")
         response.requestCompletedCallback()
     }
+    
+    func deleteComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: userstory identifier, 1: Comment position
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let deleteIndex = Int(informationGet[1])
+        
+        let db = try! DatabaseManager()
+        
+        guard let userstory = db.executeFetchRequest(UserStory.self, predicate: ["identifier": id]).first else {
+            return
+        }
+        
+        userstory.comments.removeAtIndex(deleteIndex!)
+        
+        db.updateObject(userstory)
+        
+        response.redirectTo("/userstories/\(id)")
+        response.requestCompletedCallback()
+    }
+    
+    func updateComment(request: WebRequest, response: WebResponse, identifier: String) {
+        // 0: userstory identifier, 1: New comment, 2: index of old comment
+        let informationGet = identifier.componentsSeparatedByString("_")
+        
+        let id = Int(informationGet[0])!
+        
+        let newComment = informationGet[1].stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        
+        let indexOfOldComment = Int(informationGet[2])
+        
+        let db = try! DatabaseManager()
+        
+        guard let userstory = db.executeFetchRequest(UserStory.self, predicate: ["identifier": id]).first else{
+            return
+        }
+        
+        userstory.comments[indexOfOldComment!].comment = newComment
+        
+        db.updateObject(userstory)
+        
+        response.redirectTo("/userstories/\(id)")
+        response.requestCompletedCallback()
+        
+    }
+
+
     
     
 }

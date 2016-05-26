@@ -113,8 +113,11 @@ extension AuthController {
     }
     
     func availableActionsForControllerObjects(request: WebRequest, response: WebResponse) -> [Action] {
+        if currentUser(request, response: response)?.role == .Admin{
+            return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
+        }
+        return []
         
-        return [Action(url: newURL, icon: "icon-plus", name: "",isDestructive: false)]
     }
     
     func availableActionsForObjectWithIdentifier(identifier: String, request: WebRequest, response: WebResponse) -> [Action]

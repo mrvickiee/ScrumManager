@@ -37,11 +37,8 @@
                 <a method="post" href="/users/{{username}}/activate" style="display:{{isActive}}" class="blueButton button">
                 Activate
                 </a>
-                <a method="post" href="/users/{{username}}/deactivate" style="display:{{isUnActive}}" class="redButton button">
+                <a method="post" onclick="confirmationDeletionOrDeactivate('/users/{{username}}/deactivate','delete_{{username}}','user','false')" style="display:{{isUnActive}}" class="redButton button" id="delete_{{username}}">
                 Deactivate
-                </a>
-                <a method="post" href="/users/{{username}}/delete" class="redButton button">
-                Delete
                 </a>
             </td>
             </tr>

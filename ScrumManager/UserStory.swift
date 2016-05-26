@@ -170,7 +170,8 @@ extension UserStory {
                 return comment.dictionary
             }),
             "urlPath": pathURL,
-            "rankingIndex" : rankingIndex
+            "rankingIndex" : rankingIndex,
+            "objectID" : _objectID!
         ]
     }
     /*

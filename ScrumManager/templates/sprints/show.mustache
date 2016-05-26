@@ -35,7 +35,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 
     </div>
 
-
+{{/sprint}}
 	<div class="large-6 columns">
 		<h3>Sprint Burndown Chart</h3>
 
@@ -100,11 +100,11 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 	<tbody>
 	{{#userStory}}
 		<tr>
-			<td>{{title}}</td>
+<td><a href="{{urlPath}}">{{title}}</a></td>
 			<td>{{priority}}</td>
 			<td>{{estimate}}</td>
 			<td>{{status}}</td>
-<td><a href="/tasks/new?sprintID={{identifier}}&storyID={{objectID}}"class="warning button">Add task</a></td>
+<td><a href="/tasks/new?sprintID={{#sprint}}{{identifier}}{{/sprint}}&storyID={{objectID}}"class="success button">Add task</a></td>
 		</tr>
 	{{/userStory}}
 	</tbody>
@@ -123,6 +123,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 			<td>Status</td>
 			<td>Assignee</td>
 			<td>Belong to</td>
+			<td></td>
 		</tr>
 	</thead>
 	<tbody>
@@ -132,9 +133,9 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
 			<td>{{estimates}}</td>
 			<td>{{priority}}</td>
 			<td>{{status}}</td>
-			<td>None</td>
-			<td>None</td>
-
+			<td>{{user}}</td>
+			<td>{{storyName}}</td>
+<td><a href="{{urlPath}}/assign" class="warning button">{{buttonAM}}</a></td>
 		</tr>
 {{/tasks}}
 	</tbody>
@@ -169,7 +170,7 @@ background: url('http://i.imgur.com/d4ICC.png') no-repeat center center;
             <a onclick="editComment('{{commentIndicator}}{{initials}}', 'saveButton{{commentIndicator}}', 'cancelButton{{commentIndicator}}')" style="display:{{visibility}}" class="orangeButton button">Edit</a>
 
 
-            <a method="post" href="{{identifier}}_{{commentIndicator}}/deletecomment" style="display:{{visibility}}" class="redButton button">
+            <a method="post" onclick="confirmationDeletionOrDeactivate('{{identifier}}_{{commentIndicator}}/deletecomment', 'deleteButton{{commentIndicator}}', 'comment', 'true')" style="display:{{visibility}}" class="redButton button" id="deleteButton{{commentIndicator}}">
             Delete
             </a>
 
@@ -214,13 +215,10 @@ searching:true,
 autowidth:false,
 info:false
 }
-
 );
-
-
 </script>
 
-{{/sprint}}
+
 
 
 

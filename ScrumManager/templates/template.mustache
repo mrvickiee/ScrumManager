@@ -55,14 +55,12 @@ This is the mustache template file for the tap tracker example.
                         <a href="/sprints">Sprints</a>
                     </li>
 
-{{#user}}
-                    {{#isAdmin}}
+
+
                     <li>
                         <a href="/users">Users</a>
                     </li>
 
-                    {{/isAdmin}}
-{{/user}}
                 </ul>
             </nav>
 
@@ -156,6 +154,22 @@ document.getElementById(commentIndicator).style.marginLeft = "-3px";
 document.getElementById(cancelButton).style.marginLeft = "-3px";
 document.getElementById(cancelButton).style.display = "none";
 document.getElementById(saveButton).style.display = "none";
+}
+
+function confirmationDeletionOrDeactivate(link, buttonName, nameRepresent, isDeleted){
+var typeOfAction = "delete";
+
+if (isDeleted == "false"){
+    typeOfAction = "deactivate"
+}
+
+var message = "Do you sure to "+ typeOfAction +" the "+ nameRepresent +" selected?";
+var confirmation = confirm(message);
+
+if (confirmation == true){
+    document.getElementById(buttonName).href = link;
+}
+
 }
 </script>
     </body>
